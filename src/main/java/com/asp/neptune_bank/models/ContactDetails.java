@@ -65,12 +65,11 @@ public class ContactDetails {
     private String alternateEmail = null;
 
     @Column(updatable = false)
-    @PastOrPresent
+    //@PastOrPresent
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
-    @FutureOrPresent
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    //@FutureOrPresent
+    private LocalDateTime updatedAt;
 
     @PreUpdate
     public void preUpdate() {
