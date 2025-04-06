@@ -1,5 +1,7 @@
 package com.asp.neptune_bank.controller;
 
+import com.asp.neptune_bank.models.AccountDetails;
+import com.asp.neptune_bank.models.NomineeDetails;
 import com.asp.neptune_bank.models.Users;
 import com.asp.neptune_bank.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,5 @@ public class Controller {
     public ResponseEntity<Users> createUser(@RequestBody Users users) {
         return new ResponseEntity<>(userService.createUser(users), HttpStatus.CREATED);
     }
-
 
 }

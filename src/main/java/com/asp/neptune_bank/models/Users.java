@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -93,9 +91,6 @@ public class Users {
     @Builder.Default
     private Boolean isDeleted = null;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "contactId", referencedColumnName = "contactId")
-    private ContactDetails contactDetails;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -103,6 +98,15 @@ public class Users {
 
     @Version
     private Integer version;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "contactId", referencedColumnName = "contactId")
+    private ContactDetails contactDetails;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "accountId", referencedColumnName = "accountId")
+    private AccountDetails accountDetails;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "nomineeId", referencedColumnName = "nomineeId")
+    private NomineeDetails nomineeDetails;
 
     @PrePersist
     public void prePersist() {
@@ -114,6 +118,7 @@ public class Users {
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
 
 }
 
