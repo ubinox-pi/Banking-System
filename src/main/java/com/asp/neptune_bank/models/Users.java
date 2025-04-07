@@ -91,13 +91,12 @@ public class Users {
     @Builder.Default
     private Boolean isDeleted = null;
 
+    @Version
+    private Integer version;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-    @Version
-    private Integer version;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contactId", referencedColumnName = "contactId")
     private ContactDetails contactDetails;

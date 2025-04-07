@@ -4,7 +4,10 @@ package com.asp.neptune_bank.models;
 import com.asp.neptune_bank.enumeration.AccountType;
 import com.asp.neptune_bank.enumeration.ModeOfOperation;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -12,6 +15,8 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Builder
 public class AccountDetails {
 
@@ -21,23 +26,26 @@ public class AccountDetails {
     private Long accountId;
 
 
-    @Column( nullable = false, unique = true)
+    @NotBlank(message = "Account Number cannot be blank")
+    @Column(nullable = false, unique = true)
     private String accountNumber;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "branch_id")
-//    private Branch branch;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
 
     @Builder.Default
     @Column(nullable = false)
     private BigDecimal balance = BigDecimal.ZERO;
 
+    @NotNull(message = "Account Type cannot be blank")
     @Enumerated(EnumType.STRING)
-    @Column( nullable = false)
+    @Column(nullable = false)
     private AccountType accountType;
 
+    @NotNull(message = "Account Mode Of Operation cannot be blank")
     @Enumerated(EnumType.STRING)
-    @Column( nullable = false)
+    @Column(nullable = false)
     private ModeOfOperation modeOfOperation;
 
 
@@ -55,7 +63,6 @@ public class AccountDetails {
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
-
 
 
 }
