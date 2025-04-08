@@ -8,7 +8,7 @@
 
 package com.neptuneBank.DTOs.accountDTO;
 
-import com.neptuneBank.models.Branch;
+import com.neptuneBank.DTOs.branchDTO.BranchDTO;
 import com.neptuneBank.models.ENUM.AccountType;
 import com.neptuneBank.models.ENUM.ModeOfOperation;
 import com.neptuneBank.models.Users;
@@ -24,9 +24,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AccountDTO {
     private Long accountId;
-    private Users users;
+    private Users userId;
     private String accountNumber;
-    private Branch branch;
+    private BranchDTO branch;
     @Builder.Default
     private BigDecimal balance = BigDecimal.ZERO;
     private AccountType accountType;

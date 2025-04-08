@@ -1,4 +1,10 @@
 package com.neptuneBank.models.ENUM;
 
-public class Relationship {
+public enum Relationship {
+    FATHER,
+    MOTHER,
+    SPOUSE,
+    SIBLING,
+    SON,
+    DAUGHTER
 }

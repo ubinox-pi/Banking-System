@@ -31,10 +31,8 @@ ext {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-data-ldap'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-graphql'
     implementation 'org.springframework.boot:spring-boot-starter-integration'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'
@@ -45,33 +43,17 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
-    implementation 'com.azure.spring:spring-cloud-azure-starter'
-    implementation 'com.azure.spring:spring-cloud-azure-starter-active-directory'
-    implementation 'com.azure.spring:spring-cloud-azure-starter-actuator'
-    implementation 'com.azure.spring:spring-cloud-azure-starter-data-cosmos'
-    implementation 'com.azure.spring:spring-cloud-azure-starter-integration-storage-queue'
-    implementation 'com.azure.spring:spring-cloud-azure-starter-jdbc-postgresql'
-    implementation 'com.azure.spring:spring-cloud-azure-starter-keyvault'
-    implementation 'com.azure.spring:spring-cloud-azure-starter-storage'
-    implementation 'com.google.cloud:spring-cloud-gcp-starter'
-    implementation 'com.google.cloud:spring-cloud-gcp-starter-pubsub'
-    implementation 'com.google.cloud:spring-cloud-gcp-starter-storage'
-    implementation 'org.springframework.cloud:spring-cloud-config-server'
-    implementation 'org.springframework.cloud:spring-cloud-function-web'
-    implementation 'org.springframework.cloud:spring-cloud-starter'
-    implementation 'org.springframework.cloud:spring-cloud-starter-config'
-    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
-    implementation 'org.springframework.cloud:spring-cloud-starter-gateway-mvc'
-    implementation 'org.springframework.cloud:spring-cloud-starter-task'
     implementation 'org.springframework.integration:spring-integration-http'
     implementation 'org.springframework.integration:spring-integration-mongodb'
-    implementation 'org.springframework.integration:spring-integration-redis'
     implementation 'org.springframework.integration:spring-integration-stomp'
     implementation 'org.springframework.integration:spring-integration-webflux'
     implementation 'org.springframework.integration:spring-integration-websocket'
     implementation 'org.springframework.security:spring-security-messaging'
-    implementation 'org.springframework.session:spring-session-data-redis'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.4.4")
+    // https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api
+    implementation("jakarta.validation:jakarta.validation-api:3.1.1")
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.postgresql:postgresql'
@@ -85,11 +67,11 @@ dependencies {
 }
 
 dependencyManagement {
-    imports {
-        mavenBom "com.azure.spring:spring-cloud-azure-dependencies:${springCloudAzureVersion}"
-        mavenBom "com.google.cloud:spring-cloud-gcp-dependencies:${springCloudGcpVersion}"
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
+//    imports {
+//        mavenBom "com.azure.spring:spring-cloud-azure-dependencies:${springCloudAzureVersion}"
+//        mavenBom "com.google.cloud:spring-cloud-gcp-dependencies:${springCloudGcpVersion}"
+//        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+//    }
 }
 
 tasks.named('test') {

@@ -6,7 +6,7 @@
  *
  */
 
-package com.neptuneBank.Exception;
+package com.neptuneBank.exception.usersException;
 
 public class UserException extends RuntimeException {
     public UserException(String message) {

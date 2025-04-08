@@ -1,4 +1,7 @@
 package com.neptuneBank.models.ENUM;
 
-public class Genders {
+public enum Genders {
+    MARD,
+    AURAT,
+    CHAKKA
 }

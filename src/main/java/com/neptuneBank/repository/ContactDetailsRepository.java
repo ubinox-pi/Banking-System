@@ -1,4 +1,7 @@
 package com.neptuneBank.repository;
 
-public interface ContactDetailsRepository {
+import com.neptuneBank.models.ContactDetails;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ContactDetailsRepository extends JpaRepository<ContactDetails, Long> {
 }

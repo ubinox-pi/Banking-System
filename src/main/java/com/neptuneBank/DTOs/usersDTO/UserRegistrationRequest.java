@@ -6,10 +6,9 @@
  *
  */
 
-package com.neptuneBank.DTOs;
+package com.neptuneBank.DTOs.usersDTO;
 
-import com.neptuneBank.DTOs.ContactDetailsDTO.ContactDetailsCreateDTO;
-import com.neptuneBank.DTOs.usersDTO.UsersCreateDTO;
+import com.neptuneBank.DTOs.ContactDetailsDTO.ContactDetailsDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -18,9 +17,9 @@ import lombok.Data;
 public class UserRegistrationRequest {
     @Valid
     @NotNull(message = "User details are required.")
-    private UsersCreateDTO user;
+    private UsersDTO user;
 
     @Valid
     @NotNull(message = "Contact details are required.")
-    private ContactDetailsCreateDTO contactDetails;
+    private ContactDetailsDTO contactDetails;
 }
