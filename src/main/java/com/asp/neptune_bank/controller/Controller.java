@@ -1,8 +1,6 @@
 package com.asp.neptune_bank.controller;
 
-import com.asp.neptune_bank.models.AccountDetails;
-import com.asp.neptune_bank.models.NomineeDetails;
-import com.asp.neptune_bank.models.Users;
+import com.asp.neptune_bank.DTO.UsersDTO;
 import com.asp.neptune_bank.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,8 +19,8 @@ public class Controller {
 
 
     @PostMapping("/user")
-    public ResponseEntity<Users> createUser(@RequestBody Users users) {
-        return new ResponseEntity<>(userService.createUser(users), HttpStatus.CREATED);
+    public ResponseEntity<UsersDTO> createUser(@RequestBody UsersDTO usersDTO) {
+        return new ResponseEntity<>(userService.createUser(usersDTO), HttpStatus.CREATED);
     }
 
 }

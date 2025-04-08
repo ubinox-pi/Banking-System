@@ -1,5 +1,6 @@
 package com.asp.neptune_bank.models;
 
+import com.asp.neptune_bank.DTO.BranchDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Branch {
 
     @Id
@@ -58,6 +60,27 @@ public class Branch {
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public static Branch fromDTO(BranchDTO branchDTO) {
+        return Branch.builder()
+                .branchId(branchDTO.getBranchId())
+                .branchName(branchDTO.getBranchName())
+                .branchAddress(branchDTO.getBranchAddress())
+                .branchCity(branchDTO.getBranchCity())
+                .branchState(branchDTO.getBranchState())
+                .branchZip(branchDTO.getBranchZip())
+                .build();
+    }
+
+    public BranchDTO toDTO() {
+        return BranchDTO.builder()
+                .branchName(this.branchName)
+                .branchAddress(this.branchAddress)
+                .branchCity(this.branchCity)
+                .branchState(this.branchState)
+                .branchZip(this.branchZip)
+                .build();
     }
 
 }

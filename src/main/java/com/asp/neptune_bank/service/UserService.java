@@ -1,6 +1,7 @@
 package com.asp.neptune_bank.service;
 
 
+import com.asp.neptune_bank.DTO.UsersDTO;
 import com.asp.neptune_bank.models.AccountDetails;
 import com.asp.neptune_bank.models.Branch;
 import com.asp.neptune_bank.models.Users;
@@ -44,7 +45,24 @@ public class UserService {
     }
 
     @Transactional
-    public Users createUser(Users users) {
+    public UsersDTO createUser(UsersDTO usersDTO) {
+
+        Users users = Users.fromDTO(usersDTO);
+
+
+        if (users == null) {
+            throw new IllegalArgumentException("Users object is null after mapping from DTO");
+        }
+        if (users.getContactDetails() == null) {
+            throw new IllegalArgumentException("ContactDetails is null");
+        }
+        if (users.getNomineeDetails() == null) {
+            throw new IllegalArgumentException("NomineeDetails is null");
+        }
+        if (users.getAccountDetails() == null) {
+            throw new IllegalArgumentException("AccountDetails is null");
+        }
+
 
         users.setContactDetails(contactDetailsRepository.save(users.getContactDetails()));
         users.setNomineeDetails(nomineeDetailsRepository.save(users.getNomineeDetails()));
@@ -61,7 +79,8 @@ public class UserService {
         AccountDetails accountDetails = users.getAccountDetails();
         accountDetails.setBranch(branch);
 
-        return userRepository.save(users);
+        Users savedUser = userRepository.save(users);
+        return savedUser.toDTO();
     }
 
 }

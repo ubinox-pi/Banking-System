@@ -1,5 +1,6 @@
 package com.asp.neptune_bank.models;
 
+import com.asp.neptune_bank.DTO.NomineeDetailsDTO;
 import com.asp.neptune_bank.enumeration.Relationship;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -67,6 +68,35 @@ public class NomineeDetails {
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+
+    public NomineeDetailsDTO toDTO() { //Entity to DTO
+        return NomineeDetailsDTO.builder()
+                .nomineeId(this.nomineeId)
+                .aadhaar(this.aadhaar)
+                .address(this.address)
+                .dob(this.dob)
+                .mob(this.mob)
+                .email(this.email)
+                .name(this.name)
+                .relationship(this.relationship)
+                .isVerified(this.isVerified)
+                .build();
+
+    }
+
+    public static NomineeDetails fromDTO(NomineeDetailsDTO dto) { //DTO to Entity
+        return NomineeDetails.builder()
+                .isVerified(dto.getIsVerified())
+                .address(dto.getAddress())
+                .dob(dto.getDob())
+                .aadhaar(dto.getAadhaar())
+                .mob(dto.getMob())
+                .name(dto.getName())
+                .email(dto.getEmail())
+                .relationship(dto.getRelationship())
+                .build();
     }
 
 

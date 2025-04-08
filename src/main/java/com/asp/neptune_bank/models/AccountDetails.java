@@ -1,6 +1,7 @@
 package com.asp.neptune_bank.models;
 
 
+import com.asp.neptune_bank.DTO.AccountDetailsDTO;
 import com.asp.neptune_bank.enumeration.AccountType;
 import com.asp.neptune_bank.enumeration.ModeOfOperation;
 import jakarta.persistence.*;
@@ -62,6 +63,35 @@ public class AccountDetails {
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+
+    public static AccountDetails fromDTO(AccountDetailsDTO accountDetails) {
+        AccountDetails accountDetails1 = AccountDetails.builder()
+                .accountId(accountDetails.getAccountId())
+                .accountNumber(accountDetails.getAccountNumber())
+                .balance(accountDetails.getBalance())
+                .accountType(accountDetails.getAccountType())
+                .modeOfOperation(accountDetails.getModeOfOperation())
+                .branch(Branch.fromDTO(accountDetails.getBranch()))
+                .build();
+
+        if (accountDetails.getBranch() != null) {
+            accountDetails1.setBranch(Branch.fromDTO(accountDetails.getBranch()));
+        }
+
+        return accountDetails1;
+
+    }
+
+    public AccountDetailsDTO toDTO() {
+        return AccountDetailsDTO.builder()
+                .accountNumber(this.accountNumber)
+                .balance(this.balance)
+                .accountType(this.accountType)
+                .modeOfOperation(this.modeOfOperation)
+                .branch(this.branch != null ? this.branch.toDTO() : null)
+                .build();
     }
 
 

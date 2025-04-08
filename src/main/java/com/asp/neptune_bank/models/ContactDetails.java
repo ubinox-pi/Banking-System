@@ -1,9 +1,10 @@
 package com.asp.neptune_bank.models;
 
+import com.asp.neptune_bank.DTO.ContactDetailsDTO;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -81,6 +82,40 @@ public class ContactDetails {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
+
+
+    public ContactDetailsDTO toDTO() { //Entity to DTO
+        return ContactDetailsDTO.builder()
+                .contactId(this.contactId)
+                .country(this.country)
+                .email(this.email)
+                .zip(this.zip)
+                .city(this.city)
+                .state(this.state)
+                .communicationAddress(this.communicationAddress)
+                .landmark(this.landmark)
+                .mobileNumber(this.mobileNumber)
+                .permanentAddress(this.permanentAddress)
+                .build();
+    }
+
+
+    public static ContactDetails fromDTO(ContactDetailsDTO dto) { //DTO to Entity
+        return ContactDetails.builder()
+                .country(dto.getCountry())
+                .email(dto.getEmail())
+                .zip(dto.getZip())
+                .city(dto.getCity())
+                .state(dto.getState())
+                .communicationAddress(dto.getCommunicationAddress())
+                .landmark(dto.getLandmark())
+                .mobileNumber(dto.getMobileNumber())
+                .permanentAddress(dto.getPermanentAddress())
+                .alternateMobileNumber(dto.getAlternateMobileNumber())
+                .alternateEmail(dto.getAlternateEmail())
+                .build();
+    }
+
 
 }
 

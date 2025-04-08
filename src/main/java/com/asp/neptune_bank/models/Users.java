@@ -1,5 +1,6 @@
 package com.asp.neptune_bank.models;
 
+import com.asp.neptune_bank.DTO.UsersDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -87,7 +88,6 @@ public class Users {
     @Builder.Default
     private Boolean isBlocked = null;
 
-    @NotNull
     @Builder.Default
     private Boolean isDeleted = null;
 
@@ -97,15 +97,6 @@ public class Users {
     @Column(updatable = false)
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "contactId", referencedColumnName = "contactId")
-    private ContactDetails contactDetails;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "accountId", referencedColumnName = "accountId")
-    private AccountDetails accountDetails;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "nomineeId", referencedColumnName = "nomineeId")
-    private NomineeDetails nomineeDetails;
 
     @PrePersist
     public void prePersist() {
@@ -116,6 +107,80 @@ public class Users {
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "contactId", referencedColumnName = "contactId")
+    private ContactDetails contactDetails;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "accountId", referencedColumnName = "accountId")
+    private AccountDetails accountDetails;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "nomineeId", referencedColumnName = "nomineeId")
+    private NomineeDetails nomineeDetails;
+
+
+    public UsersDTO toDTO() { //Entity to DTO
+        return UsersDTO.builder()
+                .id(this.id)
+                .aadhar(this.aadhar)
+                .gender(this.gender)
+                .dateOfBirth(this.dateOfBirth)
+                .fatherName(this.fatherName)
+                .firstName(this.firstName)
+                .lastName(this.lastName)
+//                .maritalStatus(this.maritalStatus)
+//                .spouseName(this.spouseName)
+//                .motherName(this.motherName)
+//                .occupation(this.occupation)
+//                .pan(this.pan)
+                .accountInterestRate(this.accountInterestRate)
+                .isKycCompleted(this.isKycCompleted)
+                .isVerified(this.isVerified)
+                .isActive(this.isActive)
+                .isBlocked(this.isBlocked)
+                .contactDetails(this.contactDetails != null ? this.contactDetails.toDTO() : null)
+                .nomineeDetails(this.nomineeDetails != null ? this.nomineeDetails.toDTO() : null)
+                .accountDetails(this.accountDetails != null ? this.accountDetails.toDTO() : null)
+                .build();
+    }
+
+    public static Users fromDTO(UsersDTO dto) {
+        Users user = Users.builder()
+                .aadhar(dto.getAadhar())
+                .gender(dto.getGender())
+                .dateOfBirth(dto.getDateOfBirth())
+                .fatherName(dto.getFatherName())
+                .firstName(dto.getFirstName())
+                .lastName(dto.getLastName())
+                .maritalStatus(dto.getMaritalStatus())
+                .spouseName(dto.getSpouseName())
+                .motherName(dto.getMotherName())
+                .occupation(dto.getOccupation())
+                .pan(dto.getPan())
+                .accountInterestRate(dto.getAccountInterestRate())
+                .isKycCompleted(dto.getIsKycCompleted())
+                .isVerified(dto.getIsVerified())
+                .isActive(dto.getIsActive())
+                .isBlocked(dto.getIsBlocked())
+                .build();
+
+        if (dto.getContactDetails() != null) {
+            user.setContactDetails(ContactDetails.fromDTO(dto.getContactDetails()));
+        }
+
+        if (dto.getNomineeDetails() != null) {
+            user.setNomineeDetails(NomineeDetails.fromDTO(dto.getNomineeDetails()));
+        }
+
+        if (dto.getAccountDetails() != null) {
+            user.setAccountDetails(AccountDetails.fromDTO(dto.getAccountDetails()));
+        }
+
+        return user;
     }
 
 
