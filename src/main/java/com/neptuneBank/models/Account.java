@@ -10,9 +10,8 @@
 package com.neptuneBank.models;
 
 
-import com.neptuneBank.DTOs.accountDTO.AccountDTO;
-import com.neptuneBank.models.ENUM.AccountType;
-import com.neptuneBank.models.ENUM.ModeOfOperation;
+import com.neptuneBank.ENUM.AccountType;
+import com.neptuneBank.ENUM.ModeOfOperation;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -88,39 +87,6 @@ public class Account {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
-    }
-
-    public void fromDTO(AccountDTO dto) {
-        this.userId = dto.getUserId();
-        this.accountNumber = generateAccountNumber();
-        this.branch.toDTOId(dto.getBranch());
-        this.balance = dto.getBalance();
-        this.accountType = dto.getAccountType();
-        this.modeOfOperation = dto.getModeOfOperation();
-    }
-
-    public AccountDTO toDTO() {
-        return AccountDTO.builder()
-                .accountId(this.accountId)
-                .userId(this.userId)
-                .accountNumber(this.accountNumber)
-                .branch(this.branch.toDTOId())
-                .balance(this.balance)
-                .accountType(this.accountType)
-                .modeOfOperation(this.modeOfOperation)
-                .build();
-    }
-
-    public AccountDTO toAdminDTO() {
-        return AccountDTO.builder()
-                .accountId(this.accountId)
-                .userId(this.userId)
-                .accountNumber(this.accountNumber)
-                .branch(this.branch.toDTO())
-                .balance(this.balance)
-                .accountType(this.accountType)
-                .modeOfOperation(this.modeOfOperation)
-                .build();
     }
 
 }

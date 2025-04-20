@@ -8,9 +8,7 @@
 
 package com.neptuneBank.models;
 
-import com.neptuneBank.DTOs.ContactDetailsDTO.ContactDetailsDTO;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
@@ -33,41 +31,35 @@ public class ContactDetails {
     @Setter(AccessLevel.NONE)
     private Long contactId;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
+    private Users userId;
+
     //it will take mobile number as string with country code
-    @NotBlank(message = "Mobile number is required.")
     @Column(nullable = false, unique = true)
     private String mobileNumber;
 
     @Column(nullable = false, unique = true)
-    @NotBlank(message = "Email is required.")
-    @Email
     private String email;
 
-    @NotBlank(message = "Communication address is required.")
     @Column(nullable = false, columnDefinition = "TEXT")
     private String communicationAddress;
 
     @NotBlank(message = "Permanent address is required.")
-    @Column(nullable = false, columnDefinition = "TEXT")
     private String permanentAddress;
 
-    @NotBlank(message = "City is required.")
     @Column(nullable = false)
     private String city;
 
-    @NotBlank(message = "State is required.")
     @Column(nullable = false)
     private String state;
 
-    @NotBlank(message = "Pin code is required.")
     @Column(nullable = false)
     private String zip;
 
-    @NotBlank(message = "Landmark is required.")
     @Column(nullable = false, columnDefinition = "TEXT")
     private String landmark;
 
-    @NotBlank(message = "Country is required.")
     @Column(nullable = false)
     private String country;
 
@@ -97,57 +89,4 @@ public class ContactDetails {
     }
 
 
-    // DTO implementation
-
-    public void fromDTO(ContactDetailsDTO dto) {
-        this.mobileNumber = dto.getMobileNumber();
-        this.email = dto.getEmail();
-        this.communicationAddress = dto.getCommunicationAddress();
-        this.permanentAddress = dto.getPermanentAddress();
-        this.city = dto.getCity();
-        this.state = dto.getState();
-        this.zip = dto.getZip();
-        this.landmark = dto.getLandmark();
-        this.country = dto.getCountry();
-        this.alternateMobileNumber = dto.getAlternateMobileNumber();
-        this.alternateEmail = dto.getAlternateEmail();
-    }
-
-    public void toDTOId(ContactDetailsDTO dto) {
-        this.contactId = dto.getContactId();
-    }
-
-    public ContactDetailsDTO toDTO() {
-        return ContactDetailsDTO.builder()
-                .contactId(this.contactId)
-                .mobileNumber(this.mobileNumber)
-                .communicationAddress(this.communicationAddress)
-                .permanentAddress(this.permanentAddress)
-                .city(this.city)
-                .state(this.state)
-                .zip(this.zip)
-                .landmark(this.landmark)
-                .country(this.country)
-                .alternateMobileNumber(this.alternateMobileNumber)
-                .alternateEmail(this.alternateEmail)
-                .build();
-    }
-
-    public ContactDetailsDTO toAdminDTO() {
-        return ContactDetailsDTO.builder()
-                .contactId(this.contactId)
-                .mobileNumber(this.mobileNumber)
-                .communicationAddress(this.communicationAddress)
-                .permanentAddress(this.permanentAddress)
-                .city(this.city)
-                .state(this.state)
-                .zip(this.zip)
-                .landmark(this.landmark)
-                .country(this.country)
-                .alternateMobileNumber(this.alternateMobileNumber)
-                .alternateEmail(this.alternateEmail)
-                .createdAt(this.createdAt)
-                .createdAt(this.updatedAt)
-                .build();
-    }
 }

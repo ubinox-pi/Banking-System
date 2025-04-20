@@ -9,8 +9,8 @@
 package com.neptuneBank.DTOs.accountDTO;
 
 import com.neptuneBank.DTOs.branchDTO.BranchDTO;
-import com.neptuneBank.models.ENUM.AccountType;
-import com.neptuneBank.models.ENUM.ModeOfOperation;
+import com.neptuneBank.ENUM.AccountType;
+import com.neptuneBank.ENUM.ModeOfOperation;
 import com.neptuneBank.models.Users;
 import lombok.*;
 

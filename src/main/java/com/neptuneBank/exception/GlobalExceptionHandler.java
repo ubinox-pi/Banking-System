@@ -9,6 +9,7 @@
 package com.neptuneBank.exception;
 
 import com.neptuneBank.exception.usersException.UserException;
+import com.neptuneBank.exception.usersException.entity.ContactDetailsExceptionEntity;
 import com.neptuneBank.exception.usersException.entity.ErrorResponse;
 import com.neptuneBank.exception.usersException.entity.UserExceptionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     private UserExceptionEntity userExceptionEntity;
+    private ContactDetailsExceptionEntity contactDetailsExceptionEntity;
+
+    @Autowired
+    public void setContactDetailsException(ContactDetailsExceptionEntity contactDetailsExceptionEntity) {
+        this.contactDetailsExceptionEntity = contactDetailsExceptionEntity;
+    }
 
     @Autowired
     public void setUserExceptionEntity(UserExceptionEntity userExceptionEntity) {
@@ -29,15 +36,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserException.class)
     public ResponseEntity<?> handleUserException(UserException ex) {
-        userExceptionEntity.setMessage(ex.getMessage());
-        userExceptionEntity.setErrorCode("BAD_REQUEST");
-        userExceptionEntity.setErrorType("User Exception");
-        userExceptionEntity.setErrorDescription("User registration failed");
-        userExceptionEntity.setErrorDetails("Invalid user data provided");
-        userExceptionEntity.setErrorResolution("Please check the provided data and try again");
-        userExceptionEntity.setErrorTimestamp(String.valueOf(System.currentTimeMillis()));
-        userExceptionEntity.setErrorPath("/auth/user");
-        userExceptionEntity.setErrorStatus("400 BAD REQUEST");
+        contactDetailsExceptionEntity.setMessage(ex.getMessage());
+        contactDetailsExceptionEntity.setErrorCode("BAD_REQUEST");
+        contactDetailsExceptionEntity.setErrorType("User Exception");
+        contactDetailsExceptionEntity.setErrorDescription("User registration failed");
+        contactDetailsExceptionEntity.setErrorDetails("Invalid user data provided");
+        contactDetailsExceptionEntity.setErrorResolution("Please check the provided data and try again");
+        contactDetailsExceptionEntity.setErrorTimestamp(String.valueOf(System.currentTimeMillis()));
+        contactDetailsExceptionEntity.setErrorPath("/auth/user");
+        contactDetailsExceptionEntity.setErrorStatus("400 BAD REQUEST");
         return new ResponseEntity<>(userExceptionEntity, HttpStatus.BAD_REQUEST);
     }
 
