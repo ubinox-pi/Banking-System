@@ -24,17 +24,20 @@ import com.neptunebank.user_service.ENUMs.MaritalStatus;
 import com.neptunebank.user_service.exception.usersException.UserException;
 import com.neptunebank.user_service.mappers.UsersMapper;
 import com.neptunebank.user_service.models.Kyc;
+import com.neptunebank.user_service.models.POJO.KycService;
 import com.neptunebank.user_service.repositories.KycRepository;
 import com.neptunebank.user_service.repositories.UserRepository;
 import jakarta.transaction.Transactional;
-import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
+    private KafkaTemplate<String, KycService> data;
+    private KafkaTemplate<String, String> message;
     private UserRepository userRepository;
     private KycRepository kycRepository;
 
@@ -47,6 +50,17 @@ public class UserService {
     public void setKycRepository(KycRepository kycRepository) {
         this.kycRepository = kycRepository;
     }
+
+    @Autowired
+    public void setData(KafkaTemplate<String, KycService> kafkaTemplate) {
+        this.data = kafkaTemplate;
+    }
+
+    @Autowired
+    public void setMessage(KafkaTemplate<String, String> kafkaTemplate) {
+        this.message = kafkaTemplate;
+    }
+
 
     @Transactional
     public void registerUser(UsersRequestDTO request) throws UserException {
@@ -65,16 +79,11 @@ public class UserService {
     public void setEmployee(KycService employee) {
         Kyc kyc = kycRepository.findByUserId(employee.getKycId());
         kyc.setVerifiedByEmployeeId(employee.getEmployeeId());
-        kycRepository.save(kyc);
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class KycService {
-        private long kycId;
-        private long employeeId;
+        try {
+            kycRepository.save(kyc);
+            message.send("status", "success");
+        } catch (Exception e) {
+            message.send("status", "failed");
+        }
     }
 }

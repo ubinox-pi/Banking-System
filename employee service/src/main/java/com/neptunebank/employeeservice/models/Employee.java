@@ -73,7 +73,7 @@ public class Employee {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private BankRole occupation;
+    private BankRole role;
 
     @Column(nullable = false)
     private String salary;
@@ -97,16 +97,11 @@ public class Employee {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "kycId", referencedColumnName = "kycId", unique = true)
-    private Kyc kycId;
+    private Verification verificationId;
 
-    @Builder.Default
-    private Boolean isActive = null;
-
-    @Builder.Default
-    private Boolean isBlocked = null;
-
-    @Builder.Default
-    private Boolean isDeleted = null;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private WorkingStatus workingStatus;
 
     @Column(nullable = false, updatable = false)
     @PastOrPresent

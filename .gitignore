@@ -1,0 +1,50 @@
+# IntelliJ project files
+.idea/
+*.iml
+
+# Java build directories
+target/
+build/
+
+# Logs
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Maven / Gradle
+.mvn/
+.gradle/
+!gradle-wrapper.jar
+
+# Spring Boot specific
+*.jar
+*.war
+*.ear
+
+# Node dependencies (if frontend exists in submodule)
+**/node_modules/
+
+# VS Code settings
+.vscode/
+
+# Coverage reports
+coverage/
+**/build/
+**/target/
+**/.classpath
+**/.project
+**/.settings/
+
+# Environment and IDE specific files
+.env
+*.swp
+
+# Temporary files
+*.tmp
+*.bak
+
+# System files
+ehthumbs.db
+Icon?
