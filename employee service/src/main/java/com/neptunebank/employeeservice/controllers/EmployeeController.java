@@ -1,16 +1,16 @@
 package com.neptunebank.employeeservice.controllers;
 
-import com.neptunebank.employeeservice.models.POJO.KycService;
+import com.neptunebank.employeeservice.exception.EmployeeException;
+import com.neptunebank.employeeservice.models.POJO.kycService.KycRequest;
 import com.neptunebank.employeeservice.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -42,12 +42,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/verifyKyc")
-    public ResponseEntity<HashMap<String, String>> verifyKyc(@RequestBody KycService kycService) {
-
-        employeeService.verifyUserKyc(kycService.getKycId(), kycService.getEmployeeId());
-
-        HashMap<String, String> response = new HashMap<>();
-        response.put("message", "KYC verification Completed");
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<Map<String, String>> verifyKyc(@RequestBody KycRequest kycRequest) throws EmployeeException {
+        return employeeService.verifyUserKyc(kycRequest.getKycId(), kycRequest.getEmployeeId());
     }
 }

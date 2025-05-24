@@ -82,7 +82,9 @@ public class Kyc {
     @Builder.Default
     private Boolean drivingLicenseVerified = false;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Long verifiedByEmployeeId;
+
+    private String rejectionReason;
 
 }

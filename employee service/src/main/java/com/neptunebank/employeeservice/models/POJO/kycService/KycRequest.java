@@ -1,4 +1,4 @@
-package com.neptunebank.employeeservice.models.POJO;
+package com.neptunebank.employeeservice.models.POJO.kycService;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -26,7 +26,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class KycService {
+public class KycRequest {
     @NotBlank(message = "Kyc Id is required.")
     private Long kycId;
     @NotBlank(message = "Employee Id is required.")

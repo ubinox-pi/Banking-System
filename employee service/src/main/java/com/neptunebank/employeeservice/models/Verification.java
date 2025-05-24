@@ -34,8 +34,8 @@ public class Verification {
     private Long kycId;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_id", referencedColumnName = "userid")
-    private Employee userId;
+    @JoinColumn(name = "employee_id", referencedColumnName = "employeeId")
+    private Employee EmployeeId;
 
     @Column(nullable = false, unique = true)
     private String aadharNumber;
@@ -84,5 +84,7 @@ public class Verification {
 
     @Column(nullable = false, unique = true)
     private Long verifiedByEmployeeId;
+
+    private String rejectionReason;
 
 }

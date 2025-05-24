@@ -1,7 +1,4 @@
-package com.neptunebank.user_service.models.POJO;
-
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+package com.neptunebank.employeeservice.exception;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -9,9 +6,9 @@ import lombok.*;
  * See the LICENSE file in the project root for full license information.
  *
  * Project: Neptune
- * Package: com.neptunebank.user_service.models.POJO
- * Created by: Ashish Kushwaha on 23-05-2025 18:23
- * File: a
+ * Package: com.neptunebank.employeeservice.exception
+ * Created by: Ashish Kushwaha on 24-05-2025 14:17
+ * File: EmployeeException
  *
  * This source code is intended for educational and non-commercial purposes only.
  * Redistribution and use in source and binary forms, with or without modification,
@@ -21,14 +18,18 @@ import lombok.*;
  *   - Commercial use is strictly prohibited.
  *
  */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class KycService {
-    @NotBlank(message = "Kyc Id is required.")
-    private Long kycId;
-    @NotBlank(message = "Employee Id is required.")
-    private Long employeeId;
+public class EmployeeException extends Exception {
+    private static final long serialVersionUID = 1L;
+
+    public EmployeeException(String message) {
+        super(message);
+    }
+
+    public EmployeeException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public EmployeeException(Throwable cause) {
+        super(cause);
+    }
 }

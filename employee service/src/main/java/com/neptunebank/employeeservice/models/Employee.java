@@ -40,7 +40,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    private Long userid;
+    private Long employeeId;
 
     @Column(nullable = false)
     private String firstName;

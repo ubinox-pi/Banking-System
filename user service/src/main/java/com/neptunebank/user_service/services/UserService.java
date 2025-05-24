@@ -24,7 +24,7 @@ import com.neptunebank.user_service.ENUMs.MaritalStatus;
 import com.neptunebank.user_service.exception.usersException.UserException;
 import com.neptunebank.user_service.mappers.UsersMapper;
 import com.neptunebank.user_service.models.Kyc;
-import com.neptunebank.user_service.models.POJO.KycService;
+import com.neptunebank.user_service.models.POJO.KycRequest;
 import com.neptunebank.user_service.repositories.KycRepository;
 import com.neptunebank.user_service.repositories.UserRepository;
 import jakarta.transaction.Transactional;
@@ -36,7 +36,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    private KafkaTemplate<String, KycService> data;
+    private KafkaTemplate<String, KycRequest> data;
     private KafkaTemplate<String, String> message;
     private UserRepository userRepository;
     private KycRepository kycRepository;
@@ -52,7 +52,7 @@ public class UserService {
     }
 
     @Autowired
-    public void setData(KafkaTemplate<String, KycService> kafkaTemplate) {
+    public void setData(KafkaTemplate<String, KycRequest> kafkaTemplate) {
         this.data = kafkaTemplate;
     }
 
@@ -76,14 +76,14 @@ public class UserService {
     }
 
     @KafkaListener(topics = "employeeId", groupId = "users")
-    public void setEmployee(KycService employee) {
+    public void setEmployee(KycRequest employee) {
         Kyc kyc = kycRepository.findByUserId(employee.getKycId());
         kyc.setVerifiedByEmployeeId(employee.getEmployeeId());
         try {
             kycRepository.save(kyc);
-            message.send("status", "success");
+            message.send("status", employee.getKycId() + ":success");
         } catch (Exception e) {
-            message.send("status", "failed");
+            message.send("status", employee.getKycId() + ":failed:" + e.getMessage());
         }
     }
 }

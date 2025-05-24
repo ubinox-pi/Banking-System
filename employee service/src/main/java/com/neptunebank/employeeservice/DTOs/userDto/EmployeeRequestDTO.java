@@ -78,8 +78,8 @@ public class EmployeeRequestDTO {
     private String citizen;
 
     @NotNull(message = "Category is required.")
-    private Category catagory;
-
+    private Category category;
+ 
     @NotNull(message = "Religion is required.")
     private Religion religion;
 

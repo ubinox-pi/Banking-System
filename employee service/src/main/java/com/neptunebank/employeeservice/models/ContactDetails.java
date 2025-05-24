@@ -42,8 +42,8 @@ public class ContactDetails {
     private Long contactId;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
-    private Employee userId;
+    @JoinColumn(name = "employee_id", referencedColumnName = "employeeId", nullable = false)
+    private Employee employeeId;
 
     //it will take mobile number as string with country code
     @Column(nullable = false, unique = true)

@@ -1,11 +1,19 @@
 package com.neptunebank.employeeservice.service;
 
-import com.neptunebank.employeeservice.models.POJO.KycService;
+import com.neptunebank.employeeservice.models.POJO.kycService.KycRequest;
 import com.neptunebank.employeeservice.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -28,8 +36,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmployeeService {
 
+    private final Map<Long, CompletableFuture<String>> futureMap = new ConcurrentHashMap<>();
+    private final Map<String, String> response = new ConcurrentHashMap<>();
     private EmployeeRepository employeeRepository;
-    private KafkaTemplate<String, KycService> data;
+    private KafkaTemplate<String, KycRequest> data;
     private KafkaTemplate<String, String> message;
 
     @Autowired
@@ -38,7 +48,7 @@ public class EmployeeService {
     }
 
     @Autowired
-    public void setData(KafkaTemplate<String, KycService> kafkaTemplate) {
+    public void setData(KafkaTemplate<String, KycRequest> kafkaTemplate) {
         this.data = kafkaTemplate;
     }
 
@@ -47,19 +57,59 @@ public class EmployeeService {
         this.message = message;
     }
 
-    public void verifyUserKyc(Long userId, Long employeeId) {
-        if (employeeId == null || userId == null) {
-            throw new IllegalArgumentException("User ID and Employee ID cannot be null");
-        } else if (employeeRepository.existsByEmployeeId(employeeId)) {
-            KycService kycService = new KycService(userId, employeeId);
-            data.send("employeeId", kycService);
+    public ResponseEntity<Map<String, String>> verifyUserKyc(Long kycId, Long employeeId) {
+        if (employeeId == null || kycId == null) {
+            response.put("message", "Employee Id and User Id cannot be null");
+            response.put("status", "failed");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        if (!employeeRepository.existsByEmployeeId(employeeId)) {
+            response.put("message", "Employee does not exist");
+            response.put("status", "failed");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        CompletableFuture<String> future = new CompletableFuture<>();
+        futureMap.put(kycId, future);
+
+        data.send("employeeId", new KycRequest(kycId, employeeId));
+
+        try {
+            String result = future.get(20, TimeUnit.SECONDS);
+            response.put("status", "success");
+            response.put("message", "KYC verification request sent successfully");
+            response.put("result", result);
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (TimeoutException e) {
+            response.put("message", "KYC verification request timed out");
+            response.put("status", "failed");
+            response.put("result", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.REQUEST_TIMEOUT);
+        } catch (Exception e) {
+            response.put("message", "Error occurred while processing KYC verification request");
+            response.put("status", "failed");
+            response.put("result", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @KafkaListener(topics = "status", groupId = "users")
-    public void confirmKyc(String status) {
-        if (status.equals("success")) {
-            
+    public void confirmKycRequest(String message) {
+        String[] parts = message.split(":");
+        if (parts.length >= 2) {
+            Long userId = Long.parseLong(parts[0]);
+            String status = parts[1];
+            String errorMessage = parts[2];
+
+            CompletableFuture<String> future = futureMap.remove(userId);
+            if (future != null) {
+                if ("success".equalsIgnoreCase(status)) {
+                    future.complete("KYC verification successful for user ID: " + userId);
+                } else {
+                    future.completeExceptionally(new Exception("KYC verification failed for user ID: " + userId + " " + errorMessage));
+                }
+            }
         }
     }
 }
