@@ -20,9 +20,6 @@ package com.neptunebank.user_service.models;
 
 import com.neptunebank.user_service.ENUMs.*;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
 
@@ -90,18 +87,17 @@ public class Users {
     @Enumerated(EnumType.STRING)
     private Religion religion;
 
-    @Valid
-    @NotNull(message = "Contact details is not mapped correctly.")
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(nullable = false, name = "contactId", referencedColumnName = "contactId", unique = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
+    @JoinColumn(unique = true, updatable = false)
     private ContactDetails contactDetails;
 
-    @Column(nullable = false, unique = true)
+    //will set via kafka without dto
+    @Column(unique = true)
+    @Builder.Default
     private Long accountId = null;
 
-    @Valid
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "nomineeId", referencedColumnName = "nomineeId", unique = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
+    @JoinColumn(unique = true, updatable = false)
     @Builder.Default
     private Nominee nominee = null;
 
@@ -109,13 +105,9 @@ public class Users {
     @Builder.Default
     private Double accountInterestRate = 0.0d;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "kycId", referencedColumnName = "kycId", unique = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
+    @JoinColumn(unique = true, updatable = false)
     private Kyc kycId;
-
-    //This will a class in later
-    @Builder.Default
-    private Boolean isVerified = false;
 
     @Builder.Default
     private Boolean isActive = null;
@@ -131,7 +123,7 @@ public class Users {
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    @FutureOrPresent
+    @PastOrPresent
     private LocalDateTime updatedAt;
 
     @PrePersist

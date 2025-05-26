@@ -23,12 +23,19 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ContactDetailsRequestDTO {
+public class ContactDetailsRequestDTO implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @NotBlank(message = "Mobile number is required.")
     private String mobileNumber;
 

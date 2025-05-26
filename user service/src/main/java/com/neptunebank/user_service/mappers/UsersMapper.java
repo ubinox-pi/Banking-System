@@ -36,10 +36,11 @@ public class UsersMapper {
                 .occupation(dto.getOccupation())
                 .salary(dto.getSalary())
                 .citizen(dto.getCitizen())
-                .category(dto.getCatagory())
+                .category(dto.getCategory())
                 .religion(dto.getReligion())
                 .contactDetails(ContactDetailsMapper.toEntity(dto.getContactDetails()))
                 .nominee(NomineeMapper.toEntity(dto.getNominee()))
+                .kycId(KycMapper.toEntity(dto.getKyc()))
                 .build();
     }
 }

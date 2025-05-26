@@ -25,6 +25,7 @@ import com.neptunebank.user_service.exception.usersException.UserException;
 import com.neptunebank.user_service.mappers.UsersMapper;
 import com.neptunebank.user_service.models.Kyc;
 import com.neptunebank.user_service.models.POJO.KycRequest;
+import com.neptunebank.user_service.models.Users;
 import com.neptunebank.user_service.repositories.KycRepository;
 import com.neptunebank.user_service.repositories.UserRepository;
 import jakarta.transaction.Transactional;
@@ -32,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserService {
@@ -63,7 +65,17 @@ public class UserService {
 
 
     @Transactional
-    public void registerUser(UsersRequestDTO request) throws UserException {
+    public void registerUser(
+            UsersRequestDTO request,
+            MultipartFile aadhaar,
+            MultipartFile pan,
+            MultipartFile photo,
+            MultipartFile signature,
+            MultipartFile voterId,
+            MultipartFile passportId,
+            MultipartFile drivingLicenseId
+
+    ) throws Exception {
         if (request == null || request.getContactDetails() == null || request.getNominee() == null) {
             throw new UserException("User, contact details and nominee cannot be null.");
         }
@@ -72,7 +84,25 @@ public class UserService {
             throw new UserException("Spouse name is required for married users.");
         }
 
-        userRepository.save(UsersMapper.toEntity(request));
+        Users users = UsersMapper.toEntity(request);
+        users.getContactDetails().setUser(users);
+        users.getNominee().setUser(users);
+        users.getKycId().setUser(users);
+        users.getKycId().setAadharImage(aadhaar.getBytes());
+        users.getKycId().setPanImage(pan.getBytes());
+        users.getKycId().setUserPhoto(photo.getBytes());
+        users.getKycId().setUserSignature(signature.getBytes());
+        if (voterId != null)
+            users.getKycId().setVoterIdImage(voterId.getBytes());
+        if (passportId != null)
+            users.getKycId().setPassportImage(passportId.getBytes());
+        if (drivingLicenseId != null)
+            users.getKycId().setDrivingLicenseImage(drivingLicenseId.getBytes());
+        try {
+            userRepository.save(users);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @KafkaListener(topics = "employeeId", groupId = "users")

@@ -24,13 +24,17 @@ import com.neptunebank.user_service.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 
 @RestController
 @RequestMapping("/auth")
+//TODO: Will be removed in production
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
 
     private final UserService userService;
@@ -40,9 +44,20 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/user")
-    public ResponseEntity<HashMap<String, String>> registerUser(@RequestBody @Valid UsersRequestDTO registrationRequest) {
-        userService.registerUser(registrationRequest);
+    @PostMapping(value = "/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<HashMap<String, String>> registerUser(
+            @RequestPart("user") @Valid UsersRequestDTO registrationRequest,
+            // files
+            @RequestPart("aadhaar") MultipartFile aadhaarFile,
+            @RequestPart("pan") MultipartFile panFile,
+            @RequestPart("photo") MultipartFile photoFile,
+            @RequestPart("signature") MultipartFile signatureFile,
+
+            @RequestPart(value = "voter", required = false) MultipartFile voterIdFile,
+            @RequestPart(value = "passport", required = false) MultipartFile passportIdFile,
+            @RequestPart(value = "driving", required = false) MultipartFile drivingLicenseFile
+    ) throws Exception {
+        userService.registerUser(registrationRequest, aadhaarFile, panFile, photoFile, signatureFile, voterIdFile, passportIdFile, drivingLicenseFile);
         HashMap<String, String> response = new HashMap<>();
         response.put("message", "User registered successfully");
         response.put("status", "success");
@@ -54,5 +69,5 @@ public class UserController {
     public String test() {
         return "Hello World";
     }
-    
+
 }

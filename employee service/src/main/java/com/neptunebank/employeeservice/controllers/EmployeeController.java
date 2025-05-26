@@ -41,7 +41,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @PostMapping("/verifyKyc")
+    @PostMapping("/verifyUserKyc")
     public ResponseEntity<Map<String, String>> verifyKyc(@RequestBody KycRequest kycRequest) throws EmployeeException {
         return employeeService.verifyUserKyc(kycRequest.getKycId(), kycRequest.getEmployeeId());
     }

@@ -19,7 +19,10 @@
 package com.neptunebank.user_service.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -34,14 +37,14 @@ public class Kyc {
     private Long kycId;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_id", referencedColumnName = "userid")
-    private Users userId;
+    @JoinColumn(name = "userId", referencedColumnName = "userId", unique = true, updatable = false)
+    private Users user;
 
     @Column(nullable = false, unique = true)
     private String aadharNumber;
 
     @Column(nullable = false, columnDefinition = "BYTEA")
-    private Byte aadharImage;
+    private byte[] aadharImage;
 
     @Builder.Default
     private Boolean aadharVerified = false;
@@ -50,16 +53,28 @@ public class Kyc {
     private String panNumber;
 
     @Column(nullable = false, columnDefinition = "BYTEA")
-    private Byte panImage;
+    private byte[] panImage;
 
     @Builder.Default
     private Boolean panVerified = false;
+
+    @Column(nullable = false, columnDefinition = "BYTEA")
+    private byte[] userPhoto;
+
+    @Builder.Default
+    private Boolean userPhotoVerified = false;
+
+    @Column(nullable = false, columnDefinition = "BYTEA")
+    private byte[] userSignature;
+
+    @Builder.Default
+    private Boolean userSignatureVerified = false;
 
     @Column(unique = true)
     private String voterId;
 
     @Column(columnDefinition = "BYTEA")
-    private Byte voterIdImage;
+    private byte[] voterIdImage;
 
     @Builder.Default
     private Boolean voterIdVerified = false;
@@ -68,7 +83,7 @@ public class Kyc {
     private String passportNumber;
 
     @Column(columnDefinition = "BYTEA")
-    private Byte passportImage;
+    private byte[] passportImage;
 
     @Builder.Default
     private Boolean passportVerified = false;
@@ -77,14 +92,34 @@ public class Kyc {
     private String drivingLicenseNumber;
 
     @Column(columnDefinition = "BYTEA")
-    private Byte drivingLicenseImage;
+    private byte[] drivingLicenseImage;
 
     @Builder.Default
     private Boolean drivingLicenseVerified = false;
 
-    @Column(nullable = false)
-    private Long verifiedByEmployeeId;
+    @Builder.Default
+    private Long verifiedByEmployeeId = null;
 
-    private String rejectionReason;
+    @Builder.Default
+    private String rejectionReason = null;
+
+    @Column(nullable = false, updatable = false)
+    @PastOrPresent
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    @PastOrPresent
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
 }

@@ -41,7 +41,7 @@ public class Verification {
     private String aadharNumber;
 
     @Column(nullable = false, columnDefinition = "BYTEA")
-    private Byte aadharImage;
+    private byte[] aadharImage;
 
     @Builder.Default
     private Boolean aadharVerified = false;
@@ -50,7 +50,7 @@ public class Verification {
     private String panNumber;
 
     @Column(nullable = false, columnDefinition = "BYTEA")
-    private Byte panImage;
+    private byte[] panImage;
 
     @Builder.Default
     private Boolean panVerified = false;
@@ -59,7 +59,7 @@ public class Verification {
     private String voterId;
 
     @Column(columnDefinition = "BYTEA")
-    private Byte voterIdImage;
+    private byte[] voterIdImage;
 
     @Builder.Default
     private Boolean voterIdVerified = false;
@@ -68,7 +68,7 @@ public class Verification {
     private String passportNumber;
 
     @Column(columnDefinition = "BYTEA")
-    private Byte passportImage;
+    private byte[] passportImage;
 
     @Builder.Default
     private Boolean passportVerified = false;
@@ -77,7 +77,7 @@ public class Verification {
     private String drivingLicenseNumber;
 
     @Column(columnDefinition = "BYTEA")
-    private Byte drivingLicenseImage;
+    private byte[] drivingLicenseImage;
 
     @Builder.Default
     private Boolean drivingLicenseVerified = false;

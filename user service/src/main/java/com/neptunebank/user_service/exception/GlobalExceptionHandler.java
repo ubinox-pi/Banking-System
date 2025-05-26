@@ -20,13 +20,14 @@ package com.neptunebank.user_service.exception;
 
 import com.neptunebank.user_service.exception.usersException.UserException;
 import com.neptunebank.user_service.exception.usersException.entity.ContactDetailsExceptionEntity;
-import com.neptunebank.user_service.exception.usersException.entity.ErrorResponse;
 import com.neptunebank.user_service.exception.usersException.entity.UserExceptionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -59,10 +60,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
-        ErrorResponse response = new ErrorResponse(
-                "Something went wrong: " + ex.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR.value()
+    public ResponseEntity<?> handleGenericException(Exception ex) {
+        Map<String, String> response = Map.of(
+                "message", "An unexpected error occurred",
+                "errorCode", "INTERNAL_SERVER_ERROR",
+                "errorType", "Generic Exception",
+                "errorDescription", ex.getMessage(),
+                "errorDetails", "Please contact support for assistance",
+                "errorResolution", "Try again later or contact support",
+                "errorTimestamp", String.valueOf(System.currentTimeMillis()),
+                "errorPath", "/auth/user",
+                "errorStatus", "500 INTERNAL SERVER ERROR"
         );
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }

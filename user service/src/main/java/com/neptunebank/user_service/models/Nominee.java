@@ -20,7 +20,6 @@ package com.neptunebank.user_service.models;
 import com.neptunebank.user_service.ENUMs.Relationship;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
@@ -45,7 +44,7 @@ public class Nominee {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "userId", referencedColumnName = "userId", unique = true, updatable = false)
-    private Users userId;
+    private Users user;
 
     @Column(nullable = false)
     private String nomineeName;
@@ -79,7 +78,7 @@ public class Nominee {
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    @FutureOrPresent
+    @PastOrPresent
     private LocalDateTime updatedAt;
 
 

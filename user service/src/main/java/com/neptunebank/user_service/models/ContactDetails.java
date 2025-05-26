@@ -19,7 +19,6 @@
 package com.neptunebank.user_service.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
@@ -42,8 +41,8 @@ public class ContactDetails {
     private Long contactId;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_id", referencedColumnName = "userId", nullable = false)
-    private Users userId;
+    @JoinColumn(name = "userId", referencedColumnName = "userId", unique = true, updatable = false)
+    private Users user;
 
     //it will take mobile number as string with country code
     @Column(nullable = false, unique = true)
@@ -84,7 +83,7 @@ public class ContactDetails {
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    @FutureOrPresent
+    @PastOrPresent
     private LocalDateTime updatedAt;
 
     @PrePersist

@@ -24,6 +24,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Getter
@@ -31,7 +33,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NomineeRequestDTO {
+public class NomineeRequestDTO implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @NotBlank(message = "Nominee name is required.")
     @Size(min = 8, message = "Nominee name is too short.")
     private String nomineeName;

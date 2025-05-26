@@ -20,6 +20,7 @@ package com.neptunebank.user_service.DTO.userDto;
 
 import com.neptunebank.user_service.DTO.ContactDetailsDTO.ContactDetailsRequestDTO;
 import com.neptunebank.user_service.DTO.NomineeDTO.NomineeRequestDTO;
+import com.neptunebank.user_service.DTO.kycDTO.KycRequestDTO;
 import com.neptunebank.user_service.ENUMs.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -28,6 +29,8 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Getter
@@ -35,7 +38,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UsersRequestDTO {
+public class UsersRequestDTO implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @NotBlank(message = "First name is required.")
     @Size(min = 3, message = "First name is too short.")
     private String firstName;
@@ -48,7 +55,7 @@ public class UsersRequestDTO {
     @Size(min = 3, message = "Last name is too short.")
     private String lastName;
 
-    @NotBlank(message = "Date of birth is required.")
+    @NotNull(message = "Date of birth is required.")
     @Past
     private LocalDate dateOfBirth;
 
@@ -69,7 +76,7 @@ public class UsersRequestDTO {
     @Size(min = 5, message = "Spouse name is too short.")
     private String spouseName;
 
-    @NotBlank(message = "Occupation required")
+    @NotNull(message = "Occupation required")
     private Occupation occupation;
 
     @NotBlank(message = "Occupation required")
@@ -79,7 +86,7 @@ public class UsersRequestDTO {
     private String citizen;
 
     @NotNull(message = "Category is required.")
-    private Category catagory;
+    private Category category;
 
     @NotNull(message = "Religion is required.")
     private Religion religion;
@@ -89,6 +96,9 @@ public class UsersRequestDTO {
 
     @Valid
     private NomineeRequestDTO nominee;
+
+    @Valid
+    private KycRequestDTO kyc;
 
 
 }

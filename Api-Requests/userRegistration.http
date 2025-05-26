@@ -1,0 +1,87 @@
+### GET request to example server
+### POST request to example server
+POST http://localhost:8081/auth/user
+Authorization: Basic <base64(user:password)>
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Accept: application/json
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="user"
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "middleName": "Michael",
+  "lastName": "Doe",
+  "dateOfBirth": "1990-01-15",
+  "gender": "MARD",
+  "fatherName": "Richard Doe",
+  "motherName": "Laura Doe",
+  "maritalStatus": "MARRIED",
+  "spouseName": "Jane Doe",
+  "occupation": "OTHER",
+  "salary": "85000",
+  "citizen": "Indian",
+  "category": "ST",
+  "religion": "HINDU",
+  "contactDetails": {
+    "mobileNumber": "+919876543210",
+    "email": "johndoe@example.com",
+    "communicationAddress": "221B Baker Street, London",
+    "permanentAddress": "742 Evergreen Terrace, Springfield",
+    "city": "Bhubaneswar",
+    "state": "Odisha",
+    "zip": "751001",
+    "landmark": "Near Infosys Campus",
+    "country": "India",
+    "alternateMobileNumber": "+919123456789",
+    "alternateEmail": "john.alt@example.com"
+  },
+  "accountId": 1234567890,
+  "nominee": {
+    "nomineeName": "Emma Doe",
+    "nomineeRelationship": "DAUGHTER",
+    "nomineeDateOfBirth": "2010-03-25",
+    "nomineeMobileNumber": "+919888888888",
+    "nomineeEmail": "abasdfghc@gmail.com",
+    "nomineeAadhar": "2345123412341234",
+    "nomineePan": "ABCDE1234F",
+    "nomineeAddress": "Apt 4B, Nominee Street, Mumbai"
+  },
+  "kyc": {
+    "aadharNumber": "234567891234",
+    "panNumber": "ABCDE1234F"
+  },
+  "isVerified": true,
+  "isActive": true,
+  "isBlocked": false,
+  "isDeleted": false
+}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="aadhaar"; filename="aadhaar.jpg"
+Content-Type: image/jpeg
+
+< C:/Users/ASUS/Pictures/logo.jpg
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="pan"; filename="pan.jpg"
+Content-Type: image/jpeg
+
+< C:/Users/ASUS/Pictures/logo.jpg
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW-----
+Content-Disposition: form-data; name="photo"; filename="photo.jpg"
+Content-Type: image/jpeg
+
+< C:/Users/ASUS/Pictures/logo.jpg
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="signature"; filename="signature.jpg"
+Content-Type: image/jpeg
+
+< C:/Users/ASUS/Pictures/logo.jpg
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
