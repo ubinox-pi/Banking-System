@@ -4,12 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neptunebank.user_service.exception.usersException.entity.OtpRecord;
 import com.neptunebank.user_service.repositories.OtpRepository;
+import com.neptunebank.user_service.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -38,6 +40,12 @@ public class MailService {
 
     private OtpRepository otpRepository;
     private JavaMailSender javaMailSender;
+    private UserRepository userRepository;
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Autowired
     public void setJavaMailSender(JavaMailSender javaMailSender) {
@@ -56,6 +64,14 @@ public class MailService {
     @Transactional
     public ResponseEntity<Map<String, String>> sendOtp(String phoneNumber) throws JsonProcessingException {
         if (phoneNumber.contains("@")) {
+
+            if (!userRepository.existsByEmail(phoneNumber)) {
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "Email not exists");
+                response.put("status", "error");
+                response.put("code", "400");
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
 
             // Assuming phoneNumber is a JSON string containing an email field
             ObjectMapper mapper = new ObjectMapper();
@@ -86,15 +102,7 @@ public class MailService {
             H.put("status", "success");
             H.put("code", "200");
 
-            String finalOtp = otp;
-            Thread.ofVirtual().start(() -> {
-                try {
-                    Thread.sleep(600000); // 10 minutes
-                    otpRepository.expireOtp(finalOtp, phoneNumber);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+            expireOtp(otp, email);
 
             return new ResponseEntity<>(H, HttpStatus.CREATED);
         } else {
@@ -120,6 +128,19 @@ public class MailService {
             response.put("code", "400");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Transactional
+    @Async
+    protected void expireOtp(String otp, String emailOrPhone) {
+        Thread.ofVirtual().start(() -> {
+            try {
+                Thread.sleep(600000); // 10 minutes
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        otpRepository.expireOtp(otp, emailOrPhone);
     }
 
 }

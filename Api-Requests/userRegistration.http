@@ -51,11 +51,7 @@ Content-Type: application/json
   "kyc": {
     "aadharNumber": "234567891234",
     "panNumber": "ABCDE1234F"
-  },
-  "isVerified": true,
-  "isActive": true,
-  "isBlocked": false,
-  "isDeleted": false
+  }
 }
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
