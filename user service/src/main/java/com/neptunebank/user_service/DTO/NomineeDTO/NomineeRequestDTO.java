@@ -54,14 +54,14 @@ public class NomineeRequestDTO implements Serializable {
     @NotBlank(message = "Email is required.")
     private String NomineeEmail;
 
-    @NotBlank(message = "Aadhar number is required.")
-    @Pattern(regexp = "^[2-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}$", message = "Aadhar number is invalid.")
-    @Size(min = 12, message = "Aadhar number must be 12 digits.")
-    private String nomineeAadhar;
+    @NotBlank(message = "Aadhaar number is required.")
+    @Pattern(regexp = "^[2-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}$", message = "Aadhaar number is invalid.")
+    @Size(min = 12, message = "Aadhaar number must be 12 digits.")
+    private String nomineeAadhaar;
 
-    @NotBlank(message = "Aadhar number is required.")
+    @NotBlank(message = "Aadhaar number is required.")
     @Pattern(regexp = "^[A-Z]{5}[0-9]{4}[A-Z]{1}$", message = "Pan number is invalid.")
-    @Size(min = 10, message = "Aadhar number must be 12 digits.")
+    @Size(min = 10, message = "Aadhaar number must be 12 digits.")
     private String nomineePan;
 
     @NotBlank(message = "Nominee address is required.")

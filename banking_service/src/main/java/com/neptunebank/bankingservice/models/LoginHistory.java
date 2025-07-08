@@ -1,6 +1,7 @@
-package com.neptunebank.user_service.exception.usersException.entity;
+package com.neptunebank.bankingservice.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,9 +12,9 @@ import java.time.LocalDateTime;
  * See the LICENSE file in the project root for full license information.
  *
  * Project: Neptune
- * Package: com.neptunebank.user_service.exception.usersException.entity
- * Created by: Ashish Kushwaha on 25-05-2025 20:39
- * File: OtpRecord
+ * Package: com.neptunebank.bankingservice.models
+ * Created by: Ashish Kushwaha on 02-06-2025 12:38
+ * File: LoginHistory
  *
  * This source code is intended for educational and non-commercial purposes only.
  * Redistribution and use in source and binary forms, with or without modification,
@@ -24,29 +25,21 @@ import java.time.LocalDateTime;
  *
  */
 @Entity
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(indexes = {
-        @Index(name = "idx_email_or_otp", columnList = "emailOrPhone"),
-        @Index(name = "idx_otp", columnList = "otp")
-})
-public class OtpRecord {
+public class LoginHistory {
     @Id
+    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long loginHistoryId;
 
-    private String emailOrPhone;
-    private String otp;
-    private LocalDateTime createdAt;
-    private boolean isUsed = false;
-    private boolean isExpired = false;
+    @Column(nullable = false)
+    private Long accountId;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
+    @Column(nullable = false)
+    @PastOrPresent
+    private LocalDateTime loginTime;
 }
-

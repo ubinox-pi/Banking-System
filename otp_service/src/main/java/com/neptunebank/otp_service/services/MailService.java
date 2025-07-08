@@ -1,10 +1,10 @@
-package com.neptunebank.user_service.services;
+package com.neptunebank.otp_service.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.neptunebank.user_service.exception.usersException.entity.OtpRecord;
-import com.neptunebank.user_service.repositories.OtpRepository;
-import com.neptunebank.user_service.repositories.UserRepository;
+import com.neptunebank.otp_service.models.OtpRecord;
+import com.neptunebank.otp_service.models.POJO.PhoneOrEmailAndOtp;
+import com.neptunebank.otp_service.repositories.OtpRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +23,8 @@ import java.util.Map;
  * See the LICENSE file in the project root for full license information.
  *
  * Project: Neptune
- * Package: com.neptunebank.user_service.services
- * Created by: Ashish Kushwaha on 25-05-2025 20:23
+ * Package: com.neptunebank.otp_service.services
+ * Created by: Ashish Kushwaha on 23-06-2025 12:58
  * File: MailService
  *
  * This source code is intended for educational and non-commercial purposes only.
@@ -37,15 +37,8 @@ import java.util.Map;
  */
 @Service
 public class MailService {
-
     private OtpRepository otpRepository;
     private JavaMailSender javaMailSender;
-    private UserRepository userRepository;
-
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Autowired
     public void setJavaMailSender(JavaMailSender javaMailSender) {
@@ -64,14 +57,6 @@ public class MailService {
     @Transactional
     public ResponseEntity<Map<String, String>> sendOtp(String phoneNumber) throws JsonProcessingException {
         if (phoneNumber.contains("@")) {
-
-            if (!userRepository.existsByEmail(phoneNumber)) {
-                Map<String, String> response = new HashMap<>();
-                response.put("message", "Email not exists");
-                response.put("status", "error");
-                response.put("code", "400");
-                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-            }
 
             // Assuming phoneNumber is a JSON string containing an email field
             ObjectMapper mapper = new ObjectMapper();
@@ -102,7 +87,7 @@ public class MailService {
             H.put("status", "success");
             H.put("code", "200");
 
-            expireOtp(otp, email);
+            expire1Otp(otp, email);
 
             return new ResponseEntity<>(H, HttpStatus.CREATED);
         } else {
@@ -115,12 +100,13 @@ public class MailService {
     }
 
     @Transactional
-    public ResponseEntity<Map<String, String>> verifyOtp(String otp, String emailOrPhone) {
+    public ResponseEntity<Map<String, String>> verifyOtp(PhoneOrEmailAndOtp phoneOrEmailAndOtp) {
         Map<String, String> response = new HashMap<>();
-        if (otpRepository.checkOtp(otp, emailOrPhone)) {
+        if (otpRepository.checkOtp(phoneOrEmailAndOtp.getOtp(), phoneOrEmailAndOtp.getPhoneOrEmail())) {
             response.put("message", "OTP verified successfully");
             response.put("status", "success");
             response.put("code", "200");
+            otpRepository.useOtp(phoneOrEmailAndOtp.getOtp(), phoneOrEmailAndOtp.getPhoneOrEmail());
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             response.put("message", "Invalid or expired OTP");
@@ -130,17 +116,16 @@ public class MailService {
         }
     }
 
-    @Transactional
     @Async
-    protected void expireOtp(String otp, String emailOrPhone) {
+    protected void expire1Otp(String otp, String emailOrPhone) {
         Thread.ofVirtual().start(() -> {
             try {
-                Thread.sleep(600000); // 10 minutes
+                Thread.sleep(1000 * 60 * 15);
+                otpRepository.expireOtp(otp, emailOrPhone);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         });
-        otpRepository.expireOtp(otp, emailOrPhone);
     }
 
 }

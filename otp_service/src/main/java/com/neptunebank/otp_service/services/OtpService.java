@@ -1,6 +1,8 @@
-package com.neptunebank.user_service.services;
+package com.neptunebank.otp_service.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.neptunebank.otp_service.models.POJO.PhoneOrEmailAndOtp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,9 +15,9 @@ import java.util.Map;
  * See the LICENSE file in the project root for full license information.
  *
  * Project: Neptune
- * Package: com.neptunebank.user_service.services
- * Created by: Ashish Kushwaha on 25-05-2025 19:58
- * File: AuthenticationService
+ * Package: com.neptunebank.otp_service.services
+ * Created by: Ashish Kushwaha on 23-06-2025 12:55
+ * File: OtpService
  *
  * This source code is intended for educational and non-commercial purposes only.
  * Redistribution and use in source and binary forms, with or without modification,
@@ -26,9 +28,14 @@ import java.util.Map;
  *
  */
 @Service
-public class AuthenticationService {
-
+public class OtpService {
     private MailService mailService;
+    private PhoneService phoneService;
+
+    @Autowired
+    public void setPhoneService(PhoneService phoneService) {
+        this.phoneService = phoneService;
+    }
 
     @Autowired
     public void setMailService(MailService mailService) {
@@ -39,7 +46,18 @@ public class AuthenticationService {
         return mailService.sendOtp(email);
     }
 
-    public ResponseEntity<Map<String, String>> verifyOtp(String otp, String emailOrPhone) {
-        return mailService.verifyOtp(otp, emailOrPhone);
+    public ResponseEntity<Map<String, String>> verifyEmailOtp(PhoneOrEmailAndOtp phoneOrEmailAndOtp) {
+        return mailService.verifyOtp(phoneOrEmailAndOtp);
+    }
+
+    public ResponseEntity<Map<String, String>> authenticatePhone(String phone) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Map map = mapper.readValue(phone, Map.class);
+        phone = map.get("phone").toString();
+        return phoneService.sendOtp(phone);
+    }
+
+    public ResponseEntity<Map<String, String>> verifyPhoneOtp(PhoneOrEmailAndOtp phoneOrEmailAndOtp) {
+        return phoneService.verifyOtp(phoneOrEmailAndOtp.getOtp(), phoneOrEmailAndOtp.getPhoneOrEmail());
     }
 }

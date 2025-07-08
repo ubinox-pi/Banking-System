@@ -1,6 +1,7 @@
-package com.neptunebank.user_service.repositories;
+package com.neptunebank.otp_service.repositories;
 
-import com.neptunebank.user_service.exception.usersException.entity.OtpRecord;
+import com.neptunebank.otp_service.models.OtpRecord;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -28,13 +29,22 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OtpRepository extends JpaRepository<OtpRecord, Long> {
 
-    @Query("SELECT COUNT(o) > 0 FROM OtpRecord o WHERE o.otp = ?1 AND o.isUsed = false AND o.isExpired = false")
-    boolean checkOtp(String otp);
+    @Query("SELECT COUNT(o) > 0 FROM OtpRecord o WHERE o.otp = ?1 AND o.isUsed = false AND o.isOtpExpired = false")
+    Boolean checkOtp(String otp);
 
-    @Query("SELECT COUNT(o) > 0 FROM OtpRecord o WHERE o.otp = ?1 AND o.emailOrPhone = ?2 AND o.isUsed = false AND o.isExpired = false")
-    boolean checkOtp(String otp, String emailOrPhone);
+    @Query("SELECT COUNT(o) > 0 FROM OtpRecord o WHERE o.otp = ?1 AND o.emailOrPhone = ?2 AND o.isUsed = false AND o.isOtpExpired = false")
+    Boolean checkOtp(String otp, String emailOrPhone);
 
     @Modifying
-    @Query("UPDATE OtpRecord o SET o.isExpired = true WHERE o.otp = ?1 AND o.emailOrPhone = ?2 AND o.isExpired = false")
+    @Transactional
+    @Query("UPDATE OtpRecord o SET o.isUsed = true WHERE o.otp = ?1 AND o.emailOrPhone = ?2 AND o.isUsed = false AND o.isOtpExpired = false")
+    void useOtp(String otp, String emailOrPhone);
+
+    @Query("SELECT COUNT(0) > 0 FROM OtpRecord o WHERE o.isOtpExpired = false AND o.isUsed = false AND o.emailOrPhone = ?1")
+    Boolean checkPhoneEmail(String phoneOrEmail);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE OtpRecord o SET o.isOtpExpired = true WHERE o.otp = ?1 AND o.emailOrPhone = ?2 AND o.isOtpExpired = false AND o.isUsed = false")
     void expireOtp(String otp, String emailOrPhone);
 }

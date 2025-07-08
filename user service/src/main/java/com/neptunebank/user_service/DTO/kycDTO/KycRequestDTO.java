@@ -36,10 +36,10 @@ public class KycRequestDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @NotBlank(message = "Aadhar number is required.")
-    @Pattern(regexp = "^[0-9]{12}$", message = "Aadhar number must be a 12-digit number.")
-    @Size(min = 12, max = 12, message = "Aadhar number must be 12 digits.")
-    private String aadharNumber;
+    @NotBlank(message = "Aadhaar number is required.")
+    @Pattern(regexp = "^[0-9]{12}$", message = "Aadhaar number must be a 12-digit number.")
+    @Size(min = 12, max = 12, message = "Aadhaar number must be 12 digits.")
+    private String aadhaarNumber;
 
     @NotBlank(message = "PAN number is required.")
     @Pattern(regexp = "^[A-Z]{5}[0-9]{4}[A-Z]{1}$", message = "PAN number must be a 12-digit number.")
