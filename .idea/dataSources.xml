@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="UserDB@localhost" uuid="6857aed3-7199-4c30-beef-c58316a9a71f">
+    <data-source source="LOCAL" name="UserDB@localhost" uuid="4011ade6-d35b-4d96-b805-dd358b71981e">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
@@ -10,13 +10,31 @@
       <jdbc-url>jdbc:postgresql://localhost:5433/UserDB</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="EmployeeDB@localhost" uuid="9f2c4c8a-9677-40d0-bacf-b9f83931aeb5">
+    <data-source source="LOCAL" name="AccountDB@localhost" uuid="1489dd45-0433-4423-b71f-26d4c0db39dd">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
-      <remarks>$PROJECT_DIR$/emplopyee-service/src/main/resources/application.properties</remarks>
+      <remarks>$PROJECT_DIR$/account-service/src/main/resources/application.properties</remarks>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5433/EmployeeDB</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5433/AccountDB</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="UserDB@localhost" uuid="155a237d-2d7d-4994-9055-d78e23999cd9">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/user-service/src/main/resources/application.properties</remarks>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5433/UserDB</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="AccountDB@localhost" uuid="cea42139-a744-4d7e-8608-e36329ecfa0d">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/account-service/src/main/resources/application.properties</remarks>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5433/AccountDB</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
@@ -24,16 +42,16 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="EmployeeDB@localhost" uuid="0fb64b83-6506-4cd6-bad7-03d2003e29a1">
+    <data-source source="LOCAL" name="EmployeeDB@localhost" uuid="c7f1e28e-2d73-4422-99e3-a2ba5d417ec3">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
-      <remarks>$PROJECT_DIR$/emplopyee-service/src/main/resources/application.properties</remarks>
+      <remarks>$PROJECT_DIR$/employee-service/src/main/resources/application.properties</remarks>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5433/EmployeeDB</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="OtpDB@localhost" uuid="7b392834-93b8-4292-bf69-e96131e30109">
+    <data-source source="LOCAL" name="OtpDB@localhost" uuid="b2a75ae8-9919-423b-ae60-7dce64a3ae9c">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
@@ -42,22 +60,45 @@
       <jdbc-url>jdbc:postgresql://localhost:5433/OtpDB</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="UserDB@localhost" uuid="03da5f42-5295-45b2-8090-cb1a61c52967">
+    <data-source source="LOCAL" name="EmployeeDB@localhost" uuid="761e0827-ddf1-4a02-b4bf-54cb714958bb">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
-      <remarks>$PROJECT_DIR$/user-service/src/main/resources/application.properties</remarks>
+      <remarks>$PROJECT_DIR$/employee-service/src/main/resources/application.properties</remarks>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5433/UserDB</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5433/EmployeeDB</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="OtpDB@localhost" uuid="51469dd7-10f1-41a4-8089-8e2214a7c8c0">
+    <data-source source="LOCAL" name="OtpDB@localhost" uuid="3b76c0e1-9fdb-47a3-b193-ce943dd17d92">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
       <remarks>$PROJECT_DIR$/otp-service/src/main/resources/application.properties</remarks>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5433/OtpDB</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="TransactionDB@localhost" uuid="84fea404-3dd1-40aa-ac4c-33d1adc7d62c">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/transaction-service/src/main/resources/application.properties</remarks>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5433/TransactionDB</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="TransactionDB@localhost" uuid="9d412e88-0d6a-4fdd-a155-18c06a7f22a0">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/transaction-service/src/main/resources/application.properties</remarks>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5433/TransactionDB</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="com.intellij.clouds.kubernetes.db.host.port" />
+        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+        <property name="com.intellij.clouds.kubernetes.db.container.port" />
+      </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

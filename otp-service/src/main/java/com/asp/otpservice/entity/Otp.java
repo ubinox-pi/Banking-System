@@ -21,8 +21,8 @@ import java.time.Instant;
 
 @Entity
 @Data
-@NoArgsConstructor // For JPA
-@AllArgsConstructor // Full constructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "otp_store")
 public class Otp {
 

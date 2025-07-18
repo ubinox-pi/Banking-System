@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  user-service:
+    image: user-service
+    build: ./user-service
+    ports:
+      - "9999:8080"
+
+  employee-service:
+    image: employee-service
+    build: ./employee-service
+    ports:
+      - "8888:8080"
+
+  otp-service:
+    image: otp-service
+    build: ./otp-service
+    ports:
+      - "7777:8080"
