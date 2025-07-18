@@ -1,5 +1,7 @@
 package com.neptunebank.loan_service.ENUM;
 
+import lombok.Getter;
+
 /*
  * Copyright (c) 2025 Ramjee Prasad
  * Licensed under a custom Non-Commercial, Attribution, Share-Alike License.
@@ -18,5 +20,20 @@ package com.neptunebank.loan_service.ENUM;
  *   - Commercial use is strictly prohibited.
  *
  */
+@Getter
 public enum LoanType {
+    PERSONAL("Personal Loan"),
+    PAY_LATER("Pay Later"),
+    PROPERTY("Property Loan"),
+    HOME("Home Loan"),
+    AUTO("Auto Loan"),
+    EDUCATION("Education Loan"),
+    BUSINESS("Business Loan");
+
+    private final String description;
+
+    LoanType(String description) {
+        this.description = description;
+    }
+
 }

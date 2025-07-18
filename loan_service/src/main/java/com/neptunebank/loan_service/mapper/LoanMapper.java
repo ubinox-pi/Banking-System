@@ -1,5 +1,9 @@
 package com.neptunebank.loan_service.mapper;
 
+import com.neptunebank.loan_service.DTO.LoanRequestDto;
+import com.neptunebank.loan_service.ENUM.LoanType;
+import com.neptunebank.loan_service.model.Loan;
+
 /*
  * Copyright (c) 2025 Ramjee Prasad
  * Licensed under a custom Non-Commercial, Attribution, Share-Alike License.
@@ -19,4 +23,12 @@ package com.neptunebank.loan_service.mapper;
  *
  */
 public class LoanMapper {
+    public static Loan toEntity(LoanRequestDto dto) {
+        return Loan.builder()
+                .accountId(dto.getAccountId())
+                .loanType(LoanType.valueOf(dto.getLoanType()))
+                .principalAmount(dto.getPrincipalAmount())
+                .tenure(dto.getTenure())
+                .build();
+    }
 }

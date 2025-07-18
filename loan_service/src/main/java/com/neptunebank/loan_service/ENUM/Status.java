@@ -19,4 +19,22 @@ package com.neptunebank.loan_service.ENUM;
  *
  */
 public enum Status {
+    PENDING("Pending"),
+    APPROVED("Approved"),
+    REJECTED("Rejected"),
+    DISBURSED("Disbursed"),
+    ACTIVE("Active"),
+    COMPLETED("Completed"),
+    DEFAULTED("Defaulted"),
+    CLOSED("Closed");
+
+    private final String description;
+
+    Status(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

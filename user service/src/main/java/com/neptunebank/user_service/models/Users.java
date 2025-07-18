@@ -77,7 +77,8 @@ public class Users {
     private String salary;
 
     @Column(nullable = false)
-    private String citizen;
+    @Enumerated(EnumType.STRING)
+    private Citizen citizen;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -117,6 +118,13 @@ public class Users {
 
     @Builder.Default
     private Boolean isDeleted = null;
+
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private Status status = Status.PENDING;
+
+    @Builder.Default
+    private String description = null;
 
     @Column(nullable = false, updatable = false)
     @PastOrPresent

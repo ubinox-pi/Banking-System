@@ -25,7 +25,7 @@ public class KycMapper {
 
     public static Kyc toEntity(KycRequestDTO dto) {
         return Kyc.builder()
-                .aadharNumber(dto.getAadhaarNumber())
+                .aadhaarNumber(dto.getAadhaarNumber())
                 .panNumber(dto.getPanNumber())
                 .voterId(dto.getVoterId())
                 .passportNumber(dto.getPassportNumber())

@@ -18,6 +18,8 @@
 
 package com.neptunebank.user_service.models;
 
+import com.neptunebank.user_service.ENUMs.Country;
+import com.neptunebank.user_service.ENUMs.States;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
@@ -61,7 +63,8 @@ public class ContactDetails {
     private String city;
 
     @Column(nullable = false)
-    private String state;
+    @Enumerated(EnumType.STRING)
+    private States state;
 
     @Column(nullable = false)
     private String zip;
@@ -70,7 +73,8 @@ public class ContactDetails {
     private String landmark;
 
     @Column(nullable = false)
-    private String country;
+    @Enumerated(EnumType.STRING)
+    private Country country;
 
     @Builder.Default
     private String alternateMobileNumber = null;

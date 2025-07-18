@@ -19,9 +19,9 @@ package com.neptunebank.card_service.ENUM;
  *
  */
 public enum NetworkType {
-    NEPT_DEBIT,
-    NEPT_CREDIT,
-    NEPT_PREPAID,
-    NEPT_VIRTUAL,
-    NEPT_GIFT,
+    ORBITO_DEBIT,
+    ORBITO_CREDIT,
+    ORBITO_PREPAID,
+    ORBITO_VIRTUAL,
+    ORBITO_GIFT,
 }

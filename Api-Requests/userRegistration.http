@@ -1,7 +1,7 @@
 ### GET request to example server
 ### POST request to example server
 POST http://localhost:8081/auth/user
-Authorization: Basic <base64(user:password)>
+Authorization: Basic dXNlcnM6cGFzc3dvcmQ=
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 Accept: application/json
 
@@ -21,7 +21,7 @@ Content-Type: application/json
   "spouseName": "Jane Doe",
   "occupation": "OTHER",
   "salary": "85000",
-  "citizen": "Indian",
+  "citizen": "INDIA",
   "category": "ST",
   "religion": "HINDU",
   "contactDetails": {
@@ -30,10 +30,10 @@ Content-Type: application/json
     "communicationAddress": "221B Baker Street, London",
     "permanentAddress": "742 Evergreen Terrace, Springfield",
     "city": "Bhubaneswar",
-    "state": "Odisha",
+    "state": "ODISHA",
     "zip": "751001",
     "landmark": "Near Infosys Campus",
-    "country": "India",
+    "country": "INDIA",
     "alternateMobileNumber": "+919123456789",
     "alternateEmail": "john.alt@example.com"
   },
@@ -44,12 +44,12 @@ Content-Type: application/json
     "nomineeDateOfBirth": "2010-03-25",
     "nomineeMobileNumber": "+919888888888",
     "nomineeEmail": "abasdfghc@gmail.com",
-    "nomineeAadhar": "2345123412341234",
+    "nomineeAadhaar": "2345123412341234",
     "nomineePan": "ABCDE1234F",
     "nomineeAddress": "Apt 4B, Nominee Street, Mumbai"
   },
   "kyc": {
-    "aadharNumber": "234567891234",
+    "aadhaarNumber": "234567891234",
     "panNumber": "ABCDE1234F"
   }
 }
@@ -58,25 +58,25 @@ Content-Type: application/json
 Content-Disposition: form-data; name="aadhaar"; filename="aadhaar.jpg"
 Content-Type: image/jpeg
 
-< C:/Users/ASUS/Pictures/logo.jpg
+< C:\Users\ASUS\Pictures\Screenshots\Screenshot 2025-06-27 182206.png
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="pan"; filename="pan.jpg"
 Content-Type: image/jpeg
 
-< C:/Users/ASUS/Pictures/logo.jpg
+< C:\Users\ASUS\Pictures\Screenshots\Screenshot 2025-06-27 182206.png
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW-----
 Content-Disposition: form-data; name="photo"; filename="photo.jpg"
 Content-Type: image/jpeg
 
-< C:/Users/ASUS/Pictures/logo.jpg
+< C:\Users\ASUS\Pictures\Screenshots\Screenshot 2025-06-27 182206.png
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="signature"; filename="signature.jpg"
 Content-Type: image/jpeg
 
-< C:/Users/ASUS/Pictures/logo.jpg
+< C:\Users\ASUS\Pictures\Screenshots\Screenshot 2025-06-27 182206.png
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 

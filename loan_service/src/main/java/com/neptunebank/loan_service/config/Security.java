@@ -1,7 +1,6 @@
 package com.neptunebank.loan_service.config;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -22,6 +21,5 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
  *
  */
 @Configuration
-@EnableWebSecurity
 public class Security {
 }

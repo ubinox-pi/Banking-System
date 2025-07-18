@@ -17,9 +17,12 @@
  */
 package com.neptunebank.user_service.DTO.ContactDetailsDTO;
 
+import com.neptunebank.user_service.ENUMs.Country;
+import com.neptunebank.user_service.ENUMs.States;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -53,8 +56,8 @@ public class ContactDetailsRequestDTO implements Serializable {
     @Size(min = 3, message = "City name is too short.")
     private String city;
 
-    @NotBlank(message = "State is required.")
-    private String state;
+    @NotNull(message = "State is required.")
+    private States state;
 
     @NotBlank(message = "Pin code is required.")
     private String zip;
@@ -62,8 +65,8 @@ public class ContactDetailsRequestDTO implements Serializable {
     @NotBlank(message = "Landmark is required.")
     private String landmark;
 
-    @NotBlank(message = "Country is required.")
-    private String country;
+    @NotNull(message = "Country is required.")
+    private Country country;
     @Builder.Default
     private String alternateMobileNumber = null;
     @Builder.Default
