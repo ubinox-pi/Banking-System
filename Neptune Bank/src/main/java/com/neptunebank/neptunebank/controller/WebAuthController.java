@@ -1,8 +1,4 @@
-package com.neptunebank.neptunebank.models.POJO;
-
-import com.neptunebank.neptunebank.Roles;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+package com.neptunebank.neptunebank.controller;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -10,9 +6,9 @@ import jakarta.validation.constraints.NotNull;
  * See the LICENSE file in the project root for full license information.
  *
  * Project: Neptune
- * Package: com.neptunebank.neptunebank.models.POJO
- * Created by: Ashish Kushwaha on 28-06-2025 19:56
- * File: User
+ * Package: com.neptunebank.neptunebank.controller
+ * Created by: Ashish Kushwaha on 14-07-2025 20:15
+ * File: WebAuthController
  *
  * This source code is intended for educational and non-commercial purposes only.
  * Redistribution and use in source and binary forms, with or without modification,
@@ -22,13 +18,5 @@ import jakarta.validation.constraints.NotNull;
  *   - Commercial use is strictly prohibited.
  *
  */
-public class Users {
-    @NotBlank(message = "Username cannot be blank")
-    private String username;
-
-    @NotBlank(message = "Password cannot be blank")
-    private String password;
-
-    @NotNull(message = "Role cannot be blank")
-    private Roles role;
+public class WebAuthController {
 }
