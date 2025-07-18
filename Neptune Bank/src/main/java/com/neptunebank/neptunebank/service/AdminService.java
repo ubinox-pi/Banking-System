@@ -1,5 +1,9 @@
 package com.neptunebank.neptunebank.service;
 
+import com.neptunebank.neptunebank.repository.AdminRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 /*
  * Copyright (c) 2025 Ramjee Prasad
  * Licensed under a custom Non-Commercial, Attribution, Share-Alike License.
@@ -18,5 +22,14 @@ package com.neptunebank.neptunebank.service;
  *   - Commercial use is strictly prohibited.
  *
  */
+@Service
 public class AdminService {
+    private AdminRepository adminRepository;
+
+    @Autowired
+    public void setAdminRepository(AdminRepository adminRepository) {
+        this.adminRepository = adminRepository;
+    }
+
+    
 }

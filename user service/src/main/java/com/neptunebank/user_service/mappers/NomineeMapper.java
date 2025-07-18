@@ -29,7 +29,7 @@ public class NomineeMapper {
                 .nomineeDateOfBirth(dto.getNomineeDateOfBirth())
                 .nomineeMobileNumber(dto.getNomineeMobileNumber())
                 .NomineeEmail(dto.getNomineeEmail())
-                .nomineeAadhar(dto.getNomineeAadhaar())
+                .nomineeAadhaar(dto.getNomineeAadhaar())
                 .nomineePan(dto.getNomineePan())
                 .nomineeAddress(dto.getNomineeAddress())
                 .build();

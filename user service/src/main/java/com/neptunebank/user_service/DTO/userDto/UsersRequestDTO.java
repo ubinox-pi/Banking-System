@@ -18,10 +18,12 @@
 package com.neptunebank.user_service.DTO.userDto;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.neptunebank.user_service.DTO.ContactDetailsDTO.ContactDetailsRequestDTO;
 import com.neptunebank.user_service.DTO.NomineeDTO.NomineeRequestDTO;
 import com.neptunebank.user_service.DTO.kycDTO.KycRequestDTO;
 import com.neptunebank.user_service.ENUMs.*;
+import com.neptunebank.user_service.validation.MinAge;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -54,9 +56,11 @@ public class UsersRequestDTO implements Serializable {
     @NotBlank(message = "Lastname is required.")
     @Size(min = 3, message = "Last name is too short.")
     private String lastName;
-
+    
     @NotNull(message = "Date of birth is required.")
     @Past
+    @MinAge(value = 18, message = "User must be at least 18 years old.")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
     private LocalDate dateOfBirth;
 
     @NotNull(message = "Gender is required.")
@@ -82,8 +86,8 @@ public class UsersRequestDTO implements Serializable {
     @NotBlank(message = "Occupation required")
     private String salary;
 
-    @NotBlank(message = "Citizen is required.")
-    private String citizen;
+    @NotNull(message = "Citizen is required.")
+    private Citizen citizen;
 
     @NotNull(message = "Category is required.")
     private Category category;

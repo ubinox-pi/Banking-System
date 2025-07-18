@@ -1,5 +1,10 @@
 package com.neptunebank.loan_service.repositories;
 
+import com.neptunebank.loan_service.model.Loan;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
 /*
  * Copyright (c) 2025 Ramjee Prasad
  * Licensed under a custom Non-Commercial, Attribution, Share-Alike License.
@@ -18,5 +23,10 @@ package com.neptunebank.loan_service.repositories;
  *   - Commercial use is strictly prohibited.
  *
  */
-public class LoanRepository {
+
+@Repository
+public interface LoanRepository extends JpaRepository<Loan, Long> {
+
+    @Query("SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END FROM Loan l WHERE l.loanAccountNumber = ?1")
+    boolean existsByLoanId(String loanId);
 }

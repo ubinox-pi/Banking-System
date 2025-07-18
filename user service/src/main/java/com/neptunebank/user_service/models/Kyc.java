@@ -41,13 +41,13 @@ public class Kyc {
     private Users user;
 
     @Column(nullable = false, unique = true)
-    private String aadharNumber;
+    private String aadhaarNumber;
 
     @Column(nullable = false, columnDefinition = "BYTEA")
-    private byte[] aadharImage;
+    private byte[] aadhaarImage;
 
     @Builder.Default
-    private Boolean aadharVerified = false;
+    private Boolean aadhaarVerified = false;
 
     @Column(nullable = false, unique = true)
     private String panNumber;

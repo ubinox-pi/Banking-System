@@ -1,5 +1,9 @@
 package com.neptunebank.neptunebank.repository;
 
+import com.neptunebank.neptunebank.models.Users;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
 /*
  * Copyright (c) 2025 Ramjee Prasad
  * Licensed under a custom Non-Commercial, Attribution, Share-Alike License.
@@ -18,5 +22,8 @@ package com.neptunebank.neptunebank.repository;
  *   - Commercial use is strictly prohibited.
  *
  */
-public class AdminRepository {
+public interface AdminRepository extends JpaRepository<Users, Long> {
+
+    @Query("SELECT Users FROM Users WHERE Users.username = ?1")
+    Users findByUsername(String username);
 }

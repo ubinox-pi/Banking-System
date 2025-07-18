@@ -65,7 +65,7 @@ public class Nominee {
     private String NomineeEmail;
 
     @Column(nullable = false, unique = true)
-    private String nomineeAadhar;
+    private String nomineeAadhaar;
 
     @Column(nullable = false, unique = true)
     private String nomineePan;

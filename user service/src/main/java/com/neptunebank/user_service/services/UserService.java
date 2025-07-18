@@ -88,7 +88,7 @@ public class UserService {
         users.getContactDetails().setUser(users);
         users.getNominee().setUser(users);
         users.getKycId().setUser(users);
-        users.getKycId().setAadharImage(aadhaar.getBytes());
+        users.getKycId().setAadhaarImage(aadhaar.getBytes());
         users.getKycId().setPanImage(pan.getBytes());
         users.getKycId().setUserPhoto(photo.getBytes());
         users.getKycId().setUserSignature(signature.getBytes());

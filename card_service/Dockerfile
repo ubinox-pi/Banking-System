@@ -1,4 +1,1 @@
-FROM ubuntu:latest
-LABEL authors="Ashish Kushwaha"
-
-ENTRYPOINT ["top", "-b"]
+FROM amazoncorretto:21

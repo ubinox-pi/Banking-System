@@ -38,7 +38,6 @@ public class SecurityConfig {
                         .anyRequest().permitAll() // allow all requests without authentication
                 )
                 .httpBasic(Customizer.withDefaults()); // enable basic auth if needed (optional)
-
         return http.build();
     }
 }

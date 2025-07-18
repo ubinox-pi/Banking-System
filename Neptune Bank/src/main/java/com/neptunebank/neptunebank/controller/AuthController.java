@@ -1,7 +1,8 @@
 package com.neptunebank.neptunebank.controller;
 
-import com.neptunebank.neptunebank.models.POJO.Users;
+import com.neptunebank.neptunebank.models.Users;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    public ResponseEntity<?> login(@RequestBody @Valid Users users) {
-        
+    public ResponseEntity<?> loginRequest(@RequestBody @Valid Users users) {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

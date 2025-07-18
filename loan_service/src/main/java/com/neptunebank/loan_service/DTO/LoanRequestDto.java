@@ -1,5 +1,9 @@
 package com.neptunebank.loan_service.DTO;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
 /*
  * Copyright (c) 2025 Ramjee Prasad
  * Licensed under a custom Non-Commercial, Attribution, Share-Alike License.
@@ -18,5 +22,21 @@ package com.neptunebank.loan_service.DTO;
  *   - Commercial use is strictly prohibited.
  *
  */
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class LoanRequestDto {
+    @NotNull(message = "Account ID cannot be blank")
+    private Long accountId;
+
+    @NotBlank(message = "Loan type cannot be blank")
+    private String loanType;
+
+    @NotBlank(message = "Principal amount cannot be blank")
+    private String principalAmount;
+
+    @NotBlank(message = "Tenure cannot be blank")
+    private String tenure;
 }

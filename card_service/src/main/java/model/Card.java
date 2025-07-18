@@ -1,5 +1,9 @@
 package model;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+
 /*
  * Copyright (c) 2025 Ramjee Prasad
  * Licensed under a custom Non-Commercial, Attribution, Share-Alike License.
@@ -18,5 +22,28 @@ package model;
  *   - Commercial use is strictly prohibited.
  *
  */
+@Entity
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Card {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
+    private Long cardId;
+
+    @Column(nullable = false)
+    private Long accountNumber;
+
+    @Column(nullable = false, unique = true)
+    private String cardNumber;
+
+    @Column(nullable = false)
+    @Size(min = 1, max = 64)
+//    @Pattern(regexp = "{a-zA-Z}")
+    private String cardName;
+
 }
