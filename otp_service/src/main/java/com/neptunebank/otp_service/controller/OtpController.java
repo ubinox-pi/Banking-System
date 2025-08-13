@@ -32,7 +32,7 @@ import java.util.Map;
  *
  */
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/messages/otp")
 public class OtpController {
     private OtpService authenticationService;
 
@@ -41,22 +41,22 @@ public class OtpController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping("/sendOtpEmail")
+    @PostMapping("/send-otp-email")
     public ResponseEntity<Map<String, String>> sendOtpEmail(@RequestBody String email) throws JsonProcessingException {
         return authenticationService.authenticateEmail(email);
     }
 
-    @PostMapping("/verifyEmailOtp")
+    @PostMapping("/verify-email-otp")
     public ResponseEntity<Map<String, String>> verifyOtp(@RequestBody PhoneOrEmailAndOtp phoneOrEmailAndOtp) {
         return authenticationService.verifyEmailOtp(phoneOrEmailAndOtp);
     }
 
-    @PostMapping("/sendOtpPhone")
+    @PostMapping("/send-otp-phone")
     public ResponseEntity<Map<String, String>> sendOtpPhone(@RequestBody String phone) throws JsonProcessingException {
         return authenticationService.authenticatePhone(phone);
     }
 
-    @PostMapping("/verifyPhoneOtp")
+    @PostMapping("/verify-phone-otp")
     public ResponseEntity<Map<String, String>> verifyPhoneOtp(@RequestBody @Valid PhoneOrEmailAndOtp phoneOrEmailAndOtp) {
         return authenticationService.verifyPhoneOtp(phoneOrEmailAndOtp);
     }

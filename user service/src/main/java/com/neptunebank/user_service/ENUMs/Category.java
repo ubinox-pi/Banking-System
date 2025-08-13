@@ -19,7 +19,7 @@
 package com.neptunebank.user_service.ENUMs;
 
 public enum Category {
-    GEN,
+    GENERAL,
     OBC,
     ST,
     SC,

@@ -45,8 +45,7 @@ public class ContactDetails {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "userId", referencedColumnName = "userId", unique = true, updatable = false)
     private Users user;
-
-    //it will take mobile number as string with country code
+    
     @Column(nullable = false, unique = true)
     private String mobileNumber;
 
@@ -94,11 +93,77 @@ public class ContactDetails {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+
+        if (this.mobileNumber != null)
+            if (!this.mobileNumber.startsWith("+91"))
+                this.mobileNumber = "+91" + this.mobileNumber.trim();
+
+
+        if (this.email != null)
+            if (!this.email.equals(this.email.toUpperCase()))
+                this.email = this.email.toUpperCase().trim();
+
+        if (this.communicationAddress != null)
+            if (!this.communicationAddress.equals(this.communicationAddress.toUpperCase()))
+                this.communicationAddress = this.communicationAddress.toUpperCase().trim();
+
+        if (this.permanentAddress != null)
+            if (!this.permanentAddress.equals(this.permanentAddress.toUpperCase()))
+                this.permanentAddress = this.permanentAddress.toUpperCase().trim();
+
+        if (this.city != null)
+            if (!this.city.equals(this.city.toUpperCase()))
+                this.city = this.city.toUpperCase().trim();
+
+        if (this.landmark != null)
+            if (!this.landmark.equals(this.landmark.toUpperCase()))
+                this.landmark = this.landmark.toUpperCase().trim();
+
+        if (this.alternateMobileNumber != null)
+            if (!this.alternateMobileNumber.startsWith("+91"))
+                this.alternateMobileNumber = "+91" + this.alternateMobileNumber.trim();
+
+        if (this.alternateEmail != null)
+            if (!this.alternateEmail.equals(this.alternateEmail.toUpperCase()))
+                this.alternateEmail = this.alternateEmail.toUpperCase().trim();
     }
 
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+
+        if (this.mobileNumber != null)
+            if (!this.mobileNumber.startsWith("+91"))
+                this.mobileNumber = "+91" + this.mobileNumber.trim();
+
+
+        if (this.email != null)
+            if (!this.email.equals(this.email.toUpperCase()))
+                this.email = this.email.toUpperCase().trim();
+
+        if (this.communicationAddress != null)
+            if (!this.communicationAddress.equals(this.communicationAddress.toUpperCase()))
+                this.communicationAddress = this.communicationAddress.toUpperCase().trim();
+
+        if (this.permanentAddress != null)
+            if (!this.permanentAddress.equals(this.permanentAddress.toUpperCase()))
+                this.permanentAddress = this.permanentAddress.toUpperCase().trim();
+
+        if (this.city != null)
+            if (!this.city.equals(this.city.toUpperCase()))
+                this.city = this.city.toUpperCase().trim();
+
+        if (this.landmark != null)
+            if (!this.landmark.equals(this.landmark.toUpperCase()))
+                this.landmark = this.landmark.toUpperCase().trim();
+
+        if (this.alternateMobileNumber != null)
+            if (!this.alternateMobileNumber.startsWith("+91"))
+                this.alternateMobileNumber = "+91" + this.alternateMobileNumber.trim();
+
+        if (this.alternateEmail != null)
+            if (!this.alternateEmail.equals(this.alternateEmail.toUpperCase()))
+                this.alternateEmail = this.alternateEmail.toUpperCase().trim();
     }
 
 

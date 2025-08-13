@@ -1,6 +1,6 @@
 package com.neptunebank.account_service.controller;
 
-import com.neptunebank.account_service.dto.AccountRequestDto;
+import com.neptunebank.account_service.dto.accountDTO.AccountRequestDto;
 import com.neptunebank.account_service.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/accounts")
 public class AccountController {
 
     private AccountService accountService;

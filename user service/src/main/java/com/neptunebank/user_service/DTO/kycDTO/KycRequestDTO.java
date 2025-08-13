@@ -47,7 +47,7 @@ public class KycRequestDTO implements Serializable {
     private String panNumber;
 
     @Size(min = 10, max = 10, message = "Voter ID number must be 10 characters.")
-    @Pattern(regexp = "^[A-Z]{3}[0-9]{7}$", message = "Voter ID number must start with 3 letters followed by 7 numbers")
+    @Pattern(regexp = "^$[A-Z]{3}[0-9]{7}$", message = "Voter ID number must start with 3 letters followed by 7 numbers")
     private String voterId;
     private String passportNumber;
     private String drivingLicenseNumber;

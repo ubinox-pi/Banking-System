@@ -21,20 +21,16 @@ package com.neptunebank.user_service.controllers;
 
 import com.neptunebank.user_service.DTO.userDto.UsersRequestDTO;
 import com.neptunebank.user_service.services.UserService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-
 @RestController
-@RequestMapping("/auth")
-//TODO: Will be removed in production
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -44,8 +40,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<HashMap<String, String>> registerUser(
+    @RolesAllowed({"ADMIN", "USER", "EMPLOYEE"})
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> registerUser(
             @RequestPart("user") @Valid UsersRequestDTO registrationRequest,
             // files
             @RequestPart("aadhaar") MultipartFile aadhaarFile,
@@ -57,13 +54,26 @@ public class UserController {
             @RequestPart(value = "passport", required = false) MultipartFile passportIdFile,
             @RequestPart(value = "driving", required = false) MultipartFile drivingLicenseFile
     ) throws Exception {
-        userService.registerUser(registrationRequest, aadhaarFile, panFile, photoFile, signatureFile, voterIdFile, passportIdFile, drivingLicenseFile);
-        HashMap<String, String> response = new HashMap<>();
-        response.put("message", "User registered successfully");
-        response.put("status", "success");
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return userService.registerUser(registrationRequest, aadhaarFile, panFile, photoFile, signatureFile, voterIdFile, passportIdFile, drivingLicenseFile);
     }
 
+    @GetMapping("/all")
+    @RolesAllowed({"ADMIN", "EMPLOYEE"})
+    public ResponseEntity<?> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @GetMapping("/get-count")
+    @RolesAllowed({"ADMIN", "EMPLOYEE"})
+    public ResponseEntity<?> getUserCount() {
+        return userService.userCount();
+    }
+
+    @GetMapping("/check-user")
+    @RolesAllowed({"ADMIN", "EMPLOYEE", "USER"})
+    public ResponseEntity<?> checkUserExists(@RequestParam String email, String phone) {
+        return userService.checkUserExists(email, phone);
+    }
 
     @GetMapping("/test")
     public String test() {

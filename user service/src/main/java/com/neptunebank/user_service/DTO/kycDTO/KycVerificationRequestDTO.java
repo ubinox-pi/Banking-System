@@ -27,7 +27,7 @@ import lombok.*;
 @Builder
 public class KycVerificationRequestDTO {
     private Long kycId;
-    private Boolean aadharVerified;
+    private Boolean aadhaarVerified;
     private Boolean panVerified;
     private Boolean userPhotoVerified;
     private Boolean userSignatureVerified;

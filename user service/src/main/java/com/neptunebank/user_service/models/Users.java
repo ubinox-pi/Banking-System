@@ -138,11 +138,65 @@ public class Users {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        if (this.firstName != null)
+            if (!this.firstName.equals(this.firstName.toUpperCase()))
+                this.firstName = this.firstName.toUpperCase().trim();
+
+        if (this.middleName != null)
+            if (!this.middleName.equals(this.middleName.toUpperCase()))
+                this.middleName = this.middleName.toUpperCase().trim();
+
+        if (this.lastName != null)
+            if (!this.lastName.equals(this.lastName.toUpperCase()))
+                this.lastName = this.lastName.toUpperCase().trim();
+
+        if (this.fatherName != null)
+            if (!this.fatherName.equals(this.fatherName.toUpperCase()))
+                this.fatherName = this.fatherName.toUpperCase().trim();
+
+        if (this.motherName != null)
+            if (!this.motherName.equals(this.motherName.toUpperCase()))
+                this.motherName = this.motherName.toUpperCase().trim();
+
+        if (this.spouseName != null)
+            if (!this.spouseName.equals(this.spouseName.toUpperCase()))
+                this.spouseName = this.spouseName.toUpperCase().trim();
+
+        if (this.description != null)
+            if (!this.description.equals(this.description.toUpperCase()))
+                this.description = this.description.toUpperCase().trim();
     }
 
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+        if (this.firstName != null)
+            if (!this.firstName.equals(firstName.toUpperCase()))
+                this.firstName = firstName.toUpperCase().trim();
+
+        if (this.middleName != null)
+            if (!this.middleName.equals(middleName.toUpperCase()))
+                this.middleName = middleName.toUpperCase().trim();
+
+        if (this.lastName != null)
+            if (!this.lastName.equals(lastName.toUpperCase()))
+                this.lastName = lastName.toUpperCase().trim();
+
+        if (this.fatherName != null)
+            if (!this.fatherName.equals(fatherName.toUpperCase()))
+                this.fatherName = fatherName.toUpperCase().trim();
+
+        if (this.motherName != null)
+            if (!this.motherName.equals(motherName.toUpperCase()))
+                this.motherName = motherName.toUpperCase().trim();
+
+        if (this.spouseName != null)
+            if (!this.spouseName.equals(spouseName.toUpperCase()))
+                this.spouseName = spouseName.toUpperCase().trim();
+
+        if (this.description != null)
+            if (!this.description.equals(description.toUpperCase()))
+                this.description = description.toUpperCase().trim();
     }
 
 

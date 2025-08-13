@@ -1,7 +1,8 @@
 package com.neptunebank.account_service.mappers;
 
 import com.neptunebank.account_service.ENUM.AccountType;
-import com.neptunebank.account_service.dto.AccountRequestDto;
+import com.neptunebank.account_service.dto.accountDTO.AccountAdminDTO;
+import com.neptunebank.account_service.dto.accountDTO.AccountRequestDto;
 import com.neptunebank.account_service.models.Account;
 
 /*
@@ -32,5 +33,22 @@ public class AccountMapper {
                 .modeOfOperation(accountRequestDto.getModeOfOperation())
                 .accountInterestRate(accountRequestDto.getAccountInterestRate())
                 .build();
+    }
+
+    public static AccountAdminDTO toDto(Account account) {
+        return AccountAdminDTO.builder()
+                .id(account.getUserId())
+                .userId(account.getUserId())
+                .branchId(account.getBranchId())
+                .accountType(account.getAccountType().name())
+                .accountNumber(account.getAccountNumber())
+                .balance(account.getBalance().toString())
+                .status(account.getStatus().name())
+                .modeOfOperation(account.getModeOfOperation().name())
+                .accountInterestRate(account.getAccountInterestRate())
+                .createdAt(account.getCreatedAt().toString())
+                .updatedAt(account.getUpdatedAt() != null ? account.getUpdatedAt().toString() : null)
+                .build();
+
     }
 }

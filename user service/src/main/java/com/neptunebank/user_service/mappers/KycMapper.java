@@ -1,5 +1,6 @@
 package com.neptunebank.user_service.mappers;
 
+import com.neptunebank.user_service.DTO.kycDTO.KycAdminDTO;
 import com.neptunebank.user_service.DTO.kycDTO.KycRequestDTO;
 import com.neptunebank.user_service.models.Kyc;
 
@@ -30,6 +31,36 @@ public class KycMapper {
                 .voterId(dto.getVoterId())
                 .passportNumber(dto.getPassportNumber())
                 .drivingLicenseNumber(dto.getDrivingLicenseNumber())
+                .build();
+    }
+
+    public static KycAdminDTO toAdminDto(Kyc kyc) {
+        return KycAdminDTO.builder()
+                .kycId(kyc.getKycId())
+                .user(kyc.getUser().getUserid())
+                .aadhaarNumber(kyc.getAadhaarNumber())
+                .aadhaarImage(kyc.getAadhaarImage())
+                .aadhaarVerified(kyc.getAadhaarVerified())
+                .panNumber(kyc.getPanNumber())
+                .panImage(kyc.getPanImage())
+                .panVerified(kyc.getPanVerified())
+                .userPhoto(kyc.getUserPhoto())
+                .userPhotoVerified(kyc.getUserPhotoVerified())
+                .userSignature(kyc.getUserSignature())
+                .userSignatureVerified(kyc.getUserSignatureVerified())
+                .voterId(kyc.getVoterId())
+                .voterIdImage(kyc.getVoterIdImage())
+                .voterIdVerified(kyc.getVoterIdVerified())
+                .passportNumber(kyc.getPassportNumber())
+                .passportImage(kyc.getPassportImage())
+                .passportVerified(kyc.getPassportVerified())
+                .drivingLicenseNumber(kyc.getDrivingLicenseNumber())
+                .drivingLicenseImage(kyc.getDrivingLicenseImage())
+                .drivingLicenseVerified(kyc.getDrivingLicenseVerified())
+                .status(kyc.getStatus())
+                .rejectionReason(kyc.getRejectionReason())
+                .createdAt(kyc.getCreatedAt())
+                .updatedAt(kyc.getUpdatedAt())
                 .build();
     }
 }

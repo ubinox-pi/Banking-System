@@ -89,6 +89,7 @@ CREATE TABLE kyc
     driving_license_image    BYTEA,
     driving_license_verified BOOLEAN                     DEFAULT FALSE,
     verified_by_employee_id  BIGINT,
+    status                   VARCHAR(20)        NOT NULL DEFAULT 'PENDING',
     rejection_reason         TEXT,
     created_at               TIMESTAMP          NOT NULL DEFAULT now(),
     updated_at               TIMESTAMP          NOT NULL DEFAULT now()

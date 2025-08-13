@@ -18,6 +18,7 @@
 package com.neptunebank.user_service.mappers;
 
 
+import com.neptunebank.user_service.DTO.NomineeDTO.NomineeAdminDTO;
 import com.neptunebank.user_service.DTO.NomineeDTO.NomineeRequestDTO;
 import com.neptunebank.user_service.models.Nominee;
 
@@ -28,10 +29,27 @@ public class NomineeMapper {
                 .nomineeRelationship(dto.getNomineeRelationship())
                 .nomineeDateOfBirth(dto.getNomineeDateOfBirth())
                 .nomineeMobileNumber(dto.getNomineeMobileNumber())
-                .NomineeEmail(dto.getNomineeEmail())
+                .nomineeEmail(dto.getNomineeEmail())
                 .nomineeAadhaar(dto.getNomineeAadhaar())
                 .nomineePan(dto.getNomineePan())
                 .nomineeAddress(dto.getNomineeAddress())
+                .build();
+    }
+
+    public static NomineeAdminDTO toAdminDTO(Nominee nominee) {
+        return NomineeAdminDTO.builder()
+                .nomineeId(nominee.getNomineeId())
+                .user(nominee.getUser().getUserid())
+                .nomineeName(nominee.getNomineeName())
+                .nomineeRelationship(nominee.getNomineeRelationship())
+                .nomineeDateOfBirth(nominee.getNomineeDateOfBirth())
+                .nomineeMobileNumber(nominee.getNomineeMobileNumber())
+                .NomineeEmail(nominee.getNomineeEmail())
+                .nomineeAadhaar(nominee.getNomineeAadhaar())
+                .nomineePan(nominee.getNomineePan())
+                .nomineeAddress(nominee.getNomineeAddress())
+                .createdAt(nominee.getCreatedAt())
+                .updatedAt(nominee.getUpdatedAt())
                 .build();
     }
 }

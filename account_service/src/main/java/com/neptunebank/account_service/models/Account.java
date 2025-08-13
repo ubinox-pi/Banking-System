@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -39,11 +38,10 @@ import java.util.List;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long accountId;
 
-    @Column(unique = true, nullable = false, updatable = false)
-    private List<Long> userId;
+    @Column(nullable = false, updatable = false)
+    private Long userId;
 
     @Column(nullable = false)
     private Long branchId;
@@ -60,7 +58,7 @@ public class Account {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private AccountStatus status;
+    private AccountStatus status = AccountStatus.ACTIVE;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -79,6 +77,8 @@ public class Account {
     private void prePersist() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+
+
     }
 
     @PreUpdate

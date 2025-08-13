@@ -21,5 +21,8 @@ package com.neptunebank.user_service.ENUMs;
 public enum Genders {
     MARD,
     AURAT,
-    CHAKKA
+    CHAKKA,
+    MALE,
+    FEMALE,
+    OTHER
 }

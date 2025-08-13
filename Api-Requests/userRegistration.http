@@ -1,6 +1,6 @@
 ### GET request to example server
 ### POST request to example server
-POST http://localhost:8081/auth/user
+POST http://localhost:8080/users/create
 Authorization: Basic dXNlcnM6cGFzc3dvcmQ=
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 Accept: application/json

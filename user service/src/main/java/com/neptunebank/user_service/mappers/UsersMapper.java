@@ -18,6 +18,7 @@
 package com.neptunebank.user_service.mappers;
 
 
+import com.neptunebank.user_service.DTO.userDto.UserAdminDTO;
 import com.neptunebank.user_service.DTO.userDto.UsersRequestDTO;
 import com.neptunebank.user_service.models.Users;
 
@@ -41,6 +42,38 @@ public class UsersMapper {
                 .contactDetails(ContactDetailsMapper.toEntity(dto.getContactDetails()))
                 .nominee(NomineeMapper.toEntity(dto.getNominee()))
                 .kycId(KycMapper.toEntity(dto.getKyc()))
+                .build();
+    }
+
+    public static UserAdminDTO toAdminDTO(Users user) {
+        return UserAdminDTO.builder()
+                .userId(user.getUserid())
+                .firstName(user.getFirstName())
+                .middleName(user.getMiddleName())
+                .lastName(user.getLastName())
+                .dateOfBirth(user.getDateOfBirth())
+                .gender(user.getGender())
+                .fatherName(user.getFatherName())
+                .motherName(user.getMotherName())
+                .maritalStatus(user.getMaritalStatus())
+                .spouseName(user.getSpouseName())
+                .occupation(user.getOccupation())
+                .salary(user.getSalary())
+                .citizen(user.getCitizen())
+                .category(user.getCategory())
+                .religion(user.getReligion())
+                .contactDetails(ContactDetailsMapper.toAdminDto(user.getContactDetails()))
+                .accountId(user.getAccountId())
+                .nominee(NomineeMapper.toAdminDTO(user.getNominee()))
+                .accountInterestRate(user.getAccountInterestRate())
+                .kyc(KycMapper.toAdminDto(user.getKycId()))
+                .isActive(user.getIsActive())
+                .isBlocked(user.getIsBlocked())
+                .isDeleted(user.getIsDeleted())
+                .status(user.getStatus())
+                .description(user.getDescription())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
                 .build();
     }
 }

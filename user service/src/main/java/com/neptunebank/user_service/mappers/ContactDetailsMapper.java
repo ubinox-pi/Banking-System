@@ -19,6 +19,7 @@
 package com.neptunebank.user_service.mappers;
 
 
+import com.neptunebank.user_service.DTO.ContactDetailsDTO.ContactDetailsAdminDTO;
 import com.neptunebank.user_service.DTO.ContactDetailsDTO.ContactDetailsRequestDTO;
 import com.neptunebank.user_service.models.ContactDetails;
 
@@ -36,6 +37,26 @@ public class ContactDetailsMapper {
                 .country(contactDetails.getCountry())
                 .alternateMobileNumber(contactDetails.getAlternateMobileNumber())
                 .alternateEmail(contactDetails.getAlternateEmail())
+                .build();
+    }
+
+    public static ContactDetailsAdminDTO toAdminDto(ContactDetails contactDetails) {
+        return ContactDetailsAdminDTO.builder()
+                .contactId(contactDetails.getContactId())
+                .user(contactDetails.getUser().getUserid())
+                .mobileNumber(contactDetails.getMobileNumber())
+                .email(contactDetails.getEmail())
+                .communicationAddress(contactDetails.getCommunicationAddress())
+                .permanentAddress(contactDetails.getPermanentAddress())
+                .city(contactDetails.getCity())
+                .state(contactDetails.getState())
+                .zip(contactDetails.getZip())
+                .landmark(contactDetails.getLandmark())
+                .country(contactDetails.getCountry())
+                .alternateMobileNumber(contactDetails.getAlternateMobileNumber())
+                .alternateEmail(contactDetails.getAlternateEmail())
+                .createdAt(contactDetails.getCreatedAt())
+                .updatedAt(contactDetails.getUpdatedAt())
                 .build();
     }
 }

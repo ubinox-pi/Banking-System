@@ -1,8 +1,9 @@
 package com.neptunebank.neptunebank.repository;
 
 import com.neptunebank.neptunebank.models.Users;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Mono;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -22,8 +23,7 @@ import org.springframework.data.jpa.repository.Query;
  *   - Commercial use is strictly prohibited.
  *
  */
-public interface AdminRepository extends JpaRepository<Users, Long> {
-
-    @Query("SELECT Users FROM Users WHERE Users.username = ?1")
-    Users findByUsername(String username);
+@Repository
+public interface AdminRepository extends ReactiveCrudRepository<Users, Long> {
+    Mono<Users> findByUsername(String username);
 }

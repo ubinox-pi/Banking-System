@@ -18,6 +18,7 @@
 
 package com.neptunebank.user_service.models;
 
+import com.neptunebank.user_service.ENUMs.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
@@ -100,6 +101,11 @@ public class Kyc {
     @Builder.Default
     private Long verifiedByEmployeeId = null;
 
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    @Column(nullable = false)
+    private Status status = Status.PENDING;
+
     @Builder.Default
     private String rejectionReason = null;
 
@@ -115,11 +121,51 @@ public class Kyc {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+
+        if (this.panNumber != null)
+            if (this.panNumber.equals(this.panNumber.toUpperCase()))
+                this.panNumber = this.panNumber.toUpperCase().trim();
+
+        if (this.voterId != null)
+            if (this.voterId.equals(this.voterId.toUpperCase()))
+                this.voterId = this.voterId.toUpperCase().trim();
+
+        if (this.passportNumber != null)
+            if (this.passportNumber.equals(this.passportNumber.toUpperCase()))
+                this.passportNumber = this.passportNumber.toUpperCase().trim();
+
+        if (this.drivingLicenseNumber != null)
+            if (this.drivingLicenseNumber.equals(this.drivingLicenseNumber.toUpperCase()))
+                this.drivingLicenseNumber = this.drivingLicenseNumber.toUpperCase().trim();
+
+        if (this.rejectionReason != null)
+            if (this.rejectionReason.equals(this.rejectionReason.toUpperCase()))
+                this.rejectionReason = this.rejectionReason.toUpperCase().trim();
     }
 
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+
+        if (this.panNumber != null)
+            if (this.panNumber.equals(this.panNumber.toUpperCase()))
+                this.panNumber = this.panNumber.toUpperCase().trim();
+
+        if (this.voterId != null)
+            if (this.voterId.equals(this.voterId.toUpperCase()))
+                this.voterId = this.voterId.toUpperCase().trim();
+
+        if (this.passportNumber != null)
+            if (this.passportNumber.equals(this.passportNumber.toUpperCase()))
+                this.passportNumber = this.passportNumber.toUpperCase().trim();
+
+        if (this.drivingLicenseNumber != null)
+            if (this.drivingLicenseNumber.equals(this.drivingLicenseNumber.toUpperCase()))
+                this.drivingLicenseNumber = this.drivingLicenseNumber.toUpperCase().trim();
+
+        if (this.rejectionReason != null)
+            if (this.rejectionReason.equals(this.rejectionReason.toUpperCase()))
+                this.rejectionReason = this.rejectionReason.toUpperCase().trim();
     }
 
 }

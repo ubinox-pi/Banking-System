@@ -19,6 +19,6 @@ package com.neptunebank.user_service.ENUMs;
  *
  */
 public enum Citizen {
-    INDIA,
+    INDIAN,
     NRI
 }

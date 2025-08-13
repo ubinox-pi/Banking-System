@@ -20,6 +20,7 @@ package com.neptunebank.user_service.ENUMs;
 
 public enum MaritalStatus {
     MARRIED,
+    UNMARRIED,
     SINGLE,
     DIVORCED,
     WIDOWED,

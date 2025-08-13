@@ -20,10 +20,18 @@ package com.neptunebank.user_service.ENUMs;
 
 public enum Occupation {
     SALARIED,
+    GOVERNMENT,
+    PRIVATE,
+    PROFESSIONAL,
+    FARMER,
+    LABOURER,
+    HOUSEWIFE,
+    RETIRED,
     SELF_EMPLOYED,
     BUSINESS,
     STUDENT,
-    RETIRED,
     UNEMPLOYED,
+    ENGINEER,
+    TEACHER,
     OTHER
 }

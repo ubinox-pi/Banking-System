@@ -62,7 +62,7 @@ public class Nominee {
 
     @Email
     @Column(nullable = false, unique = true)
-    private String NomineeEmail;
+    private String nomineeEmail;
 
     @Column(nullable = false, unique = true)
     private String nomineeAadhaar;
@@ -86,10 +86,50 @@ public class Nominee {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+
+        if (this.nomineeName != null)
+            if (!this.nomineeName.equals(this.nomineeName.toUpperCase()))
+                this.nomineeName = this.nomineeName.toUpperCase().trim();
+
+        if (this.nomineeRelationship != null)
+            if (!this.nomineeEmail.equals(this.nomineeEmail.toUpperCase()))
+                this.nomineeEmail = this.nomineeEmail.toUpperCase().trim();
+
+        if (this.nomineeMobileNumber != null)
+            if (!this.nomineeMobileNumber.startsWith("+91"))
+                this.nomineeMobileNumber = "+91" + this.nomineeMobileNumber.trim();
+
+        if (this.nomineePan != null)
+            if (!this.nomineePan.equals(this.nomineePan.toUpperCase()))
+                this.nomineePan = this.nomineePan.toUpperCase().trim();
+
+        if (this.nomineeAddress != null)
+            if (!this.nomineeAddress.equals(this.nomineeAddress.toUpperCase()))
+                this.nomineeAddress = this.nomineeAddress.toUpperCase().trim();
+
     }
 
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+        if (this.nomineeName != null)
+            if (!this.nomineeName.equals(this.nomineeName.toUpperCase()))
+                this.nomineeName = this.nomineeName.toUpperCase().trim();
+
+        if (this.nomineeRelationship != null)
+            if (!this.nomineeEmail.equals(this.nomineeEmail.toUpperCase()))
+                this.nomineeEmail = this.nomineeEmail.toUpperCase().trim();
+
+        if (this.nomineeMobileNumber != null)
+            if (!this.nomineeMobileNumber.startsWith("+91"))
+                this.nomineeMobileNumber = "+91" + this.nomineeMobileNumber.trim();
+
+        if (this.nomineePan != null)
+            if (!this.nomineePan.equals(this.nomineePan.toUpperCase()))
+                this.nomineePan = this.nomineePan.toUpperCase().trim();
+
+        if (this.nomineeAddress != null)
+            if (!this.nomineeAddress.equals(this.nomineeAddress.toUpperCase()))
+                this.nomineeAddress = this.nomineeAddress.toUpperCase().trim();
     }
 }

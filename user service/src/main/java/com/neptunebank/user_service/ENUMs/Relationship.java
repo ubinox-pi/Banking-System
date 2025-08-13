@@ -20,9 +20,17 @@ package com.neptunebank.user_service.ENUMs;
 
 public enum Relationship {
     FATHER,
+    SISTER,
+    BROTHER,
     MOTHER,
     SPOUSE,
     SIBLING,
     SON,
-    DAUGHTER
+    DAUGHTER,
+    WIFE,
+    HUSBAND,
+    GRANDPARENT,
+    GRANDCHILD,
+    UNCLE,
+    AUNT
 }
