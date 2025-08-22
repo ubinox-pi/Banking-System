@@ -1,11 +1,11 @@
 package com.neptunebank.otp_service.services;
 
 import com.neptunebank.otp_service.models.POJO.OtpPayload;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -32,10 +32,12 @@ import java.util.Map;
  */
 @Service
 public class SmsSender {
-    private final String DEVICE_ID = "68595138a5fdde60955c9f6d";
-    private final String API_KEY = "886d2d07-1e77-483c-ac59-4778e3994135";
-    
-    @Async
+    @Value("${sms.api-key}")
+    private String API_KEY;
+    @Value("${sms.device-id}")
+    private String DEVICE_ID;
+
+    //@Async
     public void sendSms(OtpPayload otpPayload) {
         String url = "https://api.textbee.dev/api/v1/gateway/devices/" + DEVICE_ID + "/send-sms";
 

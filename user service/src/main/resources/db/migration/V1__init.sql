@@ -16,7 +16,6 @@ CREATE TABLE users
     citizen               VARCHAR(20)  NOT NULL,
     category              VARCHAR(20)  NOT NULL,
     religion              VARCHAR(20)  NOT NULL,
-    account_id            BIGINT UNIQUE,
     account_interest_rate FLOAT        NOT NULL DEFAULT 0.0,
     is_active             BOOLEAN,
     is_blocked            BOOLEAN,
@@ -25,6 +24,15 @@ CREATE TABLE users
     description           TEXT,
     created_at            TIMESTAMP    NOT NULL DEFAULT now(),
     updated_at            TIMESTAMP    NOT NULL DEFAULT now()
+);
+
+-- Mapping table for multiple account_ids per user
+CREATE TABLE user_accounts
+(
+    id         BIGSERIAL PRIMARY KEY,
+    user_id    BIGINT NOT NULL REFERENCES users (userid) ON DELETE CASCADE,
+    account_id BIGINT UNIQUE,
+    UNIQUE (user_id, account_id)
 );
 
 -- Contact Details table
@@ -79,13 +87,13 @@ CREATE TABLE kyc
     user_photo_verified      BOOLEAN                     DEFAULT FALSE,
     user_signature           BYTEA              NOT NULL,
     user_signature_verified  BOOLEAN                     DEFAULT FALSE,
-    voter_id                 VARCHAR(20) UNIQUE,
+    voter_id                 VARCHAR(20),
     voter_id_image           BYTEA,
     voter_id_verified        BOOLEAN                     DEFAULT FALSE,
-    passport_number          VARCHAR(20) UNIQUE,
+    passport_number          VARCHAR(20),
     passport_image           BYTEA,
     passport_verified        BOOLEAN                     DEFAULT FALSE,
-    driving_license_number   VARCHAR(20) UNIQUE,
+    driving_license_number   VARCHAR(20),
     driving_license_image    BYTEA,
     driving_license_verified BOOLEAN                     DEFAULT FALSE,
     verified_by_employee_id  BIGINT,

@@ -36,7 +36,6 @@ public class ApiCallLog {
     private String id;
 
     private LocalDateTime timestamp;
-
     private String httpMethod;
     private String url;
     private String queryString;
@@ -46,16 +45,14 @@ public class ApiCallLog {
     private String clientIp;
     private String userAgent;
     private String referrer;
-
-    private String username;
     private String sessionId;
     private String jwtToken;
+    private String username;
 
     private int responseStatus;
     private String responseBody;
-    private Map<String, String> responseHeaders;
-
     private long durationMs;
+
     private long requestSizeBytes;
     private long responseSizeBytes;
 

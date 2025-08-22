@@ -1,7 +1,7 @@
 ### GET request to example server
 ### POST request to example server
 POST http://localhost:8080/users/create
-Authorization: Basic dXNlcnM6cGFzc3dvcmQ=
+Cookie: JSESSIONID=D3ACB5F1DDB016EA40B299EBD3BBD9A1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 Accept: application/json
 
@@ -21,12 +21,12 @@ Content-Type: application/json
   "spouseName": "Jane Doe",
   "occupation": "OTHER",
   "salary": "85000",
-  "citizen": "INDIA",
+  "citizen": "INDIAN",
   "category": "ST",
   "religion": "HINDU",
   "contactDetails": {
-    "mobileNumber": "+919876543210",
-    "email": "johndoe@example.com",
+    "mobileNumber": "+919834543210",
+    "email": "johndoesax@example.com",
     "communicationAddress": "221B Baker Street, London",
     "permanentAddress": "742 Evergreen Terrace, Springfield",
     "city": "Bhubaneswar",
@@ -44,8 +44,8 @@ Content-Type: application/json
     "nomineeDateOfBirth": "2010-03-25",
     "nomineeMobileNumber": "+919888888888",
     "nomineeEmail": "abasdfghc@gmail.com",
-    "nomineeAadhaar": "2345123412341234",
-    "nomineePan": "ABCDE1234F",
+    "nomineeAadhaar": "256325412563",
+    "nomineePan": "ABCDR1234F",
     "nomineeAddress": "Apt 4B, Nominee Street, Mumbai"
   },
   "kyc": {

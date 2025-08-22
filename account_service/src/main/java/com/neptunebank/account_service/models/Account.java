@@ -58,7 +58,7 @@ public class Account {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private AccountStatus status = AccountStatus.ACTIVE;
+    private AccountStatus status = AccountStatus.PENDING_VERIFICATION;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

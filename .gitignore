@@ -25,6 +25,8 @@ Thumbs.db
 
 # Node dependencies (if frontend exists in submodule)
 **/node_modules/
+**/.wwebjs_auth/
+**/.wwebjs_cache/
 
 # VS Code settings
 .vscode/

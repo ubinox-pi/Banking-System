@@ -19,14 +19,23 @@ package com.neptunebank.bankingservice.controller;
  *
  */
 
+import com.neptunebank.bankingservice.ENUMs.RecoveryPhrases;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 
 @RestController
 public class BankController {
-    public ResponseEntity<HashMap<String, String>> login() {
+    public ResponseEntity<HashMap<String, String>> login(
+            @RequestParam String username,
+            @RequestParam String password,
+            @RequestParam(required = false) RecoveryPhrases recoveryPhrases,
+            @RequestParam(required = false) String recoveryAnswer
+    ) {
+        
+
         return ResponseEntity.ok(new HashMap<>());
     }
 }

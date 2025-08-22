@@ -35,6 +35,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,8 +48,14 @@ public class UserService {
 
     private KafkaTemplate<String, KycRequest> data;
     private KafkaTemplate<String, String> message;
+    private KafkaTemplate<String, String> mail;
     private UserRepository userRepository;
     private KycRepository kycRepository;
+
+    @Autowired
+    public void setMail(KafkaTemplate<String, String> mail) {
+        this.mail = mail;
+    }
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -155,20 +162,62 @@ public class UserService {
             users.getKycId().setPassportImage(passportId.getBytes());
         if (drivingLicenseId != null)
             users.getKycId().setDrivingLicenseImage(drivingLicenseId.getBytes());
-        if (userRepository.userExists(
-                users.getContactDetails().getMobileNumber(),
-                users.getContactDetails().getEmail(),
-                users.getKycId().getAadhaarNumber(),
-                users.getKycId().getPanNumber(),
-                users.getKycId().getVoterId(),
-                users.getKycId().getPassportNumber(),
-                users.getKycId().getDrivingLicenseNumber())) {
-            response.put("message", "User already exists");
+
+        if (userRepository.existsByMobileNumber(users.getContactDetails().getMobileNumber())) {
+            response.put("message", "Mobile number already exists");
             response.put("status", "failed");
-            response.put("error", "User with the provided details already exists.");
-            response.put("code", "409");
-            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+            response.put("error", "Mobile number already exists.");
+            response.put("code", "400");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
+        if (userRepository.existsByEmail(users.getContactDetails().getEmail())) {
+            response.put("message", "Mail Id already exists");
+            response.put("status", "failed");
+            response.put("error", "Mobile number already exists.");
+            response.put("code", "400");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        if (userRepository.existsByAadhaarNumber(users.getKycId().getAadhaarNumber())) {
+            response.put("message", "Aadhaar number already exists");
+            response.put("status", "failed");
+            response.put("error", "Aadhaar number already exists.");
+            response.put("code", "400");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        if (userRepository.existsByPanNumber(users.getKycId().getPanNumber())) {
+            response.put("message", "PAN number already exists");
+            response.put("status", "failed");
+            response.put("error", "PAN number already exists.");
+            response.put("code", "400");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        if (users.getKycId().getVoterId() != null && !users.getKycId().getVoterId().isEmpty() && !users.getKycId().getVoterId().isBlank())
+            if (userRepository.existsByVoterId(users.getKycId().getVoterId())) {
+                response.put("message", "Voter ID already exists");
+                response.put("status", "failed");
+                response.put("error", "Voter ID already exists.");
+                response.put("code", "400");
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+
+        if (users.getKycId().getPassportNumber() != null && !users.getKycId().getPassportNumber().isEmpty() && !users.getKycId().getPassportNumber().isBlank())
+            if (userRepository.existsByPassportNumber(users.getKycId().getPassportNumber())) {
+                response.put("message", "Passport number already exists");
+                response.put("status", "failed");
+                response.put("error", "Passport number already exists.");
+                response.put("code", "400");
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+
+        if (users.getKycId().getDrivingLicenseNumber() != null && !users.getKycId().getDrivingLicenseNumber().isEmpty() && !users.getKycId().getDrivingLicenseNumber().isBlank())
+            if (userRepository.existsByDrivingLicenseNumber(users.getKycId().getDrivingLicenseNumber())) {
+                response.put("message", "Driving License number already exists");
+                response.put("status", "failed");
+                response.put("error", "Driving License number already exists.");
+                response.put("code", "400");
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+
         if (Objects.equals(users.getContactDetails().getMobileNumber(), users.getNominee().getNomineeMobileNumber())
                 || Objects.equals(users.getContactDetails().getEmail(), users.getNominee().getNomineeEmail())
                 || Objects.equals(users.getKycId().getAadhaarNumber(), users.getNominee().getNomineeAadhaar())
@@ -191,6 +240,27 @@ public class UserService {
 
         try {
             userRepository.save(users);
+            String registrationEmail =
+                    "Dear " +
+                            users.getFirstName() + " " +
+                            (users.getMiddleName() == null ? "" : users.getMiddleName() + " ") +
+                            users.getLastName() + ",\n\n" +
+                            "We are pleased to inform you that your registration with Neptune Bank has been successfully completed.\n\n" +
+                            "Our team will now review your application, and you can expect approval within 3 business days. Once your account is approved, you will receive a confirmation email with further instructions to get started.\n\n" +
+                            "What's next?\n" +
+                            "- Your application is currently under verification.\n" +
+                            "- We will notify you immediately once the review process is complete.\n\n" +
+                            "If you have any questions in the meantime, feel free to reach out to our support team at ashish23481@gmail.com.\n\n" +
+                            "Thank you for choosing Neptune Bank. We look forward to serving you.\n\n" +
+                            "Warm regards,\n" +
+                            "Ashish kushwaha\n" +
+                            "Creator\n" +
+                            "Neptune Bank\n" +
+                            "neptunebank.online\n" +
+                            "ashish23481@gmail.com";
+
+            String finalMail = users.getContactDetails().getEmail() + ":Welcome to Neptune Bank – Registration Successful:" + registrationEmail;
+            mail.send("send_mail_message", finalMail);
             response.put("message", "User registered successfully");
             response.put("status", "success");
             response.put("code", "201");
@@ -222,19 +292,20 @@ public class UserService {
     }
 
     @KafkaListener(topics = "employeeId", groupId = "users")
-    public void setEmployee(KycRequest employee) {
-        Kyc kyc = kycRepository.findByUserId(employee.getKycId());
+    public void setEmployee(KycRequest employee, Acknowledgment acknowledgment) {
+        Kyc kyc = kycRepository.findKycByUserId(employee.getKycId());
         kyc.setVerifiedByEmployeeId(employee.getEmployeeId());
         try {
             kycRepository.save(kyc);
             message.send("status", employee.getKycId() + ":success");
+            acknowledgment.acknowledge();
         } catch (Exception e) {
             message.send("status", employee.getKycId() + ":failed:" + e.getMessage());
         }
     }
 
     public ResponseEntity<?> userCount() {
-        Integer count = userRepository.countUsers();
+        Long count = userRepository.countUsers();
         Map<String, String> response = new HashMap<>();
         if (count == 0) {
             response.put("message", "No users found");
@@ -262,9 +333,9 @@ public class UserService {
         if (userRepository.checkUserExists(email, phone)) {
             response.put("message", "User exists");
             response.put("status", "Failed");
-            response.put("code", "409");
+            response.put("code", "200");
             response.put("error", "User with the provided email or phone number already exists.");
-            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             response.put("message", "User does not exist");
             response.put("status", "Success");
@@ -311,6 +382,21 @@ public class UserService {
 
     public boolean isValidImageFile(MultipartFile file) {
         return isAllowedImageType(file) && isAllowedImageByMagicNumber(file) && hasAllowedImageExtension(file);
+    }
+
+    @KafkaListener(topics = "set-account", groupId = "users")
+    private void setAccountNumber(String message, Acknowledgment ack) {
+        String[] split = message.split(":");
+        Long userId = Long.parseLong(split[0]);
+        Long accountId = Long.parseLong(split[1]);
+        Users users = userRepository.findUsersByUserid(userId);
+        users.getAccountId().add(accountId);
+        try {
+            userRepository.save(users);
+            ack.acknowledge();
+        } catch (Exception e) {
+            // TODO: TO BE HANDLED
+        }
     }
 
 

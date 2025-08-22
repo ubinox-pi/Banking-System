@@ -1,4 +1,4 @@
-package com.neptunebank.user_service.configuration;
+package com.neptunebank.user_service.config;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad

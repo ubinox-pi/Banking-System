@@ -43,7 +43,10 @@ public class OtpService {
     }
 
     public ResponseEntity<Map<String, String>> authenticateEmail(String email) throws JsonProcessingException {
-        return mailService.sendOtp(email);
+        ObjectMapper mapper = new ObjectMapper();
+        Map map = mapper.readValue(email, Map.class);
+        String emailId = map.get("email").toString();
+        return mailService.sendOtp(emailId);
     }
 
     public ResponseEntity<Map<String, String>> verifyEmailOtp(PhoneOrEmailAndOtp phoneOrEmailAndOtp) {
@@ -59,5 +62,19 @@ public class OtpService {
 
     public ResponseEntity<Map<String, String>> verifyPhoneOtp(PhoneOrEmailAndOtp phoneOrEmailAndOtp) {
         return phoneService.verifyOtp(phoneOrEmailAndOtp.getOtp(), phoneOrEmailAndOtp.getPhoneOrEmail());
+    }
+
+    public ResponseEntity<?> resendOtp(String phoneOrEmail) throws JsonProcessingException {
+        if (phoneOrEmail.contains("@")) {
+            ObjectMapper mapper = new ObjectMapper();
+            Map map = mapper.readValue(phoneOrEmail, Map.class);
+            String email = map.get("email").toString();
+            return mailService.sendOtp(email);
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            Map map = mapper.readValue(phoneOrEmail, Map.class);
+            String phone = map.get("phone").toString();
+            return phoneService.sendOtpAgain(phone);
+        }
     }
 }

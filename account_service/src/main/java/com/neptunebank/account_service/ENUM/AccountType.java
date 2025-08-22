@@ -21,4 +21,5 @@ package com.neptunebank.account_service.ENUM;
 public enum AccountType {
     SAVINGS,
     CURRENT,
+    FIXED,
 }

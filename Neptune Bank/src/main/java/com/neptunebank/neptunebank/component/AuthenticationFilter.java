@@ -39,6 +39,8 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
     private final WebClient webClient;
     private final String validateUrl;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    @Value("${secret.key}")
+    private String secret;
 
     public AuthenticationFilter(@Value("${auth-service.url}") String authServiceUrl) {
         this.webClient = WebClient.create();
@@ -65,6 +67,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
                 .headers(headers -> {
                     if (authHeader != null) headers.set(HttpHeaders.AUTHORIZATION, authHeader);
                     if (cookieHeader != null) headers.set(HttpHeaders.COOKIE, cookieHeader);
+                    if (secret != null) headers.set("X-Secret-Key", secret);
                 })
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, response -> Mono.error(new RuntimeException("Unauthorized")))

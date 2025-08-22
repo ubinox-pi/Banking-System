@@ -1,6 +1,7 @@
 package com.neptunebank.account_service.dto.accountDTO;
 
 import com.neptunebank.account_service.ENUM.AccountStatus;
+import com.neptunebank.account_service.ENUM.AccountType;
 import com.neptunebank.account_service.ENUM.ModeOfOperation;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -36,9 +37,8 @@ public class AccountRequestDto {
     private Long branchId;
 
     @NotNull(message = "Account type cannot be null")
-    private String accountType;
-
-    @NotNull(message = "Account number cannot be null")
+    private AccountType accountType;
+    
     private AccountStatus status;
 
     @NotNull(message = "Mode of operation cannot be null")

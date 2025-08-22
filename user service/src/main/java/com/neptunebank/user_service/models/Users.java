@@ -25,6 +25,8 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -92,10 +94,14 @@ public class Users {
     @JoinColumn(unique = true, updatable = false)
     private ContactDetails contactDetails;
 
-    //will set via kafka without dto
+    // TODO: will set via kafka without dto
+    @ElementCollection
+    @CollectionTable(
+            name = "user_accounts",
+            joinColumns = @JoinColumn(name = "user_id")
+    )
     @Column(unique = true)
-    @Builder.Default
-    private Long accountId = null;
+    private List<Long> accountId = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
     @JoinColumn(unique = true, updatable = false)

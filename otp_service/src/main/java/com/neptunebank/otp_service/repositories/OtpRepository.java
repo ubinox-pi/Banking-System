@@ -7,6 +7,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
 /*
  * Copyright (c) 2025 Ramjee Prasad
  * Licensed under a custom Non-Commercial, Attribution, Share-Alike License.
@@ -32,13 +36,13 @@ public interface OtpRepository extends JpaRepository<OtpRecord, Long> {
     @Query("SELECT COUNT(o) > 0 FROM OtpRecord o WHERE o.otp = ?1 AND o.isUsed = false AND o.isOtpExpired = false")
     Boolean checkOtp(String otp);
 
-    @Query("SELECT COUNT(o) > 0 FROM OtpRecord o WHERE o.otp = ?1 AND o.emailOrPhone = ?2 AND o.isUsed = false AND o.isOtpExpired = false")
+    @Query("SELECT COUNT(o) > 0 FROM OtpRecord o WHERE o.otp = ?1 AND o.emailOrPhone = ?2 AND (o.isUsed = false OR o.isOtpExpired = false)")
     Boolean checkOtp(String otp, String emailOrPhone);
 
     @Modifying
     @Transactional
-    @Query("UPDATE OtpRecord o SET o.isUsed = true WHERE o.otp = ?1 AND o.emailOrPhone = ?2 AND o.isUsed = false AND o.isOtpExpired = false")
-    void useOtp(String otp, String emailOrPhone);
+    @Query("UPDATE OtpRecord o SET o.isUsed = true WHERE o.otp = ?1 AND o.emailOrPhone = ?2 AND (o.isUsed = false AND o.isOtpExpired = false)")
+    int useOtp(String otp, String emailOrPhone);
 
     @Query("SELECT COUNT(0) > 0 FROM OtpRecord o WHERE o.isOtpExpired = false AND o.isUsed = false AND o.emailOrPhone = ?1")
     Boolean checkPhoneEmail(String phoneOrEmail);
@@ -47,4 +51,7 @@ public interface OtpRepository extends JpaRepository<OtpRecord, Long> {
     @Transactional
     @Query("UPDATE OtpRecord o SET o.isOtpExpired = true WHERE o.otp = ?1 AND o.emailOrPhone = ?2 AND o.isOtpExpired = false AND o.isUsed = false")
     void expireOtp(String otp, String emailOrPhone);
+
+    @Query("SELECT o FROM OtpRecord o WHERE o.emailOrPhone = ?1 AND o.isUsed = false ORDER BY o.createdAt DESC")
+    Optional<List<OtpRecord>> getRecordByDate(String emailOrPhone, LocalDateTime date);
 }

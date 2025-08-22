@@ -1,9 +1,4 @@
-package com.neptunebank.user_service.configuration;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.core.ProducerFactory;
+package com.neptunebank.bankingservice.ENUMs;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -11,9 +6,9 @@ import org.springframework.kafka.core.ProducerFactory;
  * See the LICENSE file in the project root for full license information.
  *
  * Project: Neptune
- * Package: com.neptunebank.user_service.configuration
- * Created by: Ashish Kushwaha on 23-05-2025 19:17
- * File: Config
+ * Package: com.neptunebank.bankingservice.ENUMs
+ * Created by: Ashish Kushwaha on 17-08-2025 09:24
+ * File: Status
  *
  * This source code is intended for educational and non-commercial purposes only.
  * Redistribution and use in source and binary forms, with or without modification,
@@ -23,11 +18,31 @@ import org.springframework.kafka.core.ProducerFactory;
  *   - Commercial use is strictly prohibited.
  *
  */
-@Configuration
-public class KafkaConfig {
-    @Bean
-    public KafkaTemplate<?, ?> kafkaTemplate(ProducerFactory<?, ?> producerFactory) {
-        return new KafkaTemplate<>(producerFactory);
-    }
-
+public enum Status {
+    PENDING,
+    APPROVED,
+    REJECTED,
+    BLOCKED,
+    DELETED,
+    ACTIVE,
+    INACTIVE,
+    SUSPENDED,
+    ARCHIVED,
+    VERIFIED,
+    UNVERIFIED,
+    COMPLETED,
+    IN_PROGRESS,
+    FAILED,
+    SUCCESSFUL,
+    CANCELLED,
+    EXPIRED,
+    ON_HOLD,
+    UNDER_REVIEW,
+    NOT_STARTED,
+    READY_FOR_REVIEW,
+    IN_REVIEW,
+    RESOLVED,
+    ESCALATED,
+    CLOSED,
+    OPEN,
 }

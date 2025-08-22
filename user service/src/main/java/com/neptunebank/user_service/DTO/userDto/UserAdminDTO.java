@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -66,7 +67,7 @@ public class UserAdminDTO {
 
     private ContactDetailsAdminDTO contactDetails;
 
-    private Long accountId;
+    private List<Long> accountId;
 
     private NomineeAdminDTO nominee;
 

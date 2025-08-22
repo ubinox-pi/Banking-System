@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -95,7 +96,7 @@ public class EmployeeService {
     }
 
     @KafkaListener(topics = "status", groupId = "users")
-    public void confirmKycRequest(String message) {
+    public void confirmKycRequest(String message, Acknowledgment acknowledgment) {
         String[] parts = message.split(":");
         if (parts.length >= 2) {
             Long userId = Long.parseLong(parts[0]);
@@ -106,6 +107,7 @@ public class EmployeeService {
             if (future != null) {
                 if ("success".equalsIgnoreCase(status)) {
                     future.complete("KYC verification successful for user ID: " + userId);
+                    acknowledgment.acknowledge();
                 } else {
                     future.completeExceptionally(new Exception("KYC verification failed for user ID: " + userId + " " + errorMessage));
                 }

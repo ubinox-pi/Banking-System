@@ -42,12 +42,9 @@ public class KycRequestDTO implements Serializable {
     private String aadhaarNumber;
 
     @NotBlank(message = "PAN number is required.")
-    @Pattern(regexp = "^[A-Z]{5}[0-9]{4}[A-Z]{1}$", message = "PAN number must be a 12-digit number.")
-    @Size(min = 10, max = 10, message = "PAN number must be 10 characters.")
+    @Pattern(regexp = "^[A-Za-z]{5}[0-9]{4}[A-Za-z]$", message = "PAN number must be a 12-digit number.")
     private String panNumber;
 
-    @Size(min = 10, max = 10, message = "Voter ID number must be 10 characters.")
-    @Pattern(regexp = "^$[A-Z]{3}[0-9]{7}$", message = "Voter ID number must start with 3 letters followed by 7 numbers")
     private String voterId;
     private String passportNumber;
     private String drivingLicenseNumber;

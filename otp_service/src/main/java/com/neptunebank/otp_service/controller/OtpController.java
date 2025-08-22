@@ -60,4 +60,9 @@ public class OtpController {
     public ResponseEntity<Map<String, String>> verifyPhoneOtp(@RequestBody @Valid PhoneOrEmailAndOtp phoneOrEmailAndOtp) {
         return authenticationService.verifyPhoneOtp(phoneOrEmailAndOtp);
     }
+
+    @PostMapping("/resend-otp-phone")
+    public ResponseEntity<?> resendOtpPhone(@RequestBody String phone) throws JsonProcessingException {
+        return authenticationService.resendOtp(phone);
+    }
 }

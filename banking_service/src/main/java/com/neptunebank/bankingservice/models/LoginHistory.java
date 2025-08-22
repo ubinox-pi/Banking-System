@@ -1,5 +1,6 @@
 package com.neptunebank.bankingservice.models;
 
+import com.neptunebank.bankingservice.ENUMs.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
@@ -36,10 +37,34 @@ public class LoginHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long loginHistoryId;
 
-    @Column(nullable = false)
-    private Long accountId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "bank_id", nullable = false)
+    private Banking banking;
+
+    @Column
+    private LocalDateTime logoutTime;
 
     @Column(nullable = false)
     @PastOrPresent
     private LocalDateTime loginTime;
+
+    @Column(nullable = false)
+    private String ipAddress;
+
+    @Column(length = 100)
+    private String deviceInfo;
+
+    @Column(length = 100)
+    private String location;
+
+    @Column(nullable = false, length = 200)
+    private String failureReason;
+
+    @Column(nullable = false)
+    private Boolean isSuspicious;
+
+    @Column
+    private String mfaMethodUsed;
+
+    private Status status;
 }

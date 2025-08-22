@@ -1,4 +1,4 @@
-package com.neptunebank.user_service.configuration;
+package com.neptunebank.user_service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;

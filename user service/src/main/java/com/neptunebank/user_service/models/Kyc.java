@@ -71,8 +71,8 @@ public class Kyc {
     @Builder.Default
     private Boolean userSignatureVerified = false;
 
-    @Column(unique = true)
-    private String voterId;
+    @Builder.Default
+    private String voterId = null;
 
     @Column(columnDefinition = "BYTEA")
     private byte[] voterIdImage;
@@ -80,8 +80,8 @@ public class Kyc {
     @Builder.Default
     private Boolean voterIdVerified = false;
 
-    @Column(unique = true)
-    private String passportNumber;
+    @Builder.Default
+    private String passportNumber = null;
 
     @Column(columnDefinition = "BYTEA")
     private byte[] passportImage;
@@ -89,8 +89,8 @@ public class Kyc {
     @Builder.Default
     private Boolean passportVerified = false;
 
-    @Column(unique = true)
-    private String drivingLicenseNumber;
+    @Builder.Default
+    private String drivingLicenseNumber = null;
 
     @Column(columnDefinition = "BYTEA")
     private byte[] drivingLicenseImage;
@@ -154,14 +154,20 @@ public class Kyc {
         if (this.voterId != null)
             if (this.voterId.equals(this.voterId.toUpperCase()))
                 this.voterId = this.voterId.toUpperCase().trim();
+        if (this.voterId != null && this.voterId.isEmpty() && this.voterId.isBlank())
+            this.voterId = null;
 
         if (this.passportNumber != null)
             if (this.passportNumber.equals(this.passportNumber.toUpperCase()))
                 this.passportNumber = this.passportNumber.toUpperCase().trim();
+        if (this.passportNumber != null && this.passportNumber.isEmpty() && this.passportNumber.isBlank())
+            this.passportNumber = null;
 
         if (this.drivingLicenseNumber != null)
             if (this.drivingLicenseNumber.equals(this.drivingLicenseNumber.toUpperCase()))
                 this.drivingLicenseNumber = this.drivingLicenseNumber.toUpperCase().trim();
+        if (this.drivingLicenseNumber != null && this.drivingLicenseNumber.isEmpty() && this.drivingLicenseNumber.isBlank())
+            this.drivingLicenseNumber = null;
 
         if (this.rejectionReason != null)
             if (this.rejectionReason.equals(this.rejectionReason.toUpperCase()))

@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,8 @@ import java.util.Optional;
 public class AuthController {
     private UserRepository userRepository;
     private JwtUtil jwtUtil;
+    @Value("${secret.key}")
+    private String secret;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -80,7 +83,7 @@ public class AuthController {
             HttpSession session = request.getSession(true);
             session.setAttribute("username", users.getUsername());
             session.setAttribute("role", users.getRoles().name());
-            session.setMaxInactiveInterval(600);
+            session.setMaxInactiveInterval(600 * 3);
             responseMap.put("message", "Login successful");
             responseMap.put("username", users.getUsername());
             responseMap.put("role", users.getRoles().name());
@@ -103,6 +106,10 @@ public class AuthController {
 
     @GetMapping("/validate")
     public ResponseEntity<?> validateSession(HttpServletRequest request) {
+        String security = request.getHeader("X-Secret-Key");
+        if (security == null || !security.equals(secret)) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         String jwt = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         try {
@@ -110,20 +117,20 @@ public class AuthController {
                 Claims claims = jwtUtil.validateToken(jwt.substring(7));
                 String username = claims.getSubject();
                 String role = claims.get("role", String.class);
-                return ResponseEntity.ok(new AuthResponse(username, role));
+                return new ResponseEntity<>(new AuthResponse(username, role), HttpStatus.OK);
             }
             HttpSession session = request.getSession(false);
             if (session != null) {
                 String username = (String) session.getAttribute("username");
                 String role = (String) session.getAttribute("role");
                 if (username != null && role != null) {
-                    return ResponseEntity.ok(new AuthResponse(username, role));
+                    return new ResponseEntity<>(new AuthResponse(username, role), HttpStatus.OK);
                 }
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
 

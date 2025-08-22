@@ -32,7 +32,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
  */
 @Configuration
 @EnableWebSecurity
-public class SpringSecurity {
+public class SecurityConfig {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
@@ -59,7 +59,8 @@ public class SpringSecurity {
                         .ignoringRequestMatchers("/auth/login", "/auth/validate", "/auth/logout", "/auth/add-user", "add-user")
                 )
 
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(cors -> {
+                })
 
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable);
