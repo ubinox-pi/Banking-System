@@ -35,6 +35,12 @@ public class SourceOrDestinationBank {
     @Setter(AccessLevel.NONE)
     private Long sourceBankId;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "sourceAccount", fetch = FetchType.EAGER)
+    private Transaction transaction1;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "des", fetch = FetchType.EAGER)
+    private Transaction destinationAccount;
+
     @Column(nullable = false)
     private String bankName;
 

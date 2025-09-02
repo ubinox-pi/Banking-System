@@ -24,6 +24,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface KycRepository extends JpaRepository<Kyc, Long> {
-    @Query("SELECT k FROM Kyc k WHERE k.user = ?1")
+    @Query("SELECT k FROM Kyc k WHERE k.user.userid = ?1")
     Kyc findKycByUserId(Long userId);
 }

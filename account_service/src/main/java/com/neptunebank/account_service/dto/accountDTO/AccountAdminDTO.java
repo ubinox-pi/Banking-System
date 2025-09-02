@@ -2,6 +2,8 @@ package com.neptunebank.account_service.dto.accountDTO;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 /*
  * Copyright (c) 2025 Ramjee Prasad
  * Licensed under a custom Non-Commercial, Attribution, Share-Alike License.
@@ -42,7 +44,7 @@ public class AccountAdminDTO {
 
     private String modeOfOperation;
 
-    private String accountInterestRate;
+    private BigDecimal accountInterestRate;
 
     private String createdAt;
 

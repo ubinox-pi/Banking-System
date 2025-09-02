@@ -1,13 +1,15 @@
 package com.neptunebank.account_service.service;
 
-import com.neptunebank.account_service.ENUM.AccountStatus;
 import com.neptunebank.account_service.ENUM.AccountType;
 import com.neptunebank.account_service.ENUM.ModeOfOperation;
+import com.neptunebank.account_service.ENUM.Status;
 import com.neptunebank.account_service.dto.accountDTO.AccountAdminDTO;
 import com.neptunebank.account_service.dto.accountDTO.AccountRequestDto;
 import com.neptunebank.account_service.mappers.AccountMapper;
 import com.neptunebank.account_service.models.Account;
+import com.neptunebank.account_service.models.Branch;
 import com.neptunebank.account_service.repositories.AccountRepository;
+import com.neptunebank.account_service.repositories.BranchRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +48,13 @@ public class AccountService {
     private AccountRepository accountRepository;
     private KafkaTemplate<String, String> message;
 
+    private BranchRepository branchRepository;
+
+    @Autowired
+    public void setMessage(KafkaTemplate<String, String> message) {
+        this.message = message;
+    }
+
     @Autowired
     public void setKafkaTemplate(KafkaTemplate<String, String> kafkaTemplate) {
         this.message = kafkaTemplate;
@@ -57,6 +67,7 @@ public class AccountService {
 
     @Transactional
     public ResponseEntity<?> createAccount(AccountRequestDto accountRequestDto) {
+        Branch branch = null;
         if (accountRepository.existsAccountByAccountType(accountRequestDto.getUserId(), accountRequestDto.getAccountType())) {
             Map<String, String> response = new HashMap<>();
             response.put("message", "Account with type " + accountRequestDto.getAccountType().toString() + " already exists for the user");
@@ -65,18 +76,31 @@ public class AccountService {
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
 
-        if (accountRepository.existsAccountByAccountTypeAndStatus(accountRequestDto.getUserId(), accountRequestDto.getAccountType(), AccountStatus.PENDING_VERIFICATION)) {
+        if (accountRepository.existsAccountByAccountTypeAndStatus(accountRequestDto.getUserId(), accountRequestDto.getAccountType(), Status.PENDING_VERIFICATION)) {
             Map<String, String> response = new HashMap<>();
             response.put("message", "Account with type " + accountRequestDto.getAccountType().toString() + " is pending verification");
             response.put("status", "error");
             response.put("code", "409");
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
+
+        if (branchRepository.existsByBranchCode(accountRequestDto.getBranchCode())) {
+            branch = branchRepository.findByBranchCode(accountRequestDto.getBranchCode());
+            if (branch == null) {
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "Branch with code " + accountRequestDto.getBranchCode() + " does not exist");
+                response.put("status", "error");
+                response.put("code", "404");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+        }
+
         var account = AccountMapper.toEntity(accountRequestDto);
         account.setAccountNumber(generateAccountNumber());
+        account.setBranch(branch);
         accountRepository.save(account);
 
-        if (!account.getStatus().toString().isBlank() && account.getStatus().equals(AccountStatus.ACTIVE))
+        if (!account.getStatus().toString().isBlank() && account.getStatus().equals(Status.ACTIVE))
             message.send("set-account", account.getUserId() + ":" + account.getAccountId());
 
         Map<String, String> response = new HashMap<>();
@@ -128,31 +152,31 @@ public class AccountService {
         Long userId = Long.parseLong(parts[0]);
         String accountType = parts[1];
         String status = parts[2];
-        String user = parts[3];
-        String email = parts[4];
+        String user = parts[4];
+        String email = parts[5];
         String modeOfOperation = parts[3];
         AccountRequestDto accountRequestDto = new AccountRequestDto();
         accountRequestDto.setUserId(userId);
         accountRequestDto.setAccountType(AccountType.valueOf(accountType));
-        accountRequestDto.setStatus(AccountStatus.valueOf(status));
+        accountRequestDto.setStatus(Status.valueOf(status));
         accountRequestDto.setModeOfOperation(ModeOfOperation.valueOf(modeOfOperation));
-        accountRequestDto.setBranchId(1L);
+        accountRequestDto.setBranchCode("NEPT000001");
         accountRequestDto.setAccountInterestRate(setInterestRate(AccountType.valueOf(accountType)));
         try {
             createAccount(accountRequestDto);
             String messages = accountRequestDto.getUserId() + ":" + user + ":" + email;
             this.message.send("create-banking", messages);
             ack.acknowledge();
-        } catch (Exception e) {
-            // TODO: DONE LATER: Handle exception properly
+        } catch (Throwable e) {
+            System.out.println(e.getMessage());
         }
     }
 
-    private String setInterestRate(AccountType type) {
+    private BigDecimal setInterestRate(AccountType type) {
         return switch (type) {
-            case SAVINGS -> "4.25";
-            case CURRENT -> "0.00";
-            default -> "";
+            case SAVINGS -> BigDecimal.valueOf(04.25);
+            case CURRENT -> BigDecimal.valueOf(00.00);
+            default -> BigDecimal.valueOf(0);
         };
     }
 }

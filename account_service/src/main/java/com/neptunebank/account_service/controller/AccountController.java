@@ -2,6 +2,7 @@ package com.neptunebank.account_service.controller;
 
 import com.neptunebank.account_service.dto.accountDTO.AccountRequestDto;
 import com.neptunebank.account_service.service.AccountService;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +40,7 @@ public class AccountController {
     }
 
     @PostMapping("/create")
+    @RolesAllowed({"ADMIN", "USER", "EMPLOYEE"})
     public ResponseEntity<?> createAccount(@RequestBody AccountRequestDto accountRequestDto) {
         return accountService.createAccount(accountRequestDto);
     }

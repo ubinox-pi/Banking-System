@@ -24,10 +24,7 @@ import com.neptunebank.user_service.DTO.userDto.UsersRequestDTO;
 import com.neptunebank.user_service.ENUMs.MaritalStatus;
 import com.neptunebank.user_service.exception.usersException.UserException;
 import com.neptunebank.user_service.mappers.UsersMapper;
-import com.neptunebank.user_service.models.Kyc;
-import com.neptunebank.user_service.models.POJO.KycRequest;
 import com.neptunebank.user_service.models.Users;
-import com.neptunebank.user_service.repositories.KycRepository;
 import com.neptunebank.user_service.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +43,8 @@ import java.util.*;
 @Service
 public class UserService {
 
-    private KafkaTemplate<String, KycRequest> data;
-    private KafkaTemplate<String, String> message;
     private KafkaTemplate<String, String> mail;
     private UserRepository userRepository;
-    private KycRepository kycRepository;
 
     @Autowired
     public void setMail(KafkaTemplate<String, String> mail) {
@@ -60,21 +54,6 @@ public class UserService {
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    @Autowired
-    public void setKycRepository(KycRepository kycRepository) {
-        this.kycRepository = kycRepository;
-    }
-
-    @Autowired
-    public void setData(KafkaTemplate<String, KycRequest> kafkaTemplate) {
-        this.data = kafkaTemplate;
-    }
-
-    @Autowired
-    public void setMessage(KafkaTemplate<String, String> kafkaTemplate) {
-        this.message = kafkaTemplate;
     }
 
 
@@ -271,7 +250,7 @@ public class UserService {
     }
 
     public ResponseEntity<?> getAllUsers() {
-        List<Users> users = userRepository.getAllUsers();
+        List<Users> users = userRepository.getAllUsers().orElseThrow(() -> new RuntimeException("No users found."));
         List<UserAdminDTO> userAdminDTOs = new ArrayList<>();
         Map<String, Object> response = new HashMap<>();
         for (Users user : users) {
@@ -289,19 +268,6 @@ public class UserService {
         response.put("code", "200");
         response.put("users", userAdminDTOs);
         return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @KafkaListener(topics = "employeeId", groupId = "users")
-    public void setEmployee(KycRequest employee, Acknowledgment acknowledgment) {
-        Kyc kyc = kycRepository.findKycByUserId(employee.getKycId());
-        kyc.setVerifiedByEmployeeId(employee.getEmployeeId());
-        try {
-            kycRepository.save(kyc);
-            message.send("status", employee.getKycId() + ":success");
-            acknowledgment.acknowledge();
-        } catch (Exception e) {
-            message.send("status", employee.getKycId() + ":failed:" + e.getMessage());
-        }
     }
 
     public ResponseEntity<?> userCount() {
@@ -389,13 +355,14 @@ public class UserService {
         String[] split = message.split(":");
         Long userId = Long.parseLong(split[0]);
         Long accountId = Long.parseLong(split[1]);
-        Users users = userRepository.findUsersByUserid(userId);
+        Users users = userRepository.findUsersByUserid(userId).orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
         users.getAccountId().add(accountId);
         try {
             userRepository.save(users);
-            ack.acknowledge();
         } catch (Exception e) {
             // TODO: TO BE HANDLED
+        } finally {
+            ack.acknowledge();
         }
     }
 

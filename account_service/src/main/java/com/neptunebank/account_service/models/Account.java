@@ -1,13 +1,12 @@
 package com.neptunebank.account_service.models;
 
-import com.neptunebank.account_service.ENUM.AccountStatus;
 import com.neptunebank.account_service.ENUM.AccountType;
 import com.neptunebank.account_service.ENUM.ModeOfOperation;
+import com.neptunebank.account_service.ENUM.Status;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.stereotype.Component;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /*
@@ -34,7 +33,12 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Component
+@Table(
+        indexes = {
+                @Index(name = "idx_account_user_id", columnList = "user_id"),
+                @Index(name = "idx_account_branch_id", columnList = "branch_id")
+        }
+)
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,8 +47,16 @@ public class Account {
     @Column(nullable = false, updatable = false)
     private Long userId;
 
-    @Column(nullable = false)
-    private Long branchId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "branch_id", nullable = false)
+    private Branch branch;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "account", optional = false)
+    private Upi upi;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
+    @JoinColumn(name = "limit_id", nullable = false, unique = true)
+    private Limit limit;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -53,19 +65,24 @@ public class Account {
     @Column(nullable = false, updatable = false, unique = true)
     private String accountNumber;
 
+    @Column(precision = 19, scale = 2, nullable = false)
     @Builder.Default
-    private BigInteger balance = BigInteger.ZERO;
+    private BigDecimal balance = BigDecimal.valueOf(50000L);
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private AccountStatus status = AccountStatus.PENDING_VERIFICATION;
+    @Builder.Default
+    private Status status = Status.PENDING_VERIFICATION;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ModeOfOperation modeOfOperation;
 
-    @Column(nullable = false)
-    private String accountInterestRate;
+    @Column(precision = 7, scale = 4, nullable = false)
+    private BigDecimal accountInterestRate;
+
+    @Builder.Default
+    private String rejectionReason = "";
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -78,11 +95,15 @@ public class Account {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
 
-
+        if (rejectionReason != null && !rejectionReason.isBlank() && !rejectionReason.equals(rejectionReason.toUpperCase()))
+            rejectionReason = rejectionReason.toUpperCase();
     }
 
     @PreUpdate
     private void preUpdate() {
         this.updatedAt = LocalDateTime.now();
+
+        if (rejectionReason != null && !rejectionReason.isBlank() && !rejectionReason.equals(rejectionReason.toUpperCase()))
+            rejectionReason = rejectionReason.toUpperCase();
     }
 }

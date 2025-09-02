@@ -48,20 +48,6 @@ public class BankingServices {
         this.bankingRepository = bankingRepository;
     }
 
-    public ResponseEntity<?> login(String username, String password, String recoveryPhrase, String recoveryAnswer) {
-
-        Map<String, String> response = new HashMap<>();
-
-        if (!username.startsWith("NEPT") && recoveryPhrase == null) {
-            response.put("error", "Invalid details");
-            response.put("message", "Recovery phrase is required for login");
-            response.put("code", "400");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
-
-        return ResponseEntity.ok("Login successful for user: " + username);
-    }
-
     public ResponseEntity<?> createBankingAccount(String username, String password, String newUsername, String newPassword, RecoveryPhrases recoveryPhrase, String recoveryAnswer) {
         Map<String, String> response = new HashMap<>();
         if (!username.startsWith("NEPT")) {
@@ -157,11 +143,11 @@ public class BankingServices {
     }
 
     private String generateUsername() {
-        String accountNumber = "NEPT";
+        String username;
         do {
-            accountNumber = "NEPT" + ((long) (Math.random() * 9000000000L) + 1000000000L);
-        } while (bankingRepository.findUsername(accountNumber));
-        return accountNumber;
+            username = "NEPT" + ((char) (Math.random() * 9000000000L) + 1000000000L);
+        } while (bankingRepository.findUsername(username));
+        return username;
     }
 
     private String generatePassword() {

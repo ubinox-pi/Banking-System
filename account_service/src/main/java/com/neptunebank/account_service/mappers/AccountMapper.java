@@ -27,8 +27,7 @@ public class AccountMapper {
     public static Account toEntity(AccountRequestDto accountRequestDto) {
         return Account.builder()
                 .userId(accountRequestDto.getUserId())
-                .branchId(accountRequestDto.getBranchId())
-                .accountType(AccountType.valueOf(accountRequestDto.getAccountType().toUpperCase()))
+                .accountType(AccountType.valueOf(accountRequestDto.getAccountType().toString().toUpperCase()))
                 .status(accountRequestDto.getStatus())
                 .modeOfOperation(accountRequestDto.getModeOfOperation())
                 .accountInterestRate(accountRequestDto.getAccountInterestRate())
@@ -39,7 +38,7 @@ public class AccountMapper {
         return AccountAdminDTO.builder()
                 .id(account.getUserId())
                 .userId(account.getUserId())
-                .branchId(account.getBranchId())
+                .branchId(account.getBranch().getBranchId())
                 .accountType(account.getAccountType().name())
                 .accountNumber(account.getAccountNumber())
                 .balance(account.getBalance().toString())

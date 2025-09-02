@@ -1,6 +1,6 @@
 package com.neptunebank.account_service.repositories;
 
-import com.neptunebank.account_service.models.Branches;
+import com.neptunebank.account_service.models.Branch;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -24,10 +24,10 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository
-public interface BranchRepository extends JpaRepository<Branches, Long> {
-    @Query("SELECT CASE WHEN COUNT(b) > 0 THEN true ELSE false END FROM Branches b WHERE b.branchCode = ?1")
+public interface BranchRepository extends JpaRepository<Branch, Long> {
+    @Query("SELECT CASE WHEN COUNT(b) > 0 THEN true ELSE false END FROM Branch b WHERE b.branchCode = ?1")
     Boolean existsByBranchCode(String branchCode);
 
-    @Query("SELECT b FROM Branches b WHERE b.branchCode = ?1")
-    Branches findByBranchCode(String branchCode);
+    @Query("SELECT b FROM Branch b WHERE b.branchCode = ?1")
+    Branch findByBranchCode(String branchCode);
 }

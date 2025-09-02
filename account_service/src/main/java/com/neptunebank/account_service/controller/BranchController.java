@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  */
 @Controller
-@RequestMapping("/branches")
+@RequestMapping("/branch")
 public class BranchController {
 
     private BranchService branchService;

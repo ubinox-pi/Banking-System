@@ -1,9 +1,12 @@
 package com.neptunebank.bankingservice.repositories;
 
+import com.neptunebank.bankingservice.ENUMs.RecoveryPhrases;
 import com.neptunebank.bankingservice.models.Banking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -37,4 +40,7 @@ public interface BankingRepository extends JpaRepository<Banking, Long> {
 
     @Query("SELECT CASE WHEN COUNT(B) > 0 THEN TRUE ELSE FALSE END FROM Banking B WHERE B.userId = ?1")
     Boolean existsByUserId(Long userId);
+
+    @Query("SELECT B FROM Banking B WHERE B.username = ?1 AND B.password = ?2 AND B.recoveryPhrase = ?3 AND B.recoveryAnswer = ?4")
+    Optional<Banking> findBankingForLogin(String username, String password, RecoveryPhrases recoveryPhrases, String recoveryAnswer);
 }

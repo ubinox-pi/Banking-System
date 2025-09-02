@@ -1,7 +1,7 @@
 package com.neptunebank.account_service.repositories;
 
-import com.neptunebank.account_service.ENUM.AccountStatus;
 import com.neptunebank.account_service.ENUM.AccountType;
+import com.neptunebank.account_service.ENUM.Status;
 import com.neptunebank.account_service.models.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -39,5 +39,5 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     boolean existsAccountByAccountType(Long userId, AccountType accountType);
 
     @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM Account a WHERE a.userId = ?1 AND a.accountType = ?2 AND a.status = ?3")
-    boolean existsAccountByAccountTypeAndStatus(Long userId, AccountType accountType, AccountStatus status);
+    boolean existsAccountByAccountTypeAndStatus(Long userId, AccountType accountType, Status status);
 }

@@ -1,10 +1,14 @@
 package com.neptunebank.bankingservice.config;
 
+import com.neptunebank.bankingservice.jwt.JwtUtil;
+import com.neptunebank.bankingservice.services.BankingSessionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -29,18 +33,44 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
+
+    private BankingAuthFilter bankingAuthFilter;
+    private HeaderRoleAuthenticationFilter headerRoleAuthenticationFilter;
+
+    @Autowired
+    public void setHeaderRoleAuthenticationFilter(HeaderRoleAuthenticationFilter headerRoleAuthenticationFilter) {
+        this.headerRoleAuthenticationFilter = headerRoleAuthenticationFilter;
+    }
+
+    @Autowired
+    public void setBankingAuthFilter(BankingAuthFilter bankingAuthFilter) {
+        this.bankingAuthFilter = bankingAuthFilter;
+    }
+
     @Bean
-    public SecurityFilterChain security(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("").permitAll()
+                        .requestMatchers("/banking/auth/login").permitAll()
                         .anyRequest().authenticated())
-                .addFilterBefore(new HeaderRoleAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new UsernamePasswordAuthenticationFilter(), HeaderRoleAuthenticationFilter.class)
+                .addFilterBefore(headerRoleAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(bankingAuthFilter, HeaderRoleAuthenticationFilter.class)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .build();
+    }
+
+    @Bean
+    protected BankingAuthFilter bankingAuthFilter(JwtUtil jwtUtil, BankingSessionService sessionService) {
+        return new BankingAuthFilter(jwtUtil, sessionService);
+    }
+
+    @Bean
+    protected HeaderRoleAuthenticationFilter headerRoleAuthenticationFilter() {
+        return new HeaderRoleAuthenticationFilter();
     }
 }

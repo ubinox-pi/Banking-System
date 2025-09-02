@@ -2,9 +2,12 @@ package com.neptunebank.user_service.controllers;
 
 import com.neptunebank.user_service.DTO.kycDTO.KycVerificationDTO;
 import com.neptunebank.user_service.services.KycService;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +42,8 @@ public class KycController {
 
 
     @PostMapping("/submit")
-    public ResponseEntity<?> submitKyc(KycVerificationDTO kyc) {
+    @RolesAllowed({"ADMIN", "EMPLOYEE"})
+    public ResponseEntity<?> submitKyc(@RequestBody @Valid KycVerificationDTO kyc) {
         return kycService.doKyc(kyc);
     }
 }

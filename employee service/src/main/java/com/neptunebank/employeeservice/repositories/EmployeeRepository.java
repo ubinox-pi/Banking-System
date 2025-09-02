@@ -2,6 +2,7 @@ package com.neptunebank.employeeservice.repositories;
 
 import com.neptunebank.employeeservice.models.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /*
@@ -25,4 +26,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     boolean existsByEmployeeId(Long employeeId);
+
+    @Query("SELECT CASE WHEN COUNT(E) > 0 THEN TRUE ELSE FALSE END FROM Employee E WHERE E.username = ?1")
+    boolean existsByUsername(String username);
+
+    @Query("SELECT CASE WHEN COUNT(E) > 0 THEN TRUE ELSE FALSE END FROM Employee E WHERE E.mobileNumber = ?1 AND E.email = ?2")
+    boolean existsByPhoneAndEmail(String phone, String email);
 }

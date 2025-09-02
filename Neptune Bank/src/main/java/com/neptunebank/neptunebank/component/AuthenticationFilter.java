@@ -76,6 +76,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
                     ServerHttpRequest mutatedRequest = request.mutate()
                             .header("X-Authenticated-User", extractUser(responseBody))
                             .header("X-Authenticated-Role", extractRole(responseBody))
+                            .header("X-Secret-Key", secret)
                             .build();
                     return chain.filter(exchange.mutate().request(mutatedRequest).build());
                 })

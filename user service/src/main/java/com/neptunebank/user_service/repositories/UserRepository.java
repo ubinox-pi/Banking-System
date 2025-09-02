@@ -24,12 +24,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<Users, Long> {
 
     @Query("SELECT u FROM Users u WHERE u.status = ?1")
-    List<Users> allUsersByStatus(String status) throws IllegalArgumentException;
+    Optional<List<Users>> allUsersByStatus(String status) throws IllegalArgumentException;
 
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM Users u WHERE u.contactDetails.mobileNumber = ?1")
     boolean existsByMobileNumber(String mobileNumber);
@@ -53,7 +54,7 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     boolean existsByDrivingLicenseNumber(String drivingLicenseNumber);
 
     @Query("SELECT U FROM Users U")
-    List<Users> getAllUsers();
+    Optional<List<Users>> getAllUsers();
 
     @Query("SELECT COUNT(u) FROM Users u")
     long countUsers();
@@ -62,5 +63,5 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     boolean checkUserExists(String email, String phoneNumber);
 
     @Query("SELECT u FROM Users u WHERE u.userid = ?1")
-    Users findUsersByUserid(Long userId);
+    Optional<Users> findUsersByUserid(Long userId);
 }

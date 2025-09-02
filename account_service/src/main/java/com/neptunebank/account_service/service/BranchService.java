@@ -2,7 +2,7 @@ package com.neptunebank.account_service.service;
 
 import com.neptunebank.account_service.dto.branchDTO.BranchesDTO;
 import com.neptunebank.account_service.mappers.BranchMapper;
-import com.neptunebank.account_service.models.Branches;
+import com.neptunebank.account_service.models.Branch;
 import com.neptunebank.account_service.repositories.BranchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,14 +41,14 @@ public class BranchService {
 
     public ResponseEntity<?> addBranch(BranchesDTO branchesDTO) {
         Map<String, String> response = new HashMap<>();
-        Branches branches = BranchMapper.toEntity(branchesDTO);
-        if (branchRepository.existsByBranchCode(branches.getBranchCode())) {
+        Branch branch = BranchMapper.toEntity(branchesDTO);
+        if (branchRepository.existsByBranchCode(branch.getBranchCode())) {
             response.put("message", "Branch with this code already exists");
             response.put("status", "error");
             response.put("code", "400");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         } else {
-            branchRepository.save(branches);
+            branchRepository.save(branch);
             response.put("message", "Branch added successfully");
             response.put("status", "success");
             response.put("code", "201");
@@ -58,7 +58,7 @@ public class BranchService {
 
     public ResponseEntity<?> getBranchByCode(String branchCode) {
         Map<String, String> response = new HashMap<>();
-        Branches branch = branchRepository.findByBranchCode(branchCode);
+        Branch branch = branchRepository.findByBranchCode(branchCode);
         if (branch == null) {
             response.put("message", "Branch not found");
             response.put("status", "error");
@@ -87,7 +87,7 @@ public class BranchService {
 
     public ResponseEntity<?> updateBranch(Long branchId, BranchesDTO branchesDTO) {
         Map<String, String> response = new HashMap<>();
-        Branches existingBranch = branchRepository.findById(branchId).orElse(null);
+        Branch existingBranch = branchRepository.findById(branchId).orElse(null);
         if (existingBranch == null) {
             response.put("message", "Branch not found");
             response.put("status", "error");
@@ -120,5 +120,5 @@ public class BranchService {
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
-    
+
 }

@@ -2,6 +2,7 @@ package com.neptunebank.bankingservice.models;
 
 import com.neptunebank.bankingservice.ENUMs.RecoveryPhrases;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -44,17 +45,21 @@ public class Banking implements UserDetails {
     @Column(unique = true, nullable = false)
     private Long userId;
 
+    @Pattern(regexp = "^[aA-zZ0-9_]{5,20}$", message = "Username must be 5-20 characters long and can contain letters, numbers, and underscores only")
     @Column(unique = true, nullable = false)
     private String username;
 
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character")
     @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Builder.Default
     private RecoveryPhrases recoveryPhrase = RecoveryPhrases.WHAT_IS_YOUR_BIRTH_CITY;
 
     @Column(nullable = false)
+    @Builder.Default
     private String recoveryAnswer = "JAMSHEDPUR";
 
     @Builder.Default
@@ -79,6 +84,7 @@ public class Banking implements UserDetails {
             orphanRemoval = true
     )
     @OrderBy("loginTime DESC")
+    @Builder.Default
     private List<LoginHistory> loginHistories = new ArrayList<>();
 
     @Builder.Default

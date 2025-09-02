@@ -19,16 +19,19 @@ package com.neptunebank.employeeservice.models;
  *
  */
 
-import com.neptunebank.employeeservice.ENUMs.*;
+import com.neptunebank.employeeservice.ENUMs.BankRole;
+import com.neptunebank.employeeservice.ENUMs.Genders;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Getter
@@ -36,7 +39,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Employee {
+public class Employee implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
@@ -54,54 +57,37 @@ public class Employee {
     @Column(nullable = false)
     private LocalDate dateOfBirth;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false, unique = true)
+    private String mobileNumber;
+
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private BankRole roles;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Genders gender;
 
-    @Column(nullable = false)
-    private String fatherName;
-
-    @Column(nullable = false)
-    private String motherName;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private MaritalStatus maritalStatus;
+    @Builder.Default
+    private Boolean isAccountNonExpired = true;
 
     @Builder.Default
-    private String spouseName = null;
+    private Boolean isAccountNonLocked = true;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private BankRole role;
+    @Builder.Default
+    private Boolean isCredentialsNonExpired = true;
 
-    @Column(nullable = false)
-    private String salary;
-
-    @Column(nullable = false)
-    private String citizen;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Category category;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Religion religion;
-
-    @Valid
-    @NotNull(message = "Contact details is not mapped correctly.")
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(nullable = false, name = "contactId", referencedColumnName = "contactId", unique = true)
-    private ContactDetails contactDetails;
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "kycId", referencedColumnName = "kycId", unique = true)
-    private Verification verificationId;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private WorkingStatus workingStatus;
+    @Builder.Default
+    private Boolean isEnabled = true;
 
     @Column(nullable = false, updatable = false)
     @PastOrPresent
@@ -122,4 +108,38 @@ public class Employee {
         this.updatedAt = LocalDateTime.now();
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton((GrantedAuthority) () -> this.roles.name());
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.isAccountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.isAccountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.isCredentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.isEnabled;
+    }
 }

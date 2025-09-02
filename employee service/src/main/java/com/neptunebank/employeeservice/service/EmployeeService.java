@@ -1,6 +1,8 @@
 package com.neptunebank.employeeservice.service;
 
-import com.neptunebank.employeeservice.models.POJO.kycService.KycRequest;
+import com.neptunebank.employeeservice.DTOs.employeeDto.EmployeeRequestDTO;
+import com.neptunebank.employeeservice.mappers.EmployeeMapper;
+import com.neptunebank.employeeservice.models.Employee;
 import com.neptunebank.employeeservice.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,11 +12,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -37,10 +36,8 @@ import java.util.concurrent.TimeoutException;
 @Service
 public class EmployeeService {
 
-    private final Map<Long, CompletableFuture<String>> futureMap = new ConcurrentHashMap<>();
-    private final Map<String, String> response = new ConcurrentHashMap<>();
     private EmployeeRepository employeeRepository;
-    private KafkaTemplate<String, KycRequest> data;
+    private KafkaTemplate<String, String> data;
     private KafkaTemplate<String, String> message;
 
     @Autowired
@@ -49,7 +46,7 @@ public class EmployeeService {
     }
 
     @Autowired
-    public void setData(KafkaTemplate<String, KycRequest> kafkaTemplate) {
+    public void setData(KafkaTemplate<String, String> kafkaTemplate) {
         this.data = kafkaTemplate;
     }
 
@@ -58,60 +55,37 @@ public class EmployeeService {
         this.message = message;
     }
 
-    public ResponseEntity<Map<String, String>> verifyUserKyc(Long kycId, Long employeeId) {
-        if (employeeId == null || kycId == null) {
-            response.put("message", "Employee Id and User Id cannot be null");
-            response.put("status", "failed");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
-
-        if (!employeeRepository.existsByEmployeeId(employeeId)) {
-            response.put("message", "Employee does not exist");
-            response.put("status", "failed");
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
-
-        CompletableFuture<String> future = new CompletableFuture<>();
-        futureMap.put(kycId, future);
-
-        data.send("employeeId", new KycRequest(kycId, employeeId));
-
+    @KafkaListener(topics = "check-employee", groupId = "users")
+    public void confirmKycRequest(String message, Acknowledgment acknowledgment) {
         try {
-            String result = future.get(20, TimeUnit.SECONDS);
-            response.put("status", "success");
-            response.put("message", "KYC verification request sent successfully");
-            response.put("result", result);
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
-        } catch (TimeoutException e) {
-            response.put("message", "KYC verification request timed out");
-            response.put("status", "failed");
-            response.put("result", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.REQUEST_TIMEOUT);
-        } catch (Exception e) {
-            response.put("message", "Error occurred while processing KYC verification request");
-            response.put("status", "failed");
-            response.put("result", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            if (employeeRepository.existsByEmployeeId(Long.parseLong(message))) {
+                this.message.send("verify-kyc", "success" + ":" + message);
+                acknowledgment.acknowledge();
+            } else {
+                this.message.send("verify-kyc", "failed:Employee does not exist");
+                acknowledgment.acknowledge();
+            }
+        } catch (Throwable t) {
+            this.message.send("verify-kyc", "failed:" + t.getMessage());
         }
+
     }
 
-    @KafkaListener(topics = "status", groupId = "users")
-    public void confirmKycRequest(String message, Acknowledgment acknowledgment) {
-        String[] parts = message.split(":");
-        if (parts.length >= 2) {
-            Long userId = Long.parseLong(parts[0]);
-            String status = parts[1];
-            String errorMessage = parts[2];
-
-            CompletableFuture<String> future = futureMap.remove(userId);
-            if (future != null) {
-                if ("success".equalsIgnoreCase(status)) {
-                    future.complete("KYC verification successful for user ID: " + userId);
-                    acknowledgment.acknowledge();
-                } else {
-                    future.completeExceptionally(new Exception("KYC verification failed for user ID: " + userId + " " + errorMessage));
-                }
-            }
+    private ResponseEntity<?> createEmplyee(EmployeeRequestDTO dto) {
+        Map<String, String> responseMap = new HashMap<>();
+        Employee emp = EmployeeMapper.toEntiry(dto);
+        if (employeeRepository.existsByUsername(emp.getUsername())) {
+            responseMap.put("error", "User already exists");
+            responseMap.put("status", "failed");
+            responseMap.put("code", "409");
+            return new ResponseEntity<>(responseMap, HttpStatus.CONFLICT);
         }
+        if (employeeRepository.existsByPhoneAndEmail(emp.getMobileNumber(), emp.getEmail())) {
+            responseMap.put("error", "Employee with same phone number and email already exists");
+            responseMap.put("status", "failed");
+            responseMap.put("code", "409");
+            return new ResponseEntity<>(responseMap, HttpStatus.CONFLICT);
+        }
+        return null;
     }
 }

@@ -2,6 +2,7 @@ package com.neptunebank.user_service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -28,6 +29,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
@@ -35,6 +37,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
+                .addFilterBefore(new HeaderRoleAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/users/test", "/error").permitAll()
                         .requestMatchers(
@@ -43,24 +46,10 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-resources/**",
                                 "/v3/api-docs/**",
-                                "/webjars/**",
-                                "/**/*.html",
-                                "/**/*.css",
-                                "/**/*.js",
-                                "/**/*.png",
-                                "/**/*.jpg",
-                                "/**/*.jpeg",
-                                "/**/*.gif",
-                                "/**/*.svg",
-                                "/**/*.ico",
-                                "/**/*.woff",
-                                "/**/*.woff2",
-                                "/**/*.ttf",
-                                "/**/*.eot"
+                                "/webjars/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(new HeaderRoleAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable);
         return http.build();

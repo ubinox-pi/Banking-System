@@ -2,7 +2,7 @@ package com.neptunebank.account_service.mappers;
 
 import com.neptunebank.account_service.dto.branchDTO.BranchAdminDTO;
 import com.neptunebank.account_service.dto.branchDTO.BranchesDTO;
-import com.neptunebank.account_service.models.Branches;
+import com.neptunebank.account_service.models.Branch;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -23,15 +23,15 @@ import com.neptunebank.account_service.models.Branches;
  *
  */
 public class BranchMapper {
-    public static Branches toEntity(BranchesDTO dto) {
-        return Branches.builder()
+    public static Branch toEntity(BranchesDTO dto) {
+        return Branch.builder()
                 .branchName(dto.getBranchName())
                 .branchCode(dto.getBranchCode())
                 .branchAddress(dto.getBranchAddress())
                 .build();
     }
 
-    public static BranchAdminDTO toDto(Branches branch) {
+    public static BranchAdminDTO toDto(Branch branch) {
         return BranchAdminDTO.builder()
                 .branchId(branch.getBranchId())
                 .branchName(branch.getBranchName())

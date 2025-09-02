@@ -123,7 +123,7 @@ public class UserController {
         return userService.checkUserExists(email, phone);
     }
 
-    @RolesAllowed("USER")
+    @RolesAllowed({"USER", "ADMIN", "EMPLOYEE"})
     @GetMapping("/test")
     public String test() {
         return "Hello World";

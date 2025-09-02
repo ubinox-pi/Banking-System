@@ -32,11 +32,11 @@ public class KycVerificationDTO {
 
     @NotNull(message = "userId cannot be null")
     private Long userId;
-
+    
     @NotNull(message = "aadhaar verification cannot be null")
     private Boolean aadhaarVerified;
 
-    @NotBlank(message = "pan verification cannot be blank")
+    @NotNull(message = "pan verification cannot be blank")
     private Boolean panVerified;
 
     @NotNull(message = "user photo verification cannot be null")
@@ -57,7 +57,7 @@ public class KycVerificationDTO {
     @NotNull(message = "verifiedByEmployeeId cannot be null")
     private Long verifiedByEmployeeId;
 
-    @NotBlank(message = "status cannot be blank")
+    @NotNull(message = "status cannot be blank")
     private Status status;
 
     @NotBlank(message = "rejectionReason cannot be blank")

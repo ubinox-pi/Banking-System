@@ -1,5 +1,6 @@
 package com.neptunebank.auth_service.controller;
 
+import com.neptunebank.auth_service.ENUM.Roles;
 import com.neptunebank.auth_service.jwt.JwtUtil;
 import com.neptunebank.auth_service.models.Users;
 import com.neptunebank.auth_service.records.AuthResponse;
@@ -44,9 +45,17 @@ import java.util.Optional;
 @RequestMapping("/auth")
 public class AuthController {
     private UserRepository userRepository;
+
     private JwtUtil jwtUtil;
+
     @Value("${secret.key}")
     private String secret;
+
+    @Value("${app.admin.user}")
+    private String user;
+
+    @Value("${app.admin.password}")
+    private String password;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -61,6 +70,33 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest, HttpServletResponse response, HttpServletRequest request) {
         Map<String, String> responseMap = new HashMap<>();
+        if (loginRequest.username().equals(this.user) && loginRequest.password().equals(this.password)) {
+            if ("session".equalsIgnoreCase(loginRequest.mode())) {
+                HttpSession session = request.getSession(true);
+                session.setAttribute("username", loginRequest.username());
+                session.setAttribute("role", "ADMIN");
+                session.setMaxInactiveInterval(600 * 3);
+                responseMap.put("message", "Login successful");
+                responseMap.put("username", loginRequest.username());
+                responseMap.put("role", "ADMIN");
+                responseMap.put("status", "success");
+                responseMap.put("code", "200");
+                return new ResponseEntity<>(responseMap, HttpStatus.OK);
+            } else if ("jwt".equalsIgnoreCase(loginRequest.mode())) {
+                request.getSession(false);
+                String token = jwtUtil.generateToken(Users.builder()
+                        .username(loginRequest.username())
+                        .roles(Roles.ADMIN)
+                        .build());
+                responseMap.put("message", "Login successful");
+                responseMap.put("username", loginRequest.username());
+                responseMap.put("role", Roles.ADMIN.name());
+                responseMap.put("token", token);
+                responseMap.put("status", "success");
+                responseMap.put("code", "200");
+                return new ResponseEntity<>(responseMap, HttpStatus.OK);
+            }
+        }
         Users users = userRepository.findByUsername(loginRequest.username())
                 .filter(u -> u.getPassword().equals(loginRequest.password()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
@@ -83,7 +119,7 @@ public class AuthController {
             HttpSession session = request.getSession(true);
             session.setAttribute("username", users.getUsername());
             session.setAttribute("role", users.getRoles().name());
-            session.setMaxInactiveInterval(600 * 3);
+            session.setMaxInactiveInterval(600);
             responseMap.put("message", "Login successful");
             responseMap.put("username", users.getUsername());
             responseMap.put("role", users.getRoles().name());

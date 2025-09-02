@@ -1,4 +1,4 @@
-CREATE TABLE branches
+CREATE TABLE branch
 (
     branch_id      BIGSERIAL PRIMARY KEY,
     branch_name    VARCHAR(255) NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE account
 );
 
 
-INSERT INTO branches (branch_name, branch_code, branch_address, created_at, updated_at)
+INSERT INTO branch (branch_name, branch_code, branch_address, created_at, updated_at)
 VALUES ('BRANCH 1', 'BRC001', '123 MAIN STREET, CITY A', NOW(), NOW()),
        ('BRANCH 2', 'BRC002', '456 HIGH STREET, CITY B', NOW(), NOW()),
        ('BRANCH 3', 'BRC003', '789 PARK AVENUE, CITY C', NOW(), NOW()),

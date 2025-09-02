@@ -46,11 +46,13 @@ public class Transaction {
     @Column(length = 64)
     private String transactionId;
 
-    @Column(length = 64, nullable = false)
-    private Long sourceAccount;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false)
+    private SourceOrDestinationBank sourceAccount;
 
-    @Column(length = 64, nullable = false)
-    private Long destinationAccount;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false)
+    private SourceOrDestinationBank destinationAccount;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

@@ -19,23 +19,35 @@ package com.neptunebank.bankingservice.controller;
  *
  */
 
-import com.neptunebank.bankingservice.ENUMs.RecoveryPhrases;
+import com.neptunebank.bankingservice.DTO.CreateBankDTO;
+import com.neptunebank.bankingservice.services.BankingServices;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-
 @RestController
+@RequestMapping("/banking")
 public class BankController {
-    public ResponseEntity<HashMap<String, String>> login(
-            @RequestParam String username,
-            @RequestParam String password,
-            @RequestParam(required = false) RecoveryPhrases recoveryPhrases,
-            @RequestParam(required = false) String recoveryAnswer
-    ) {
-        
 
-        return ResponseEntity.ok(new HashMap<>());
+    private BankingServices bankingServices;
+
+    @Autowired
+    public void setBankingServices(BankingServices bankingServices) {
+        this.bankingServices = bankingServices;
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createBank(@RequestBody @Valid CreateBankDTO dto) {
+        return bankingServices.createBankingAccount(
+                dto.getUsername(),
+                dto.getPassword(),
+                dto.getNewUsername(),
+                dto.getNewPassword(),
+                dto.getRecoveryPhrase(),
+                dto.getRecoveryAnswer());
     }
 }

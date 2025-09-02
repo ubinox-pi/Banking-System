@@ -1,10 +1,13 @@
 package com.neptunebank.account_service.dto.accountDTO;
 
-import com.neptunebank.account_service.ENUM.AccountStatus;
 import com.neptunebank.account_service.ENUM.AccountType;
 import com.neptunebank.account_service.ENUM.ModeOfOperation;
+import com.neptunebank.account_service.ENUM.Status;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.math.BigDecimal;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -33,17 +36,17 @@ public class AccountRequestDto {
     @NotNull(message = "User ID cannot be null")
     private Long userId;
 
-    @NotNull(message = "Branch ID cannot be null")
-    private Long branchId;
+    @NotBlank(message = "Branch ID cannot be null")
+    private String branchCode;
 
     @NotNull(message = "Account type cannot be null")
     private AccountType accountType;
-    
-    private AccountStatus status;
+
+    private Status status;
 
     @NotNull(message = "Mode of operation cannot be null")
     private ModeOfOperation modeOfOperation;
 
     @NotNull(message = "Account interest rate cannot be null")
-    private String accountInterestRate;
+    private BigDecimal accountInterestRate;
 }
