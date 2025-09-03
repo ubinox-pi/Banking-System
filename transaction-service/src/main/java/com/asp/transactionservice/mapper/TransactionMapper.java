@@ -1,5 +1,8 @@
 package com.asp.transactionservice.mapper;
 
+import com.asp.transactionservice.dto.TransactionRequestDto;
+import com.asp.transactionservice.models.Transaction;
+
 /*
  * Copyright (c) 2025 Ayshi Shannidhya Panda. All rights reserved.
  *
@@ -9,20 +12,20 @@ package com.asp.transactionservice.mapper;
  *
  * Project: Neptune Bank
  * Author: Ayshi Shannidhya Panda
- * Created on: 30-06-2025
+ * Created on: 02-09-2025
  */
-
-import com.asp.transactionservice.dto.TransactionRequest;
-import com.asp.transactionservice.dto.TransactionResponse;
-import com.asp.transactionservice.model.Transaction;
-import org.mapstruct.Mapper;
-
-
-@Mapper(componentModel = "spring")
-public interface TransactionMapper {
-
-    Transaction toEntity(TransactionRequest request);
-
-    TransactionResponse toResponse(Transaction transaction);
+public class TransactionMapper {
+    public static Transaction toEntity(TransactionRequestDto dto) {
+        return Transaction.builder()
+                .sourceAccount(dto.getSourceAccount())
+                .destinationAccount(dto.getDestinationAccount())
+                .transactionType(dto.getTransactionType())
+                .modeOfTransaction(dto.getModeOfTransaction())
+                .transactionMedium(dto.getTransactionMedium())
+                .amount(dto.getAmount())
+                .sourceOrDestinationBankId(SourceOrDestinationMapper.toEntity(dto.getSourceOrDestinationBank()))
+                .description(dto.getDescription())
+                .remarks(dto.getRemarks())
+                .build();
+    }
 }
-

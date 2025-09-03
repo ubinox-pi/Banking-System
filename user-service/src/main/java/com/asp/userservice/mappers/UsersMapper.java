@@ -14,6 +14,7 @@ package com.asp.userservice.mappers;
 
 
 import com.asp.userservice.DTO.UsersDTO.UsersRequestDTO;
+import com.asp.userservice.DTO.UsersDTO.UsersResponseDTO;
 import com.asp.userservice.models.Users;
 import org.springframework.stereotype.Component;
 
@@ -38,6 +39,30 @@ public class UsersMapper {
                 .contactDetails(ContactDetailsMapper.toEntity(dto.getContactDetails()))
                 .nominee(NomineeMapper.toEntity(dto.getNominee()))
                 .kycId(KycMapper.toEntity(dto.getKyc()))
+                .build();
+    }
+
+    public static UsersResponseDTO toResponseDTO(Users user) {
+        if (user == null) return null;
+        return UsersResponseDTO.builder()
+                .userId(user.getUserid())
+                .firstName(user.getFirstName())
+                .middleName(user.getMiddleName())
+                .lastName(user.getLastName())
+                .dateOfBirth(user.getDateOfBirth())
+                .gender(user.getGender())
+                .fatherName(user.getFatherName())
+                .motherName(user.getMotherName())
+                .maritalStatus(user.getMaritalStatus())
+                .spouseName(user.getSpouseName())
+                .occupation(user.getOccupation())
+                .salary(user.getSalary())
+                .citizen(user.getCitizen())
+                .category(user.getCategory())
+                .religion(user.getReligion())
+                .contactDetails(ContactDetailsMapper.toResponseDTO(user.getContactDetails()))
+                .nominee(NomineeMapper.toResponseDTO(user.getNominee()))
+                .kyc(KycMapper.toResponseDTO(user.getKycId()))
                 .build();
     }
 }

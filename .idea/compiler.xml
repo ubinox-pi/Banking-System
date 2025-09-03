@@ -6,9 +6,8 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.38/57f8f5e02e92a30fd21b80cbd426a4172b5f8e29/lombok-1.18.38.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mapstruct/mapstruct-processor/1.5.5.Final/897f6f115930b936287bef552bf5fe28cc64717d/mapstruct-processor-1.5.5.Final.jar" />
         </processorPath>
-        <module name="transaction-service.main" />
+        <module name="auth-service.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17" />
@@ -18,7 +17,6 @@
       <module name="Neptune_Bank.account-service" options="-parameters" />
       <module name="Neptune_Bank.account-service.main" options="-parameters" />
       <module name="Neptune_Bank.account-service.test" options="-parameters" />
-      <module name="Neptune_Bank.employee-service" options="-parameters" />
       <module name="Neptune_Bank.employee-service.main" options="-parameters" />
       <module name="Neptune_Bank.employee-service.test" options="-parameters" />
       <module name="Neptune_Bank.otp-service" options="-parameters" />
@@ -27,6 +25,20 @@
       <module name="Neptune_Bank.user-service" options="-parameters" />
       <module name="Neptune_Bank.user-service.main" options="-parameters" />
       <module name="Neptune_Bank.user-service.test" options="-parameters" />
+      <module name="auth-service" options="-parameters" />
+      <module name="auth-service.main" options="-parameters" />
+      <module name="auth-service.test" options="-parameters" />
+      <module name="com.asp.Neptune_Bank.account-service.main" options="-parameters" />
+      <module name="com.asp.Neptune_Bank.employee-service.main" options="-parameters" />
+      <module name="com.asp.Neptune_Bank.otp-service.main" options="-parameters" />
+      <module name="com.asp.Neptune_Bank.user-service.main" options="-parameters" />
+      <module name="com.asp.transaction-service.main" options="-parameters" />
+      <module name="employee-services" options="-parameters" />
+      <module name="employee-services.main" options="-parameters" />
+      <module name="employee-services.test" options="-parameters" />
+      <module name="gateway-service" options="-parameters" />
+      <module name="gateway-service.main" options="-parameters" />
+      <module name="gateway-service.test" options="-parameters" />
       <module name="transaction-service" options="-parameters" />
       <module name="transaction-service.main" options="-parameters" />
       <module name="transaction-service.test" options="-parameters" />

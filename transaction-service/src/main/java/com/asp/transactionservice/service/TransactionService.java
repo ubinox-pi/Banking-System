@@ -1,55 +1,73 @@
 package com.asp.transactionservice.service;
 
-import com.asp.transactionservice.dto.TransactionRequest;
-import com.asp.transactionservice.dto.TransactionResponse;
+import com.asp.transactionservice.dto.TransactionRequestDto;
 import com.asp.transactionservice.enumeration.TransactionStatus;
 import com.asp.transactionservice.mapper.TransactionMapper;
-import com.asp.transactionservice.model.Transaction;
 import com.asp.transactionservice.repository.TransactionRepository;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.ValidationException;
-import lombok.RequiredArgsConstructor;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+/*
+ * Copyright (c) 2025 Ayshi Shannidhya Panda. All rights reserved.
+ *
+ * This source code is confidential and intended solely for internal use.
+ * Unauthorized copying, modification, distribution, or disclosure of this
+ * file, via any medium, is strictly prohibited.
+ *
+ * Project: Neptune Bank
+ * Author: Ayshi Shannidhya Panda
+ * Created on: 02-09-2025
+ */
 @Service
-@RequiredArgsConstructor
 public class TransactionService {
 
-    private final TransactionRepository transactionRepository;
-    private final TransactionMapper transactionMapper;
+    private TransactionRepository transactionRepository;
 
-    public TransactionResponse createTransaction(TransactionRequest request) {
+    @Autowired
+    public void setTransactionRepository(TransactionRepository transactionRepository) {
+        this.transactionRepository = transactionRepository;
+    }
 
-        if (request.getFromAccountId().equals(request.getToAccountId())) {
-            throw new ValidationException("Cannot transfer to the same account.");
+    @Transactional
+    public ResponseEntity<?> createTransact(@Valid TransactionRequestDto dto) {
+        var transaction = TransactionMapper.toEntity(dto);
+        transaction.setTransactionId(getTransactionId());
+        transaction.setTransactionStatus(TransactionStatus.PENDING);
+        transactionRepository.save(transaction);
+        transaction.setTransactionStatus(TransactionStatus.SUCCESSFUL);
+        transactionRepository.save(transaction);
+        String transactionId = transaction.getTransactionId();
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Transaction created successfully");
+        response.put("transactionId", transactionId);
+        response.put("status", "success");
+        response.put("code", "201");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+
+    private String getTransactionId() {
+        String transactionId;
+        do {
+            transactionId = generateTransactionId();
         }
+        while (transactionRepository.existsByTransactionId(transactionId));
+        return transactionId;
+    }
 
-        if (request.getAmount() == null || request.getAmount().signum() <= 0) {
-            throw new ValidationException("Transfer amount must be greater than zero.");
+    private String generateTransactionId() {
+        StringBuilder sb = new StringBuilder("NEFT");
+        for (int i = 0; i < 60; i++) {
+            sb.append((int) (Math.random() * 10));
         }
-
-
-        Transaction transaction = transactionMapper.toEntity(request);
-        transaction.setTimestamp(LocalDateTime.now());
-        transaction.setStatus(TransactionStatus.SUCCESS);
-
-        Transaction saved = transactionRepository.save(transaction);
-        return transactionMapper.toResponse(saved);
+        return sb.toString();
     }
 
-    public List<TransactionResponse> getTransactionsByAccountId(Long accountId) {
-        List<Transaction> transactions = transactionRepository.findByFromAccountIdOrToAccountId(accountId, accountId);
-        return transactions.stream()
-                .map(transactionMapper::toResponse)
-                .toList();
-    }
-
-    public TransactionResponse getTransactionById(Long id) {
-        Transaction transaction = transactionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Transaction not found with ID: " + id));
-        return transactionMapper.toResponse(transaction);
-    }
 }

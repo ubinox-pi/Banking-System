@@ -26,7 +26,7 @@ public interface AccountMapper {
     @Mapping(target = "accountId", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "branch", ignore = true) // set manually in service
+    @Mapping(target = "branch", ignore = true)
     Account toEntity(AccountRequestDTO dto);
 
     @Mapping(source = "branch.branchCode", target = "branchCode")

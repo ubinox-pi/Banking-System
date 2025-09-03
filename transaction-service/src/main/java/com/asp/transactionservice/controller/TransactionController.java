@@ -1,39 +1,41 @@
 package com.asp.transactionservice.controller;
 
-import com.asp.transactionservice.dto.TransactionRequest;
-import com.asp.transactionservice.dto.TransactionResponse;
+/*
+ * Copyright (c) 2025 Ayshi Shannidhya Panda. All rights reserved.
+ *
+ * This source code is confidential and intended solely for internal use.
+ * Unauthorized copying, modification, distribution, or disclosure of this
+ * file, via any medium, is strictly prohibited.
+ *
+ * Project: Neptune Bank
+ * Author: Ayshi Shannidhya Panda
+ * Created on: 02-09-2025
+ */
+
+import com.asp.transactionservice.dto.TransactionRequestDto;
 import com.asp.transactionservice.service.TransactionService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("/api/transactions")
+@Controller
+@RequestMapping("transactions")
 public class TransactionController {
-    @Autowired
+
     private TransactionService transactionService;
 
-    @PostMapping
-    public ResponseEntity<TransactionResponse> createTransaction(@RequestBody TransactionRequest request) {
-        TransactionResponse response = transactionService.createTransaction(request);
-        return ResponseEntity.ok(response);
+    @Autowired
+    public void setTransactionService(TransactionService transactionService) {
+        this.transactionService = transactionService;
     }
 
-    @GetMapping("/account/{accountId}")
-    public ResponseEntity<List<TransactionResponse>> getTransactionsByAccount(@PathVariable Long accountId) {
-        List<TransactionResponse> responses = transactionService.getTransactionsByAccountId(accountId);
-        return ResponseEntity.ok(responses);
-    }
+    @PostMapping("/create")
+    public ResponseEntity<?> createTransaction(@Valid @RequestBody TransactionRequestDto dto) {
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TransactionResponse> getTransactionById(@PathVariable Long id) {
-        TransactionResponse response = transactionService.getTransactionById(id);
-        if (response == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(response);
+        return transactionService.createTransact(dto);
     }
 }
-

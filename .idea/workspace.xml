@@ -5,60 +5,71 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d76d0dab-0768-4966-a666-c6ecc63d2b6f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules/account-service/Neptune_Bank.account-service.main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/employee-service/Neptune_Bank.employee-service.main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/otp-service/Neptune_Bank.otp-service.main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/user-service/Neptune_Bank.user-service.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.13/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.13/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.13/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.13/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.13/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.13/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.13/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.13/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.13/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.13/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/employee-service.main.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/otp-service.main.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/user-service.main.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Neptune Bank.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/.gitattributes" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/EmployeeServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/EmployeeServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/controller/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/controller/EmployeeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/dto/AccountDetailsDTO/AccountDetailsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/dto/AccountDetailsDTO/AccountDetailsDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/dto/BranchDTO/BranchDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/dto/BranchDTO/BranchDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/dto/EmployeeDTO/EmployeeRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/dto/EmployeeDTO/EmployeeRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/dto/EmployeeDTO/EmployeeResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/dto/EmployeeDTO/EmployeeResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/enumeration/AccountType.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/enumeration/AccountType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/enumeration/EmployeeRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/enumeration/EmployeeRole.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/enumeration/ModeOfOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/enumeration/ModeOfOperation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/mappers/EmployeeMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/mappers/EmployeeMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/models/AccountDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/models/AccountDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/models/Branch.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/models/Branch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/models/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/models/Employee.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/repositories/AccountDetailsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/repositories/AccountDetailsRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/repositories/BranchRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/repositories/BranchRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/repositories/EmployeeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/repositories/EmployeeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/java/com/asp/employeeservice/service/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/service/EmployeeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emplopyee-service/src/test/java/com/asp/employeeservice/EmployeeServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/employee-service/src/test/java/com/asp/employeeservice/EmployeeServiceApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/otp-service/src/main/java/com/asp/otpservice/entity/Otp.java" beforeDir="false" afterPath="$PROJECT_DIR$/otp-service/src/main/java/com/asp/otpservice/entity/Otp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/otp-service/src/main/java/com/asp/otpservice/repositories/OtpRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/otp-service/src/main/java/com/asp/otpservice/repositories/OtpRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/otp-service/src/main/java/com/asp/otpservice/service/OtpService.java" beforeDir="false" afterPath="$PROJECT_DIR$/otp-service/src/main/java/com/asp/otpservice/service/OtpService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/account-service/Neptune_Bank.account-service.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/account-service/Neptune_Bank.account-service.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/employee-service/Neptune_Bank.employee-service.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/employee-service/Neptune_Bank.employee-service.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/otp-service/Neptune_Bank.otp-service.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/otp-service/Neptune_Bank.otp-service.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/transaction-service.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/transaction-service.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/user-service/Neptune_Bank.user-service.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/user-service/Neptune_Bank.user-service.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/asp/accountservice/controller/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-service/src/main/java/com/asp/accountservice/controller/AccountController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/asp/accountservice/mapper/AccountMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-service/src/main/java/com/asp/accountservice/mapper/AccountMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/asp/accountservice/models/Branch.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-service/src/main/java/com/asp/accountservice/models/Branch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/asp/accountservice/repositories/BranchRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-service/src/main/java/com/asp/accountservice/repositories/BranchRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/asp/accountservice/service/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-service/src/main/java/com/asp/accountservice/service/AccountService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/account-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/EmployeeServiceApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/controller/EmployeeController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/dto/EmployeeRequestDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/dto/EmployeeResponseDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/enumeration/EmployeeRole.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/exception/GlobalExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/mappers/EmployeeMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/models/Employee.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/repositories/EmployeeRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/src/main/java/com/asp/employeeservice/service/EmployeeService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/employee-service/src/test/java/com/asp/employeeservice/EmployeeServiceApplicationTests.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/otp-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/otp-service/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/DTO/AccountDetailsDTO/AccountDetailsDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/DTO/BranchDTO/BranchDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/enumeration/AccountType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/enumeration/ModeOfOperation.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/models/AccountDetails.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/models/Branch.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/repositories/AccountDetailsRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/asp/transactionservice/config/RestTemplateConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/asp/transactionservice/controller/TransactionController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/asp/transactionservice/dto/TransactionRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/asp/transactionservice/dto/TransactionResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/asp/transactionservice/enumeration/TransactionStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/asp/transactionservice/mapper/TransactionMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/asp/transactionservice/model/Transaction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/asp/transactionservice/repository/TransactionRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/asp/transactionservice/service/TransactionService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/DTO/KycDTO/KycResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/DTO/KycDTO/KycResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/DTO/UsersDTO/UsersResponseDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/config/WebConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/mappers/ContactDetailsMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/mappers/ContactDetailsMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/mappers/KycMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/mappers/KycMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/mappers/NomineeMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/mappers/NomineeMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/mappers/UsersMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/asp/userservice/mappers/UsersMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -68,6 +79,15 @@
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/auth-service">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/employee-services">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/gateway-service">
       <ProjectState />
     </projectState>
     <projectState path="$PROJECT_DIR$/transaction-service">
@@ -89,10 +109,14 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -101,6 +125,12 @@
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
+  <component name="OptimizeOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="Security Analysis" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;1f48ecff&quot;,
   &quot;associatedIndex&quot;: 5
@@ -117,6 +147,8 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Gradle.Build Neptune Bank.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build auth-service.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build employee-services.executor&quot;: &quot;Run&quot;,
     &quot;Gradle.Build transaction-service.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
@@ -124,19 +156,28 @@
     &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;Spring Boot.AccountServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.AuthServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.EmployeeServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.EmployeeServicesApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.OtpServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.TransactionServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.UserServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;code.cleanup.on.save&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Ayshi-Shannidhya-Panda&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Ankit/IdeaProjects/Neptune Bank&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;rearrange.code.on.save&quot;: &quot;true&quot;,
     &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.general&quot;
   }
@@ -150,8 +191,23 @@
         <option value="SpringBootApplicationConfigurationType" />
       </set>
     </option>
+    <option name="configurationStatuses">
+      <map>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <map>
+              <entry key="AuthServiceApplication" value="STOPPED" />
+              <entry key="EmployeeServicesApplication" value="STOPPED" />
+              <entry key="OtpServiceApplication" value="STOPPED" />
+              <entry key="TransactionServiceApplication" value="STOPPED" />
+              <entry key="UserServiceApplication" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.OtpServiceApplication">
+  <component name="RunManager" selected="Spring Boot.TransactionServiceApplication">
     <configuration default="true" type="com.poratu.idea.plugins.tomcat">
       <predefined_log_file enabled="true" id="Tomcat Localhost Log" />
       <predefined_log_file enabled="true" id="Tomcat Access Log" />
@@ -188,30 +244,45 @@
     </configuration>
     <configuration name="AccountServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-      <module name="Neptune_Bank.account-service.main" />
+      <module name="com.asp.Neptune_Bank.account-service.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.asp.accountservice.AccountServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EmployeeServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <configuration name="AuthServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-      <module name="Neptune_Bank.employee-service.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.asp.employeeservice.EmployeeServiceApplication" />
+      <module name="auth-service.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.asp.authservice.AuthServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EmployeeServicesApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="employee-services.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ankit.employeeservices.EmployeeServicesApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GatewayServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="gateway-service.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.asp.gatewayservice.GatewayServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="OtpServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-      <module name="Neptune_Bank.otp-service.main" />
+      <module name="com.asp.Neptune_Bank.otp-service.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.asp.otpservice.OtpServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="TransactionServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="transaction-service.main" />
+      <module name="com.asp.transaction-service.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.asp.transactionservice.TransactionServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -219,7 +290,7 @@
     </configuration>
     <configuration name="UserServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-      <module name="Neptune_Bank.user-service.main" />
+      <module name="com.asp.Neptune_Bank.user-service.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.asp.userservice.UserServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -445,8 +516,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26927.53" />
-        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.26927.53" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.25557.131" />
+        <option value="bundled-js-predefined-d6986cc7102b-b598e85cdad2-JavaScript-IU-252.25557.131" />
       </set>
     </attachedChunks>
   </component>
@@ -465,10 +536,56 @@
       <workItem from="1751634545430" duration="16000" />
       <workItem from="1752482936777" duration="15000" />
       <workItem from="1752856819803" duration="329000" />
+      <workItem from="1753020366060" duration="17000" />
+      <workItem from="1753029996251" duration="7000" />
+      <workItem from="1753107117178" duration="5000" />
+      <workItem from="1753288281499" duration="3000" />
+      <workItem from="1753792575937" duration="1278000" />
+      <workItem from="1753794220560" duration="1211000" />
+      <workItem from="1754059807024" duration="49000" />
+      <workItem from="1755107289903" duration="30000" />
+      <workItem from="1755107347152" duration="6000" />
+      <workItem from="1755107371243" duration="42000" />
+      <workItem from="1755107451211" duration="498000" />
+      <workItem from="1755130415779" duration="45000" />
+      <workItem from="1755256245606" duration="3000" />
+      <workItem from="1755518530056" duration="462000" />
+      <workItem from="1755519012685" duration="25000" />
+      <workItem from="1755519054749" duration="73000" />
+      <workItem from="1755600914078" duration="21000" />
+      <workItem from="1755600956477" duration="41000" />
+      <workItem from="1755601011526" duration="2290000" />
+      <workItem from="1755698519783" duration="8000" />
+      <workItem from="1755698546458" duration="304000" />
+      <workItem from="1755698865499" duration="530000" />
+      <workItem from="1755747957012" duration="2050000" />
+      <workItem from="1755750050297" duration="1231000" />
+      <workItem from="1755854444925" duration="3097000" />
+      <workItem from="1756025902541" duration="2962000" />
+      <workItem from="1756485357942" duration="9975000" />
+      <workItem from="1756906772013" duration="3858000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-core" />
+    <option featureType="dependencySupport" implementationName="executable:docker" />
+    <option featureType="dependencySupport" implementationName="java:org.apache.kafka:kafka_2.13" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.validation:jakarta.validation-api" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.persistence:jakarta.persistence-api" />
+    <option featureType="dependencySupport" implementationName="executable:kubectl" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.data:spring-data-commons" />
+    <option featureType="dependencySupport" implementationName="java:org.hibernate.validator:hibernate-validator" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-messaging" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.boot:spring-boot" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-webmvc" />
+    <option featureType="dependencySupport" implementationName="java:org.projectlombok:lombok" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

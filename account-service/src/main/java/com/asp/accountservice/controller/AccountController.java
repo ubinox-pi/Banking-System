@@ -38,7 +38,7 @@ public class AccountController {
         return ResponseEntity.ok(response);
     }
 
-    // Get account by ID
+
     @GetMapping("/get/{id}")
     public ResponseEntity<AccountResponseDTO> getAccountById(@PathVariable Long id) {
         AccountResponseDTO account = accountService.getAccountById(id);
@@ -51,14 +51,14 @@ public class AccountController {
         return ResponseEntity.ok(accounts);
     }
 
-    // Delete account
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteAccount(@PathVariable Long id) {
         accountService.deleteAccount(id);
         return ResponseEntity.ok("Account deleted successfully.");
     }
 
-    // Update account (optional - if supported)
+
     @PutMapping("/update/{id}")
     public ResponseEntity<AccountResponseDTO> updateAccount(
             @PathVariable Long id,

@@ -12,6 +12,7 @@
 package com.asp.userservice.mappers;
 
 import com.asp.userservice.DTO.NomineeDetailsDTO.NomineeRequestDTO;
+import com.asp.userservice.DTO.NomineeDetailsDTO.NomineeResponseDTO;
 import com.asp.userservice.models.NomineeDetails;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +28,20 @@ public class NomineeMapper {
                 .nomineeAadhar(dto.getNomineeAadhar())
                 .nomineePan(dto.getNomineePan())
                 .nomineeAddress(dto.getNomineeAddress())
+                .build();
+    }
+
+    public static NomineeResponseDTO toResponseDTO(NomineeDetails nominee) {
+        if (nominee == null) return null;
+        return NomineeResponseDTO.builder()
+                .nomineeName(nominee.getNomineeName())
+                .nomineeRelationship(nominee.getNomineeRelationship())
+                .nomineeDateOfBirth(nominee.getNomineeDateOfBirth())
+                .nomineeMobileNumber(nominee.getNomineeMobileNumber())
+                .nomineeEmail(nominee.getNomineeEmail())
+                .nomineeAadhar(nominee.getNomineeAadhar())
+                .nomineePan(nominee.getNomineePan())
+                .nomineeAddress(nominee.getNomineeAddress())
                 .build();
     }
 }

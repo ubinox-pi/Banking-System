@@ -24,7 +24,7 @@ public class Branch {
 
     @NotBlank(message = "Branch code is required")
     @Column(nullable = false, unique = true)
-    private String branchCode; // ✅ Only one definition now
+    private String branchCode;
 
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default

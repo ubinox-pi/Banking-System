@@ -14,24 +14,31 @@ package com.asp.userservice.DTO.KycDTO;
 
 
 import com.asp.userservice.models.Users;
+import lombok.*;
 
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class KycResponseDTO {
     private Users user;
     private String aadharNumber;
-    private Byte aadharImage;
+    private byte[] aadharImage;
     private Boolean aadharVerified;
     private String panNumber;
-    private Byte panImage;
+    private byte[] panImage;
     private Boolean panVerified;
     private String voterId;
-    private Byte voterIdImage;
+    private byte[] voterIdImage;
     private Boolean voterIdVerified;
     private String passportNumber;
-    private Byte passportImage;
+    private byte[] passportImage;
     private Boolean passportVerified;
     private String drivingLicenseNumber;
-    private Byte drivingLicenseImage;
+    private byte[] drivingLicenseImage;
     private Boolean drivingLicenseVerified;
     private Long verifiedByEmployeeId;
     private String rejectionReason;
+
 }

@@ -6,6 +6,11 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/employee-service/Neptune_Bank.employee-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/employee-service/Neptune_Bank.employee-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/otp-service/Neptune_Bank.otp-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/otp-service/Neptune_Bank.otp-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/user-service/Neptune_Bank.user-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/user-service/Neptune_Bank.user-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/auth-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/auth-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/account-service/com.asp.Neptune_Bank.account-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/account-service/com.asp.Neptune_Bank.account-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/otp-service/com.asp.Neptune_Bank.otp-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/otp-service/com.asp.Neptune_Bank.otp-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/user-service/com.asp.Neptune_Bank.user-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/user-service/com.asp.Neptune_Bank.user-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.asp.transaction-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.asp.transaction-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/transaction-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/transaction-service.main.iml" />
     </modules>
   </component>

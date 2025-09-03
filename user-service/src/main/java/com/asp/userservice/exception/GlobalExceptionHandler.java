@@ -26,9 +26,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    /**
-     * Handles validation errors (@Valid annotated DTOs)
-     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationErrors(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -42,9 +39,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    /**
-     * Handles custom business exceptions (optional)
-     */
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<Map<String, String>> handleCustomException(CustomException ex) {
         Map<String, String> response = new HashMap<>();
@@ -52,9 +46,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, ex.getStatus());
     }
 
-    /**
-     * Catch-all fallback for unhandled exceptions
-     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGeneralException(Exception ex) {
         Map<String, String> error = new HashMap<>();

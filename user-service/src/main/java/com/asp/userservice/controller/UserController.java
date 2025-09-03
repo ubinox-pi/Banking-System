@@ -27,7 +27,6 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/auth")
-//TODO: Will be removed in production
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
 
