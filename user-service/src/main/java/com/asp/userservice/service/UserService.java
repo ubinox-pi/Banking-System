@@ -137,20 +137,10 @@ public class UserService {
             userRepository.save(users);
 
         } catch (Exception e) {
-            e.printStackTrace(); // for dev visibility
+            e.printStackTrace();
             throw new Exception("User registration failed: " + e.getMessage(), e);
         }
     }
 
-    //    @KafkaListener(topics = "employeeId", groupId = "users")
-    //    public void setEmployee(KycRequest employee) {
-    //        Kyc kyc = kycRepository.findByUserId(employee.getKycId());
-    //        kyc.setVerifiedByEmployeeId(employee.getEmployeeId());
-    //        try {
-    //            kycRepository.save(kyc);
-    //            message.send("status", employee.getKycId() + ":success");
-    //        } catch (Exception e) {
-    //            message.send("status", employee.getKycId() + ":failed:" + e.getMessage());
-    //        }
-    //    }
+
 }

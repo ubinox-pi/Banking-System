@@ -12,11 +12,23 @@
 package com.asp.accountservice.repositories;
 
 
-
 import com.asp.accountservice.models.Account;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
+
+    boolean existsByAccountNumber(String candidate);
+
+    Account getAccountByAccountId(Long accountId);
+
+    @Modifying
+    @Transactional
+    @Query("delete from Account a where a.accountId = :accountId")
+    void deleteByAccountId(@Param("accountId") Long accountId);
 }

@@ -1,6 +1,6 @@
 package com.asp.accountservice.models;
 
-import com.asp.accountservice.DTO.BranchDTO.BranchDTO;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -26,8 +26,9 @@ public class Branch {
     @Column(nullable = false, unique = true)
     private String branchCode;
 
-    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
+    @JsonManagedReference
     private List<Account> accounts = new ArrayList<>();
 
     @NotBlank(message = "Branch Name cannot be blank")
@@ -65,27 +66,5 @@ public class Branch {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public static Branch fromDTO(BranchDTO branchDTO) {
-        return Branch.builder()
-                .branchId(branchDTO.getBranchId())
-                .branchCode(branchDTO.getBranchCode())
-                .branchName(branchDTO.getBranchName())
-                .branchAddress(branchDTO.getBranchAddress())
-                .branchCity(branchDTO.getBranchCity())
-                .branchState(branchDTO.getBranchState())
-                .branchZip(branchDTO.getBranchZip())
-                .build();
-    }
 
-    public BranchDTO toDTO() {
-        return BranchDTO.builder()
-                .branchId(this.branchId)
-                .branchCode(this.branchCode)
-                .branchName(this.branchName)
-                .branchAddress(this.branchAddress)
-                .branchCity(this.branchCity)
-                .branchState(this.branchState)
-                .branchZip(this.branchZip)
-                .build();
-    }
 }

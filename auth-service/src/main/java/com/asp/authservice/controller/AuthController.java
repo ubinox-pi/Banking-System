@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +36,6 @@ public class AuthController {
 
     private AuthRepo authRepo;
     private JwtUtil jwtUtil;
-    @Value("${secret.key}")
-    private String secretKey;
 
     @Autowired
     public void setJwtUtil(JwtUtil jwtUtil) {

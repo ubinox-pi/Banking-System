@@ -2,6 +2,7 @@ package com.asp.accountservice.models;
 
 import com.asp.accountservice.enumeration.AccountType;
 import com.asp.accountservice.enumeration.ModeOfOperation;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +12,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "accounts")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,16 +23,21 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long accountId;
 
+    @Column(nullable = false)
+    private Long userId;
+
     @NotBlank(message = "Account Number cannot be blank")
     @Column(nullable = false, unique = true)
     private String accountNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id", nullable = false)
+    @JsonBackReference
     private Branch branch;
 
     @Column(nullable = false)
-    private BigDecimal balance;
+    @Builder.Default
+    private BigDecimal balance = BigDecimal.ZERO;
 
     @NotNull(message = "Account Type cannot be null")
     @Enumerated(EnumType.STRING)

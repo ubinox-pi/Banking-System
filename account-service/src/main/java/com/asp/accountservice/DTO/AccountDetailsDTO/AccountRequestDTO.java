@@ -1,10 +1,13 @@
 package com.asp.accountservice.DTO.AccountDetailsDTO;
 
+import com.asp.accountservice.enumeration.AccountType;
 import com.asp.accountservice.enumeration.ModeOfOperation;
-import jakarta.validation.constraints.*;
-import lombok.*;
-
-import java.math.BigDecimal;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
@@ -12,16 +15,8 @@ import java.math.BigDecimal;
 @Builder
 public class AccountRequestDTO {
 
-    @NotBlank(message = "Account type is required")
-    private String accountType;
-
-    @NotBlank(message = "Account Number is required")
-    private String accountNumber;
-
-
-    @NotNull(message = "Initial balance is required")
-    @DecimalMin(value = "0.0", inclusive = true, message = "Balance cannot be negative")
-    private BigDecimal initialBalance;
+    @NotNull(message = "Account type is required")
+    private AccountType accountType;
 
     @NotNull(message = "User ID is required")
     private Long userId;

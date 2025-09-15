@@ -1,12 +1,15 @@
 package com.asp.accountservice.DTO.BranchDTO;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BranchDTO {
+public class BranchResponseDTO {
     private Long branchId;
     private String branchCode;
     private String branchName;
@@ -14,4 +17,6 @@ public class BranchDTO {
     private String branchCity;
     private String branchState;
     private String branchZip;
+    private boolean success;
+    private String message;
 }
