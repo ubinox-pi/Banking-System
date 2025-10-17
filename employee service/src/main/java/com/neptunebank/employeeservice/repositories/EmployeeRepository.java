@@ -32,4 +32,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Query("SELECT CASE WHEN COUNT(E) > 0 THEN TRUE ELSE FALSE END FROM Employee E WHERE E.mobileNumber = ?1 AND E.email = ?2")
     boolean existsByPhoneAndEmail(String phone, String email);
+
+    @Query("SELECT E FROM Employee E WHERE E.username = ?1")
+    Employee getPasswordByUsername(String username);
 }

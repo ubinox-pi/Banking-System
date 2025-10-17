@@ -39,6 +39,15 @@ public class HeaderRoleAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws IOException, jakarta.servlet.ServletException {
+        
+        String path = request.getRequestURI();
+
+        if (path.startsWith("/actuator") || path.startsWith("/error")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+
         String username = request.getHeader("X-Authenticated-User");
         String role = request.getHeader("X-Authenticated-Role");
         String secretKey = request.getHeader("X-Secret-Key");

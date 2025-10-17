@@ -2,6 +2,8 @@ package com.neptunebank.neptunebank.component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -39,7 +41,8 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
     private final WebClient webClient;
     private final String validateUrl;
     private final ObjectMapper objectMapper = new ObjectMapper();
-    @Value("${secret.key}")
+    private final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
+    @Value("${app.secret-key}")
     private String secret;
 
     public AuthenticationFilter(@Value("${auth-service.url}") String authServiceUrl) {
@@ -72,6 +75,9 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, response -> Mono.error(new RuntimeException("Unauthorized")))
                 .bodyToMono(String.class)
+                .doOnNext(responseBody -> {
+                    logger.info("Response Body from authentication filter: {}", responseBody);
+                })
                 .flatMap(responseBody -> {
                     ServerHttpRequest mutatedRequest = request.mutate()
                             .header("X-Authenticated-User", extractUser(responseBody))

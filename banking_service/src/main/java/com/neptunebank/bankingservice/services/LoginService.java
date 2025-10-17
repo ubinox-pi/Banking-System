@@ -8,12 +8,14 @@ import com.neptunebank.bankingservice.models.LoginHistory;
 import com.neptunebank.bankingservice.repositories.BankingRepository;
 import com.neptunebank.bankingservice.repositories.HistoryRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,12 +66,21 @@ public class LoginService {
         this.bankingRepository = bankingRepository;
     }
 
-    public ResponseEntity<?> login(LoginDTO loginDTO, HttpServletRequest request) {
+    public ResponseEntity<?> login(LoginDTO loginDTO, HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map<String, String> responseMap = new HashMap<>();
         String username = loginDTO.getUsername();
         String password = loginDTO.getPassword();
         RecoveryPhrases recoveryPhrases = loginDTO.getRecoveryPhrase();
         String recoveryAnswer = loginDTO.getRecoveryAnswer();
+
+        if (username.startsWith("NEPT")) {
+            responseMap.put("error", "Invalid details");
+            responseMap.put("message", "Activate your account first.");
+            responseMap.put("status", "Failed");
+            responseMap.put("code", "400");
+            response.sendRedirect("/activate-account");
+            return new ResponseEntity<>(responseMap, HttpStatus.BAD_REQUEST);
+        }
 
         var banking = bankingRepository.findByUsername(username);
         if (banking == null) {

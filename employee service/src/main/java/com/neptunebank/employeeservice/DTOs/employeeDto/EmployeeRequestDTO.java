@@ -69,8 +69,7 @@ public class EmployeeRequestDTO {
     @Enumerated(EnumType.STRING)
     private BankRole roles;
 
-    @Enumerated(EnumType.STRING)
     @NotNull(message = "Gender cannot be null")
+    @Enumerated(EnumType.STRING)
     private Genders gender;
-
 }

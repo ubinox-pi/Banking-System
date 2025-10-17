@@ -8,6 +8,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -229,5 +231,16 @@ public class PhoneService {
         });
     }
 
-
+    @KafkaListener(topics = "send-phone-message", groupId = "users")
+    private void sendPhoneMessage(String message, Acknowledgment acknowledgment) {
+        String[] parts = message.split(":");
+        if (parts.length < 2) {
+            acknowledgment.acknowledge();
+            return;
+        }
+        String phone = parts[0];
+        String messageText = parts[1];
+        this.whatsappMessages.sendOtp(new OtpPayload(phone, messageText));
+        acknowledgment.acknowledge();
+    }
 }

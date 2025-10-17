@@ -48,7 +48,14 @@ public class BankingAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws IOException, ServletException {
-        
+
+        String path = request.getRequestURI();
+
+        if (path.startsWith("/actuator") || path.startsWith("/error")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing Gateway authentication");
             return;

@@ -56,7 +56,7 @@ public class Account {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
     @JoinColumn(name = "limit_id", nullable = false, unique = true)
-    private Limit limit;
+    private Account_limit accountLimit;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

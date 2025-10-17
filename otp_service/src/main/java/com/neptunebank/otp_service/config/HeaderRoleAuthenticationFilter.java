@@ -26,14 +26,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
 
+@Component
 public class HeaderRoleAuthenticationFilter extends OncePerRequestFilter {
-    @Value("${app.secret-key}")
-    private String secretKey;
+    private final String secretKey;
+
+    public HeaderRoleAuthenticationFilter(@Value("${app.secret-key}") String secretKey) {
+        this.secretKey = secretKey;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -41,9 +46,9 @@ public class HeaderRoleAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws IOException, jakarta.servlet.ServletException {
         String username = request.getHeader("X-Authenticated-User");
         String role = request.getHeader("X-Authenticated-Role");
-        String secretKey = request.getHeader("X-Secret-Key");
+        String secretKeyHeader = request.getHeader("X-Secret-Key");
 
-        if (username != null && role != null && secretKey != null && secretKey.equals(this.secretKey)) {
+        if (username != null && role != null && secretKeyHeader != null && secretKeyHeader.equals(this.secretKey)) {
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
                             username,
@@ -56,4 +61,3 @@ public class HeaderRoleAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
-

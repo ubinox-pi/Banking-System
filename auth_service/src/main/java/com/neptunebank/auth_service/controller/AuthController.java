@@ -1,11 +1,8 @@
 package com.neptunebank.auth_service.controller;
 
-import com.neptunebank.auth_service.ENUM.Roles;
 import com.neptunebank.auth_service.jwt.JwtUtil;
-import com.neptunebank.auth_service.models.Users;
 import com.neptunebank.auth_service.records.AuthResponse;
 import com.neptunebank.auth_service.records.LoginRequest;
-import com.neptunebank.auth_service.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,11 +14,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -44,129 +40,136 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    private UserRepository userRepository;
 
-    private JwtUtil jwtUtil;
-
-    @Value("${secret.key}")
-    private String secret;
-
-    @Value("${app.admin.user}")
-    private String user;
-
-    @Value("${app.admin.password}")
-    private String password;
+    private final JwtUtil jwtUtil;
+    private final String secret;
+    private final String loginURL;
+    private final RestTemplate restTemplate;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Autowired
-    public void setJwtUtil(JwtUtil jwtUtil) {
+    public AuthController(JwtUtil jwtUtil, @Value("${app.secret-key}") String secretKey, @Value("${app.login-url}") String loginURL) {
         this.jwtUtil = jwtUtil;
+        this.secret = secretKey;
+        this.loginURL = loginURL;
+        this.restTemplate = new RestTemplate();
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest, HttpServletResponse response, HttpServletRequest request) {
         Map<String, String> responseMap = new HashMap<>();
-        if (loginRequest.username().equals(this.user) && loginRequest.password().equals(this.password)) {
+
+        String username = loginRequest.username();
+        String password = loginRequest.password();
+
+        Map<String, String> urlVariables = Map.of(
+                "username", username,
+                "password", password,
+                "secretKey", this.secret
+        );
+
+        ResponseEntity<Map> loginResponse = restTemplate.getForEntity(
+                loginURL,
+                Map.class,
+                urlVariables
+        );
+        if (loginResponse.getStatusCode() != HttpStatus.OK) {
+            return new ResponseEntity<>(loginResponse.getBody(), HttpStatus.UNAUTHORIZED);
+        }
+        Map res = loginResponse.getBody();
+
+        assert res != null;
+        String role = res.get("role").toString();
+        if (role == null || role.isBlank()) {
+            responseMap.put("status", "failed");
+            responseMap.put("code", "500");
+            responseMap.put("error", "Internal server error");
+            responseMap.put("message", "Role not found");
+            return new ResponseEntity<>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (loginResponse.getStatusCode() == HttpStatus.OK) {
             if ("session".equalsIgnoreCase(loginRequest.mode())) {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("username", loginRequest.username());
-                session.setAttribute("role", "ADMIN");
+                session.setAttribute("role", role);
                 session.setMaxInactiveInterval(600 * 3);
                 responseMap.put("message", "Login successful");
                 responseMap.put("username", loginRequest.username());
-                responseMap.put("role", "ADMIN");
+                responseMap.put("role", role);
                 responseMap.put("status", "success");
                 responseMap.put("code", "200");
                 return new ResponseEntity<>(responseMap, HttpStatus.OK);
             } else if ("jwt".equalsIgnoreCase(loginRequest.mode())) {
                 request.getSession(false);
-                String token = jwtUtil.generateToken(Users.builder()
-                        .username(loginRequest.username())
-                        .roles(Roles.ADMIN)
-                        .build());
+                String token = jwtUtil.generateToken(loginRequest.username(), role);
                 responseMap.put("message", "Login successful");
                 responseMap.put("username", loginRequest.username());
-                responseMap.put("role", Roles.ADMIN.name());
+                responseMap.put("role", role);
                 responseMap.put("token", token);
                 responseMap.put("status", "success");
                 responseMap.put("code", "200");
                 return new ResponseEntity<>(responseMap, HttpStatus.OK);
-            }
+            } else
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid login request");
+        } else {
+            responseMap.put("status", "failed");
+            responseMap.put("code", "401");
+            responseMap.put("error", "Unauthorized");
+            responseMap.put("message", "Internal server error");
+            return new ResponseEntity<>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        Users users = userRepository.findByUsername(loginRequest.username())
-                .filter(u -> u.getPassword().equals(loginRequest.password()))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
-        if (users.isExpired()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User account is expired");
-        }
-        if (users.isLocked()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User account is locked");
-        }
-        if (!users.isActive()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User account is inactive");
-        }
-        if (users.getRoles() == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User role is not assigned");
-        }
-        if (users.isCredentialsExpired()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User credentials are expired");
-        }
-        if ("session".equalsIgnoreCase(loginRequest.mode())) {
-            HttpSession session = request.getSession(true);
-            session.setAttribute("username", users.getUsername());
-            session.setAttribute("role", users.getRoles().name());
-            session.setMaxInactiveInterval(600);
-            responseMap.put("message", "Login successful");
-            responseMap.put("username", users.getUsername());
-            responseMap.put("role", users.getRoles().name());
-            responseMap.put("status", "success");
-            responseMap.put("code", "200");
-            return new ResponseEntity<>(responseMap, HttpStatus.OK);
-        } else if ("jwt".equalsIgnoreCase(loginRequest.mode())) {
-            request.getSession(false);
-            String token = jwtUtil.generateToken(users);
-            responseMap.put("message", "Login successful");
-            responseMap.put("username", users.getUsername());
-            responseMap.put("role", users.getRoles().name());
-            responseMap.put("token", token);
-            responseMap.put("status", "success");
-            responseMap.put("code", "200");
-            return new ResponseEntity<>(responseMap, HttpStatus.OK);
-        } else
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid login request");
+
     }
 
     @GetMapping("/validate")
     public ResponseEntity<?> validateSession(HttpServletRequest request) {
+        Map<String, String> responseMap = new HashMap<>();
         String security = request.getHeader("X-Secret-Key");
         if (security == null || !security.equals(secret)) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            responseMap.put("message", "Invalid secret key");
+            responseMap.put("status", "error");
+            responseMap.put("code", "401");
+            responseMap.put("error", "Unauthorized");
+            return new ResponseEntity<>(responseMap, HttpStatus.UNAUTHORIZED);
         }
-        String jwt = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         try {
-            if (jwt != null && jwt.startsWith("Bearer ")) {
-                Claims claims = jwtUtil.validateToken(jwt.substring(7));
-                String username = claims.getSubject();
-                String role = claims.get("role", String.class);
-                return new ResponseEntity<>(new AuthResponse(username, role), HttpStatus.OK);
-            }
             HttpSession session = request.getSession(false);
             if (session != null) {
                 String username = (String) session.getAttribute("username");
                 String role = (String) session.getAttribute("role");
                 if (username != null && role != null) {
                     return new ResponseEntity<>(new AuthResponse(username, role), HttpStatus.OK);
+                } else {
+                    responseMap.put("message", "Session have no attributes");
+                    responseMap.put("status", "error");
+                    responseMap.put("code", "401");
+                    responseMap.put("error", "Unauthorized");
+                    return new ResponseEntity<>(responseMap, HttpStatus.UNAUTHORIZED);
                 }
             }
-        } catch (Exception e) {
+            String jwt = request.getHeader(HttpHeaders.AUTHORIZATION);
+            if (jwt != null && jwt.startsWith("Bearer ")) {
+                Claims claims = jwtUtil.validateToken(jwt.substring(7));
+                String username = claims.getSubject();
+                String role = claims.get("role", String.class);
+                return new ResponseEntity<>(new AuthResponse(username, role), HttpStatus.OK);
+            } else {
+                responseMap.put("message", "Invalid authorization header");
+                responseMap.put("status", "error");
+                responseMap.put("code", "401");
+                responseMap.put("error", "Unauthorized");
+                return new ResponseEntity<>(responseMap, HttpStatus.UNAUTHORIZED);
+            }
+
+
+        } catch (Throwable t) {
+            responseMap.put("message", "Invalid session");
+            responseMap.put("status", "error");
+            responseMap.put("code", "401");
+            responseMap.put("error", t.getMessage());
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
 
@@ -177,15 +180,5 @@ public class AuthController {
             session.invalidate();
         }
         return ResponseEntity.ok("Logged out successfully.");
-    }
-
-    @PostMapping("/add-user")
-    public ResponseEntity<?> addUser(@RequestBody @Valid Users user) {
-        Optional<Users> existingUser = userRepository.findByUsername(user.getUsername());
-        if (existingUser.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
-        }
-        userRepository.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
     }
 }

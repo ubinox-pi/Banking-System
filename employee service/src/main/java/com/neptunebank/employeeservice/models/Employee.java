@@ -101,11 +101,51 @@ public class Employee implements UserDetails {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+
+        if (firstName != null)
+            if (!firstName.equals(firstName.toUpperCase()))
+                firstName = firstName.toUpperCase();
+
+        if (middleName != null)
+            if (!middleName.equals(middleName.toUpperCase()))
+                middleName = middleName.toUpperCase();
+
+        if (lastName != null)
+            if (!lastName.equals(lastName.toUpperCase()))
+                lastName = lastName.toUpperCase();
+
+        if (email != null)
+            if (!email.equals(email.toLowerCase()))
+                email = email.toLowerCase();
+
+        if (username != null)
+            if (!username.equals(username.toLowerCase()))
+                username = username.toLowerCase();
     }
 
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+
+        if (firstName != null)
+            if (!firstName.equals(firstName.toUpperCase()))
+                firstName = firstName.toUpperCase();
+
+        if (middleName != null)
+            if (!middleName.equals(middleName.toUpperCase()))
+                middleName = middleName.toUpperCase();
+
+        if (lastName != null)
+            if (!lastName.equals(lastName.toUpperCase()))
+                lastName = lastName.toUpperCase();
+
+        if (email != null)
+            if (!email.equals(email.toLowerCase()))
+                email = email.toLowerCase();
+
+        if (username != null)
+            if (!username.equals(username.toLowerCase()))
+                username = username.toLowerCase();
     }
 
     @Override

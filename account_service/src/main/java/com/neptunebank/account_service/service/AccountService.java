@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -45,24 +46,16 @@ import java.util.Map;
  */
 @Service
 public class AccountService {
-    private AccountRepository accountRepository;
-    private KafkaTemplate<String, String> message;
+    private final AccountRepository accountRepository;
+    private final KafkaTemplate<String, String> message;
 
-    private BranchRepository branchRepository;
-
-    @Autowired
-    public void setMessage(KafkaTemplate<String, String> message) {
-        this.message = message;
-    }
+    private final BranchRepository branchRepository;
 
     @Autowired
-    public void setKafkaTemplate(KafkaTemplate<String, String> kafkaTemplate) {
-        this.message = kafkaTemplate;
-    }
-
-    @Autowired
-    public void setAccountRepository(AccountRepository accountRepository) {
+    public AccountService(AccountRepository accountRepository, KafkaTemplate<String, String> message, BranchRepository branchRepository) {
         this.accountRepository = accountRepository;
+        this.message = message;
+        this.branchRepository = branchRepository;
     }
 
     @Transactional
@@ -172,11 +165,51 @@ public class AccountService {
         }
     }
 
+    @KafkaListener(topics = "check-account", groupId = "users")
+    private void checkAccountNumberIsValid(String message, Acknowledgment acknowledgment) {
+        boolean isValid = accountRepository.existsByAccountNumber(message);
+        try {
+            String userId = accountRepository.findByAccountNumber(message).orElseThrow(
+                    () -> new Exception("Account not found")
+            ).getUserId().toString();
+            String finalMessage = message + ":" + userId + ":" + isValid;
+            this.message.send("check-account-validation", finalMessage);
+        } catch (Throwable e) {
+            String finalMessage = message + ":" + Boolean.FALSE;
+            this.message.send("check-account-validation", finalMessage);
+        } finally {
+            acknowledgment.acknowledge();
+        }
+    }
+
     private BigDecimal setInterestRate(AccountType type) {
         return switch (type) {
             case SAVINGS -> BigDecimal.valueOf(04.25);
             case CURRENT -> BigDecimal.valueOf(00.00);
             default -> BigDecimal.valueOf(0);
         };
+    }
+
+    @Scheduled(cron = "0 0 0 1 * ?")
+    protected void giveMonthlyInterest() {
+        accountRepository.giveInterest(AccountType.SAVINGS, Status.ACTIVE); //TODO: to enhance in future
+        String subject = "Monthly Interest Credited to Your Account";
+        String body = """
+                Dear [%s],
+                
+                We are pleased to inform you that the monthly interest has been credited to your account ending with [last four digits].
+                
+                You can now view the updated balance in your account. If you notice any discrepancies, please contact our support team immediately at [support email/phone number].
+                
+                Thank you for banking with [Your Company/Bank Name]. We remain committed to serving you with the highest level of trust and excellence.
+                
+                Sincerely,
+                [Ashish kushwaha]
+                [Creator]
+                [Neptune Bank]
+                [konealeabo@gmail.com]
+                """;
+        //String finalMessage = "email" + accountRepository.getUserIdByaccountNukmber("");
+        //this.message.send("send-user-message", finalMessage);
     }
 }

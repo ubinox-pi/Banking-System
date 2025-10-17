@@ -1,8 +1,13 @@
 package com.neptunebank.card_service.model;
 
+import com.neptunebank.card_service.ENUM.CardStatus;
+import com.neptunebank.card_service.ENUM.NetworkType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.*;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -34,16 +39,91 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long cardId;
+    
+    private Long varifiedBY;
 
-    @Column(nullable = false)
-    private Long accountNumber;
+    @ManyToOne(optional = false)
+    @JoinColumn(updatable = false, nullable = false)
+    private CardTypes cardType;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, updatable = false)
+    private String accountNumber;
+
+    @Column(nullable = false, unique = true, length = 16)
     private String cardNumber;
 
     @Column(nullable = false)
-    @Size(min = 1, max = 64)
-//    @Pattern(regexp = "{a-zA-Z}")
-    private String cardName;
+    private String cardHolderName;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private NetworkType cardNetworkType;
+
+    @Column(nullable = false)
+    private LocalDate expiryDate;
+
+    @Column(nullable = false)
+    private String cvv;
+
+    @Column(length = 4)
+    private String pin;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private CardStatus cardStatus = CardStatus.INACTIVE;
+
+    @Column(nullable = false)
+    private String annualFee;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private CardStatus status;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean contactlessEnabled = false;
+
+    @Column(nullable = false)
+    private BigDecimal dailyLimit;
+
+    @Column(nullable = false)
+    private BigDecimal dailyUsed = BigDecimal.ZERO;
+
+    @Column(nullable = false)
+    private BigDecimal monthlyLimit;
+
+    @Column(nullable = false)
+    private BigDecimal monthlyUsed = BigDecimal.ZERO;
+
+    @Column(nullable = false)
+    private LocalDateTime issuedAt;
+
+    private LocalDateTime lastUsedAt;
+
+    @Builder.Default
+    private Boolean isBlocked = false;
+
+    private LocalDateTime blockedAt;
+
+    private LocalDateTime unblockedAt;
+
+    private String blockedReason;
+
+    private String unblockedReason;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    private void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    private void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

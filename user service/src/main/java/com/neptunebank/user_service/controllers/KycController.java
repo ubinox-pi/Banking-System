@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @RestController
-@RequestMapping("/kyc")
+@RequestMapping("/users/kyc")
 public class KycController {
 
     private KycService kycService;

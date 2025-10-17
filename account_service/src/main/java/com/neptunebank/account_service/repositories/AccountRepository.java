@@ -4,10 +4,12 @@ import com.neptunebank.account_service.ENUM.AccountType;
 import com.neptunebank.account_service.ENUM.Status;
 import com.neptunebank.account_service.models.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -40,4 +42,14 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM Account a WHERE a.userId = ?1 AND a.accountType = ?2 AND a.status = ?3")
     boolean existsAccountByAccountTypeAndStatus(Long userId, AccountType accountType, Status status);
+
+    @Query("SELECT a FROM Account a WHERE a.accountNumber = ?1")
+    Optional<Account> findByAccountNumber(String accountNumber);
+
+    @Query("UPDATE Account a SET a.balance = a.balance + (a.balance * 4.25) WHERE a.accountType = ?1 AND a.status = ?2")
+    @Modifying
+    void giveInterest(AccountType accountType, Status status);
+
+    @Query("SELECT a.userId FROM Account a WHERE a.accountNumber = ?1")
+    long getUserIdByaccountNukmber(String accountNumber);
 }

@@ -1,7 +1,5 @@
 package com.neptunebank.bankingservice.config;
 
-import com.neptunebank.bankingservice.jwt.JwtUtil;
-import com.neptunebank.bankingservice.services.BankingSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,17 +32,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
-    private BankingAuthFilter bankingAuthFilter;
-    private HeaderRoleAuthenticationFilter headerRoleAuthenticationFilter;
+    private final BankingAuthFilter bankingAuthFilter;
+    private final HeaderRoleAuthenticationFilter headerRoleAuthenticationFilter;
 
     @Autowired
-    public void setHeaderRoleAuthenticationFilter(HeaderRoleAuthenticationFilter headerRoleAuthenticationFilter) {
-        this.headerRoleAuthenticationFilter = headerRoleAuthenticationFilter;
-    }
-
-    @Autowired
-    public void setBankingAuthFilter(BankingAuthFilter bankingAuthFilter) {
+    public SecurityConfig(BankingAuthFilter bankingAuthFilter,
+                          HeaderRoleAuthenticationFilter headerRoleAuthenticationFilter) {
         this.bankingAuthFilter = bankingAuthFilter;
+        this.headerRoleAuthenticationFilter = headerRoleAuthenticationFilter;
     }
 
     @Bean
@@ -55,7 +50,9 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/banking/auth/login").permitAll()
+                        .requestMatchers("/banking/auth/login",
+                                "/actuator/**",
+                                "/error/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(headerRoleAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(bankingAuthFilter, HeaderRoleAuthenticationFilter.class)
@@ -64,13 +61,4 @@ public class SecurityConfig {
                 .build();
     }
 
-    @Bean
-    protected BankingAuthFilter bankingAuthFilter(JwtUtil jwtUtil, BankingSessionService sessionService) {
-        return new BankingAuthFilter(jwtUtil, sessionService);
-    }
-
-    @Bean
-    protected HeaderRoleAuthenticationFilter headerRoleAuthenticationFilter() {
-        return new HeaderRoleAuthenticationFilter();
-    }
 }

@@ -83,7 +83,7 @@ public class GlobalExceptionHandler {
                 "message", "An unexpected error occurred",
                 "errorCode", "INTERNAL_SERVER_ERROR",
                 "errorType", "Generic Exception",
-                "errorDescription", ex.getMessage(),
+                "errorDescription", ex.getMessage() == null ? "Unknown error occurred" : ex.getMessage(),
                 "errorDetails", "Please contact support for assistance",
                 "errorResolution", "Try again later or contact support",
                 "errorTimestamp", String.valueOf(System.currentTimeMillis()),

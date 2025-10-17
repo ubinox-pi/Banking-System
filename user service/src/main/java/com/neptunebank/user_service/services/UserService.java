@@ -45,6 +45,12 @@ public class UserService {
 
     private KafkaTemplate<String, String> mail;
     private UserRepository userRepository;
+    private KafkaTemplate<String, String> message;
+
+    @Autowired
+    public void setMessage(KafkaTemplate<String, String> message) {
+        this.message = message;
+    }
 
     @Autowired
     public void setMail(KafkaTemplate<String, String> mail) {
@@ -363,6 +369,33 @@ public class UserService {
             // TODO: TO BE HANDLED
         } finally {
             ack.acknowledge();
+        }
+    }
+
+    @KafkaListener(topics = "send-user-message", groupId = "users")
+    private void sendUserMessage(String message, Acknowledgment acknowledgment) {
+        String[] split = message.split(":");
+        String way = split[0];
+        if (way.equalsIgnoreCase("mail")) {
+            var user = userRepository.findUsersByUserid(Long.parseLong(split[1])).orElseThrow();
+            String email = user.getContactDetails().getEmail();
+            String fullName = user.getFirstName() + " " + user.getMiddleName() + " " + user.getLastName();
+            String subject = split[2];
+            String body = String.format(split[3], fullName);
+            String finalMail = email + ":" + subject + ":" + body;
+            this.message.send("send-mail-message", finalMail);
+            acknowledgment.acknowledge();
+            return;
+        }
+        if (way.equalsIgnoreCase("phone")) {
+            var user = userRepository.findUsersByUserid(Long.parseLong(split[1])).orElseThrow(
+                    () -> new RuntimeException("User not found with id: " + split[1]));
+            String phone = user.getContactDetails().getMobileNumber();
+            String fullName = user.getFirstName() + " " + user.getMiddleName() + " " + user.getLastName();
+            String subject = String.format(split[2], fullName);
+            String finalMessage = phone + ":" + subject;
+            this.message.send("send-phone-message", finalMessage);
+            acknowledgment.acknowledge();
         }
     }
 

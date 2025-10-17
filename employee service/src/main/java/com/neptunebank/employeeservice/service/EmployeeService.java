@@ -2,7 +2,6 @@ package com.neptunebank.employeeservice.service;
 
 import com.neptunebank.employeeservice.DTOs.employeeDto.EmployeeRequestDTO;
 import com.neptunebank.employeeservice.mappers.EmployeeMapper;
-import com.neptunebank.employeeservice.models.Employee;
 import com.neptunebank.employeeservice.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -36,44 +36,54 @@ import java.util.Map;
 @Service
 public class EmployeeService {
 
-    private EmployeeRepository employeeRepository;
-    private KafkaTemplate<String, String> data;
-    private KafkaTemplate<String, String> message;
+    private final EmployeeRepository employeeRepository;
+    private final KafkaTemplate<String, String> data;
+    private final KafkaTemplate<String, String> message;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public void setEmployeeRepository(EmployeeRepository employeeRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, KafkaTemplate<String, String> data, KafkaTemplate<String, String> message, PasswordEncoder passwordEncoder) {
         this.employeeRepository = employeeRepository;
-    }
-
-    @Autowired
-    public void setData(KafkaTemplate<String, String> kafkaTemplate) {
-        this.data = kafkaTemplate;
-    }
-
-    @Autowired
-    public void setMessage(KafkaTemplate<String, String> message) {
+        this.data = data;
         this.message = message;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @KafkaListener(topics = "check-employee", groupId = "users")
-    public void confirmKycRequest(String message, Acknowledgment acknowledgment) {
+    private void confirmKycRequest(String message, Acknowledgment acknowledgment) {
         try {
             if (employeeRepository.existsByEmployeeId(Long.parseLong(message))) {
                 this.message.send("verify-kyc", "success" + ":" + message);
                 acknowledgment.acknowledge();
             } else {
-                this.message.send("verify-kyc", "failed:Employee does not exist");
+                this.message.send("verify-kyc", "failed:Employee does not exist:" + message);
                 acknowledgment.acknowledge();
             }
         } catch (Throwable t) {
-            this.message.send("verify-kyc", "failed:" + t.getMessage());
+            this.message.send("verify-kyc", "failed:" + t.getMessage() + ":" + message);
         }
 
     }
 
-    private ResponseEntity<?> createEmplyee(EmployeeRequestDTO dto) {
+    @KafkaListener(topics = "check-employee-for-card", groupId = "users")
+    private void confirmEmployeeForCardRequest(String message, Acknowledgment acknowledgment) {
+        try {
+            if (employeeRepository.existsByEmployeeId(Long.parseLong(message))) {
+                this.message.send("check-employee-for-card-validation", message + ":" + true);
+                acknowledgment.acknowledge();
+            } else {
+                this.message.send("check-employee-for-card-validation", message + ":" + false);
+                acknowledgment.acknowledge();
+            }
+        } catch (Throwable t) {
+            this.message.send("check-employee-for-card-validation", message + ":" + false);
+            acknowledgment.acknowledge();
+        }
+    }
+
+    public ResponseEntity<?> createEmployee(EmployeeRequestDTO dto) {
         Map<String, String> responseMap = new HashMap<>();
-        Employee emp = EmployeeMapper.toEntiry(dto);
+        var emp = EmployeeMapper.toEntiry(dto);
         if (employeeRepository.existsByUsername(emp.getUsername())) {
             responseMap.put("error", "User already exists");
             responseMap.put("status", "failed");
@@ -86,6 +96,11 @@ public class EmployeeService {
             responseMap.put("code", "409");
             return new ResponseEntity<>(responseMap, HttpStatus.CONFLICT);
         }
-        return null;
+        emp.setPassword(passwordEncoder.encode(emp.getPassword()));
+        employeeRepository.save(emp);
+        responseMap.put("status", "success");
+        responseMap.put("code", "200");
+        responseMap.put("message", "Employee created successfully");
+        return new ResponseEntity<>(responseMap, HttpStatus.CREATED);
     }
 }

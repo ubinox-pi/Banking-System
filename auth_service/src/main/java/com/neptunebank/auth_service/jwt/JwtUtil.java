@@ -1,6 +1,5 @@
 package com.neptunebank.auth_service.jwt;
 
-import com.neptunebank.auth_service.models.Users;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -32,10 +31,10 @@ import java.util.Date;
 public class JwtUtil {
     private final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
-    public String generateToken(Users user) {
+    public String generateToken(String username, String role) {
         return Jwts.builder()
-                .setSubject(user.getUsername())
-                .claim("role", user.getRoles().name())
+                .setSubject(username)
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 180))
                 .signWith(SECRET_KEY)

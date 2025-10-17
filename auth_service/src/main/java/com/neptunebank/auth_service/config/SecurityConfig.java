@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -46,7 +45,11 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/auth/validate", "/auth/logout", "/auth/add-user").permitAll()
+                        .requestMatchers("/auth/login",
+                                "/auth/validate",
+                                "/auth/logout",
+                                "/auth/add-user",
+                                "/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
 
@@ -54,13 +57,9 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
 
-                .csrf(csrf -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .ignoringRequestMatchers("/auth/login", "/auth/validate", "/auth/logout", "/auth/add-user", "add-user")
-                )
+                .csrf(AbstractHttpConfigurer::disable)
 
-                .cors(cors -> {
-                })
+                .cors(AbstractHttpConfigurer::disable)
 
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable);

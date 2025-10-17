@@ -66,5 +66,6 @@ public class LoginHistory {
     @Column
     private String mfaMethodUsed;
 
+    @Enumerated(EnumType.STRING)
     private Status status;
 }

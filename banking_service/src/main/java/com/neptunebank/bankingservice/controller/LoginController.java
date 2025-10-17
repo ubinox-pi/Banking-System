@@ -3,6 +3,7 @@ package com.neptunebank.bankingservice.controller;
 import com.neptunebank.bankingservice.DTO.LoginDTO;
 import com.neptunebank.bankingservice.services.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -42,7 +45,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid LoginDTO login, HttpServletRequest request) {
-        return loginService.login(login, request);
+    public ResponseEntity<?> login(@RequestBody @Valid LoginDTO login, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return loginService.login(login, request, response);
     }
 }

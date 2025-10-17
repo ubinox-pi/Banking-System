@@ -37,23 +37,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public class KycService {
 
     private final Map<Long, String> resource = new ConcurrentHashMap<>();
-    private KycRepository kycRepository;
-    private KafkaTemplate<String, String> account;
-    private KafkaTemplate<String, String> message;
+    private final KycRepository kycRepository;
+    private final KafkaTemplate<String, String> account;
+    private final KafkaTemplate<String, String> message;
 
     @Autowired
-    public void setMessage(KafkaTemplate<String, String> message) {
-        this.message = message;
-    }
-
-    @Autowired
-    public void setAccount(KafkaTemplate<String, String> account) {
-        this.account = account;
-    }
-
-    @Autowired
-    public void setKycRepository(KycRepository kycRepository) {
+    public KycService(KycRepository kycRepository, KafkaTemplate<String, String> account, KafkaTemplate<String, String> message) {
         this.kycRepository = kycRepository;
+        this.account = account;
+        this.message = message;
     }
 
     public ResponseEntity<?> doKyc(KycVerificationDTO kyc) {
@@ -82,13 +74,40 @@ public class KycService {
         kycId.setRejectionReason(kyc.getRejectionReason());
 
         if (kyc.getVerifiedByEmployeeId() != 0) {
-            this.resource.put(kyc.getUserId(), null);
+            this.resource.put(kyc.getUserId(), "null");
+            message.send("check-employee", String.valueOf(kyc.getVerifiedByEmployeeId()));
+            int count = 0;
             while (true) {
-                if (this.resource.get(kyc.getUserId()) != null) {
+                if (!this.resource.get(kyc.getUserId()).equalsIgnoreCase("null")) {
+                    if (!this.resource.get(kyc.getUserId()).matches("\\d+")) {
+                        response.put("message", "Employee verification failed");
+                        response.put("status", "error");
+                        response.put("error", this.resource.get(kyc.getUserId()));
+                        response.put("code", "500");
+                        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+                    }
                     break;
+                } else {
+                    count++;
+                    if (20 >= count) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            response.put("message", "Failed to verify employee");
+                            response.put("status", "error");
+                            response.put("error", e.getMessage() == null ? "Unknown error" : e.getMessage());
+                            response.put("code", "500");
+                            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+                        }
+                    } else {
+                        response.put("message", "Failed to verify employee");
+                        response.put("status", "error");
+                        response.put("error", "Employee verification timed out");
+                        response.put("code", "500");
+                        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+                    }
                 }
             }
-            message.send("check-employee", String.valueOf(kyc.getVerifiedByEmployeeId()));
             String[] message = this.resource.get(kyc.getUserId()).split(":");
             if (message[0].equalsIgnoreCase("failed")) {
                 response.put("message", message[1]);
@@ -121,7 +140,7 @@ public class KycService {
                         "Neptune Bank Team";
                 String finalMessage = to + ":" + subject + ":" + body;
                 this.message.send("send-mail-message", finalMessage);
-                account.send("create-account", message);
+                this.account.send("create-account", message);
             }
             response.put("message", "KYC updated successfully");
             response.put("status", "success");
@@ -139,7 +158,11 @@ public class KycService {
     @KafkaListener(topics = "verify-kyc", groupId = "users")
     public void setEmployee(String message, Acknowledgment acknowledgment) {
         String[] split = message.split(":");
-        resource.replace(Long.parseLong(split[1]), message);
+        if (split[0].equalsIgnoreCase("success"))
+            this.resource.replace(Long.parseLong(split[1]), message);
+        else if (split[0].equalsIgnoreCase("failed")) {
+            this.resource.replace(Long.parseLong(split[2]), "failed " + split[1]);
+        }
         acknowledgment.acknowledge();
     }
 }

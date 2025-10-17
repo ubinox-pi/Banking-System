@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .cors(corsSpec -> {
                 })
                 .authorizeExchange(exchanges -> exchanges
+                        .pathMatchers("/actuator/**").permitAll()
                         .anyExchange().permitAll()
                 );
         return http.build();

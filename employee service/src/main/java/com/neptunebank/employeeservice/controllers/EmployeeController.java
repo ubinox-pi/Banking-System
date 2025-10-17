@@ -1,7 +1,12 @@
 package com.neptunebank.employeeservice.controllers;
 
+import com.neptunebank.employeeservice.DTOs.employeeDto.EmployeeRequestDTO;
 import com.neptunebank.employeeservice.service.EmployeeService;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,11 +32,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
     @Autowired
-    public void setEmployeeService(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
+
+    @PostMapping("/register")
+    @RolesAllowed("ADMIN")
+    public ResponseEntity<?> registerEmployee(@RequestBody EmployeeRequestDTO dto) {
+        return employeeService.createEmployee(dto);
+    }
+
 
 }
