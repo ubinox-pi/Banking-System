@@ -6,7 +6,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.Executor;
 
@@ -28,7 +28,7 @@ import java.util.concurrent.Executor;
  *   - Commercial use is strictly prohibited.
  *
  */
-@Component
+@Configuration
 @EnableAsync
 public class AsyncConfig implements AsyncConfigurer {
     @Bean

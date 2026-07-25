@@ -3,6 +3,7 @@ package com.neptunebank.transaction_service.controller;
 import com.neptunebank.transaction_service.DTOs.TransactionRequestDto;
 import com.neptunebank.transaction_service.services.TransactionService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,13 +31,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("transactions")
+@RequiredArgsConstructor
 public class TransactionController {
-    private TransactionService transactionService;
 
-    @Autowired
-    public void setTransactionService(TransactionService transactionService) {
-        this.transactionService = transactionService;
-    }
+    private final TransactionService transactionService;
 
     @PostMapping("/create")
     public ResponseEntity<?> createTransaction(@Valid @RequestBody TransactionRequestDto dto) {

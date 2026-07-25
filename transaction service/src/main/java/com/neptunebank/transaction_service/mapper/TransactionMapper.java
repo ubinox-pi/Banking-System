@@ -24,13 +24,12 @@ import com.neptunebank.transaction_service.models.Transaction;
 public class TransactionMapper {
     public static Transaction toEntity(TransactionRequestDto dto) {
         return Transaction.builder()
-                .sourceAccount(dto.getSourceAccount())
-                .destinationAccount(dto.getDestinationAccount())
+                .sourceAccount(SourceOrDestinationMapper.toEntity(dto.getSourceAccount()))
+                .destinationAccount(SourceOrDestinationMapper.toEntity(dto.getDestinationAccount()))
                 .transactionType(dto.getTransactionType())
                 .modeOfTransaction(dto.getModeOfTransaction())
                 .transactionMedium(dto.getTransactionMedium())
                 .amount(dto.getAmount())
-                .sourceOrDestinationBankId(SourceOrDestinationMapper.toEntity(dto.getSourceOrDestinationBank()))
                 .description(dto.getDescription())
                 .remarks(dto.getRemarks())
                 .build();

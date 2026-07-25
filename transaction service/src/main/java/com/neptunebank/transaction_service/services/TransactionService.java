@@ -1,5 +1,6 @@
 package com.neptunebank.transaction_service.services;
 
+import com.neptunebank.transaction_service.DTOs.ApiResponse;
 import com.neptunebank.transaction_service.DTOs.TransactionRequestDto;
 import com.neptunebank.transaction_service.mapper.TransactionMapper;
 import com.neptunebank.transaction_service.repositories.TransactionRepository;
@@ -8,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /*
  * Copyright (c) 2025 Ramjee Prasad
@@ -44,12 +42,12 @@ public class TransactionService {
         var transaction = TransactionMapper.toEntity(transactionRequestDto);
         transaction.setTransactionId(getTransactionId());
         String transactionId = transactionRepository.save(transaction).getTransactionId();
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "Transaction created successfully");
-        response.put("transactionId", transactionId);
-        response.put("status", "success");
-        response.put("code", "201");
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+
+        return new ResponseEntity<>(ApiResponse.created(
+                transactionId,
+                "Transaction created successfully",
+                "/transaction/create"
+        ), HttpStatus.CREATED);
     }
 
     private String getTransactionId() {

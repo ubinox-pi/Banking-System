@@ -18,7 +18,6 @@
 
 package com.neptunebank.user_service.services;
 
-
 import com.neptunebank.user_service.DTO.userDto.UserAdminDTO;
 import com.neptunebank.user_service.DTO.userDto.UsersRequestDTO;
 import com.neptunebank.user_service.ENUMs.MaritalStatus;
@@ -27,7 +26,7 @@ import com.neptunebank.user_service.mappers.UsersMapper;
 import com.neptunebank.user_service.models.Users;
 import com.neptunebank.user_service.repositories.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -41,27 +40,12 @@ import java.io.InputStream;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    private KafkaTemplate<String, String> mail;
-    private UserRepository userRepository;
-    private KafkaTemplate<String, String> message;
-
-    @Autowired
-    public void setMessage(KafkaTemplate<String, String> message) {
-        this.message = message;
-    }
-
-    @Autowired
-    public void setMail(KafkaTemplate<String, String> mail) {
-        this.mail = mail;
-    }
-
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
+    private final KafkaTemplate<String, String> mail;
+    private final UserRepository userRepository;
+    private final KafkaTemplate<String, String> message;
 
     @Transactional
     public ResponseEntity<?> registerUser(
@@ -255,6 +239,46 @@ public class UserService {
         }
     }
 
+    public boolean isValidImageFile(MultipartFile file) {
+        return isAllowedImageType(file) && isAllowedImageByMagicNumber(file) && hasAllowedImageExtension(file);
+    }
+
+    public boolean isAllowedImageType(MultipartFile file) {
+        if (file == null || file.isEmpty()) return false;
+
+        String contentType = file.getContentType();
+        return contentType != null && (
+                contentType.equalsIgnoreCase("image/jpeg") ||
+                        contentType.equalsIgnoreCase("image/jpg") ||
+                        contentType.equalsIgnoreCase("image/png")
+        );
+    }
+
+    public boolean isAllowedImageByMagicNumber(MultipartFile file) {
+        if (file == null || file.isEmpty()) return false;
+        try (InputStream is = file.getInputStream()) {
+            byte[] header = new byte[8];
+            int b = is.read(header);
+
+            if (header[0] == (byte) 0xFF && header[1] == (byte) 0xD8) {
+                return true;
+            }
+
+            return header[0] == (byte) 0x89 && header[1] == (byte) 0x50 &&
+                    header[2] == (byte) 0x4E && header[3] == (byte) 0x47;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    public boolean hasAllowedImageExtension(MultipartFile file) {
+        if (file == null || file.isEmpty()) return false;
+        String name = file.getOriginalFilename();
+        if (name == null) return false;
+        String extension = name.substring(name.lastIndexOf('.') + 1).toLowerCase();
+        return extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png");
+    }
+
     public ResponseEntity<?> getAllUsers() {
         List<Users> users = userRepository.getAllUsers().orElseThrow(() -> new RuntimeException("No users found."));
         List<UserAdminDTO> userAdminDTOs = new ArrayList<>();
@@ -314,46 +338,6 @@ public class UserService {
             response.put("code", "200");
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
-    }
-
-    public boolean isAllowedImageType(MultipartFile file) {
-        if (file == null || file.isEmpty()) return false;
-
-        String contentType = file.getContentType();
-        return contentType != null && (
-                contentType.equalsIgnoreCase("image/jpeg") ||
-                        contentType.equalsIgnoreCase("image/jpg") ||
-                        contentType.equalsIgnoreCase("image/png")
-        );
-    }
-
-    public boolean isAllowedImageByMagicNumber(MultipartFile file) {
-        if (file == null || file.isEmpty()) return false;
-        try (InputStream is = file.getInputStream()) {
-            byte[] header = new byte[8];
-            int b = is.read(header);
-
-            if (header[0] == (byte) 0xFF && header[1] == (byte) 0xD8) {
-                return true;
-            }
-
-            return header[0] == (byte) 0x89 && header[1] == (byte) 0x50 &&
-                    header[2] == (byte) 0x4E && header[3] == (byte) 0x47;
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-    public boolean hasAllowedImageExtension(MultipartFile file) {
-        if (file == null || file.isEmpty()) return false;
-        String name = file.getOriginalFilename();
-        if (name == null) return false;
-        String extension = name.substring(name.lastIndexOf('.') + 1).toLowerCase();
-        return extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png");
-    }
-
-    public boolean isValidImageFile(MultipartFile file) {
-        return isAllowedImageType(file) && isAllowedImageByMagicNumber(file) && hasAllowedImageExtension(file);
     }
 
     @KafkaListener(topics = "set-account", groupId = "users")

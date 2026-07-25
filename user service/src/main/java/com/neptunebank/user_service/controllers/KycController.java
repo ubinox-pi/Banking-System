@@ -4,7 +4,7 @@ import com.neptunebank.user_service.DTO.kycDTO.KycVerificationDTO;
 import com.neptunebank.user_service.services.KycService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,15 +31,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/users/kyc")
+@RequiredArgsConstructor
 public class KycController {
 
-    private KycService kycService;
-
-    @Autowired
-    public void setKycService(KycService kycService) {
-        this.kycService = kycService;
-    }
-
+    private final KycService kycService;
 
     @PostMapping("/submit")
     @RolesAllowed({"ADMIN", "EMPLOYEE"})

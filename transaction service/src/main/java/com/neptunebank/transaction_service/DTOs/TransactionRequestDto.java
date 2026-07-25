@@ -31,13 +31,12 @@ import java.math.BigInteger;
 @AllArgsConstructor
 @Builder
 public class TransactionRequestDto {
-    private Long sourceAccount;
-    private Long destinationAccount;
+    private SourceOrDestinationRequestDto sourceAccount;
+    private SourceOrDestinationRequestDto destinationAccount;
     private TransactionType transactionType;
     private ModeOfTransaction modeOfTransaction;
     private TransactionMedium transactionMedium;
     private BigInteger amount;
-    private SourceOrDestinationRequestDto sourceOrDestinationBank;
     private String description;
     private String remarks;
 }

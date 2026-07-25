@@ -3,7 +3,7 @@ package com.neptunebank.user_service.services;
 import com.neptunebank.user_service.DTO.kycDTO.KycVerificationDTO;
 import com.neptunebank.user_service.models.Kyc;
 import com.neptunebank.user_service.repositories.KycRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -34,19 +34,13 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  */
 @Service
+@RequiredArgsConstructor
 public class KycService {
 
     private final Map<Long, String> resource = new ConcurrentHashMap<>();
     private final KycRepository kycRepository;
     private final KafkaTemplate<String, String> account;
     private final KafkaTemplate<String, String> message;
-
-    @Autowired
-    public KycService(KycRepository kycRepository, KafkaTemplate<String, String> account, KafkaTemplate<String, String> message) {
-        this.kycRepository = kycRepository;
-        this.account = account;
-        this.message = message;
-    }
 
     public ResponseEntity<?> doKyc(KycVerificationDTO kyc) {
         // TODO: Add role-based access control to ensure only authorized employees can perform KYC verification

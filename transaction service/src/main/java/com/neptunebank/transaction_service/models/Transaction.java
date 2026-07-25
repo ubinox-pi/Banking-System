@@ -69,10 +69,6 @@ public class Transaction {
     @Column(nullable = false)
     private BigInteger amount;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false)
-    private SourceOrDestinationBank sourceOrDestinationBankId;
-
     @Column(columnDefinition = "TEXT")
     private String description;
 

@@ -1,6 +1,7 @@
 package com.neptunebank.card_service.DTO;
 
 import com.neptunebank.card_service.ENUM.NetworkType;
+import com.neptunebank.card_service.model.CardTypes;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
@@ -46,7 +47,7 @@ public class CardDTO {
     private Boolean contactlessEnabled = false;
 
     @NotBlank(message = "Card type cannot be null")
-    private Long cardType;
+    private CardTypes cardType;
 
     private Long varifiedBy;
 }

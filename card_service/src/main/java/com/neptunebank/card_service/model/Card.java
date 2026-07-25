@@ -39,7 +39,7 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long cardId;
-    
+
     private Long varifiedBY;
 
     @ManyToOne(optional = false)
@@ -88,12 +88,14 @@ public class Card {
     private BigDecimal dailyLimit;
 
     @Column(nullable = false)
+    @Builder.Default
     private BigDecimal dailyUsed = BigDecimal.ZERO;
 
     @Column(nullable = false)
     private BigDecimal monthlyLimit;
 
     @Column(nullable = false)
+    @Builder.Default
     private BigDecimal monthlyUsed = BigDecimal.ZERO;
 
     @Column(nullable = false)

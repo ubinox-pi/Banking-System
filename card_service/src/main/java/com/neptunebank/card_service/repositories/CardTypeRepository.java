@@ -27,8 +27,8 @@ import org.springframework.stereotype.Repository;
 public interface CardTypeRepository extends JpaRepository<CardTypes, Long> {
 
     @Query("SELECT CASE WHEN COUNT(ct) > 0 THEN TRUE ELSE FALSE END FROM CardTypes ct WHERE ct.cardTypeId = ?1")
-    boolean existsCardTypesByCardTypeId(Long cardTypeId);
+    boolean existsCardTypesByCardTypeId(CardTypes cardTypeId);
 
     @Query("SELECT ct FROM CardTypes ct WHERE ct.cardTypeId = ?1")
-    CardTypes findCardTypesByCardTypeId(Long cardTypeId);
+    CardTypes findCardTypesByCardTypeId(CardTypes cardTypeId);
 }

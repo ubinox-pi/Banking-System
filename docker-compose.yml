@@ -1,32 +1,39 @@
-version: '3.8'
-
 services:
-  user_service:
-    build:
-      context: ./user service
-    container_name: user_service
-    ports:
-      - "8081:8080"
-    environment:
-      - DATABASE_URL=jdbc:postgresql://postgres:5432/neptune
-      - DATABASE_USERNAME=ashish
-      - DATABASE_PASSWORD=ashish123
-      - KAFKA_SERVER=kafka:9092
-    depends_on:
-      - postgres
-      - kafka
-
   postgres:
     image: postgres:15
     container_name: postgres
     environment:
       POSTGRES_DB: neptune
-      POSTGRES_USER: ashish
-      POSTGRES_PASSWORD: ashish123
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ashish
     ports:
       - "5439:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - banking-system:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - banking-system
+
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - banking-system
+
+  redis:
+    image: redis:7
+    container_name: redis
+    command: [ "redis-server", "--appendonly", "yes" ]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - banking-system
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
@@ -36,6 +43,8 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - banking-system
 
   kafka:
     image: confluentinc/cp-kafka:7.4.0
@@ -49,8 +58,289 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - banking-system
 
+  main_server:
+    build:
+      context: ./main_server
+    container_name: main_server
+    ports:
+      - "8761:8761"
+    environment:
+      - PORT=8761
+      - DEFAULT_ZONE=http://main_server:8761/eureka/
+    networks:
+      - banking-system
+
+  auth_service:
+    build:
+      context: ./auth_service
+    container_name: auth_service
+    ports:
+      - "8081:8081"
+    environment:
+      - PORT=8081
+      - EUREKA_SERVER_URL=http://main_server:8761/eureka/
+      - ADMIN_SERVER_URL=http://main_server:8761/
+      - SERVICE_BASE_URL=http://auth_service:8081
+    depends_on:
+      - main_server
+    networks:
+      - banking-system
+
+  user_service:
+    build:
+      context: "./user service"
+    container_name: user_service
+    ports:
+      - "8082:8082"
+    environment:
+      - PORT=8082
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/Users
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=ashish
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/Users
+      - KAFKA_SERVER=kafka:9092
+      - EUREKA_SERVER_URL=http://main_server:8761/eureka/
+      - ADMIN_SERVER_URL=http://main_server:8761/
+      - SERVICE_BASE_URL=http://user_service:8082
+    depends_on:
+      - postgres
+      - mongodb
+      - kafka
+      - main_server
+    networks:
+      - banking-system
+
+  account_service:
+    build:
+      context: ./account_service
+    container_name: account_service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/accounts
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=ashish
+      - KAFKA_SERVER=kafka:9092
+      - EUREKA_SERVER_URL=http://main_server:8761/eureka/
+      - ADMIN_SERVER_URL=http://main_server:8761/
+      - SERVICE_BASE_URL=http://account_service:8083
+    depends_on:
+      - postgres
+      - kafka
+      - main_server
+    networks:
+      - banking-system
+
+  messaging_service:
+    build:
+      context: ./messaging_service
+    container_name: messaging_service
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/otp
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=ashish
+      - KAFKA_SERVER=kafka:9092
+      - EUREKA_SERVER_URL=http://main_server:8761/eureka/
+      - ADMIN_SERVER_URL=http://main_server:8761/
+      - SERVICE_BASE_URL=http://messaging_service:8084
+    depends_on:
+      - postgres
+      - kafka
+      - main_server
+    networks:
+      - banking-system
+
+  banking_service:
+    build:
+      context: ./banking_service
+    container_name: banking_service
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/banking
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=ashish
+      - KAFKA_SERVER=kafka:9092
+      - EUREKA_SERVER_URL=http://main_server:8761/eureka/
+      - ADMIN_SERVER_URL=http://main_server:8761/
+      - SERVICE_BASE_URL=http://banking_service:8085
+    depends_on:
+      - postgres
+      - kafka
+      - main_server
+    networks:
+      - banking-system
+
+  loan_service:
+    build:
+      context: ./loan_service
+    container_name: loan_service
+    ports:
+      - "8090:8087"
+    environment:
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/loan
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=ashish
+      - EUREKA_SERVER_URL=http://main_server:8761/eureka/
+      - ADMIN_SERVER_URL=http://main_server:8761/
+      - SERVICE_BASE_URL=http://loan_service:8087
+    depends_on:
+      - postgres
+      - main_server
+    networks:
+      - banking-system
+
+  card_service:
+    build:
+      context: ./card_service
+    container_name: card_service
+    ports:
+      - "8088:8088"
+    environment:
+      - PORT=8088
+      - DB_URL=jdbc:postgresql://postgres:5432/cards
+      - DB_USER=postgres
+      - DB_PASSWORD=ashish
+      - KAFKA_SERVER=kafka:9092
+      - EUREKA_SERVER_URL=http://main_server:8761/eureka/
+      - ADMIN_SERVER_URL=http://main_server:8761/
+      - SERVICE_BASE_URL=http://card_service:8088
+    depends_on:
+      - postgres
+      - kafka
+      - main_server
+    networks:
+      - banking-system
+
+  transaction_service:
+    build:
+      context: "./transaction service"
+    container_name: transaction_service
+    ports:
+      - "8086:8086"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/transactions
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=ashish
+      - EUREKA_SERVER_URL=http://main_server:8761/eureka/
+      - ADMIN_SERVER_URL=http://main_server:8761/
+      - SERVICE_BASE_URL=http://transaction_service:8086
+    depends_on:
+      - postgres
+      - main_server
+    networks:
+      - banking-system
+
+  employee_service:
+    build:
+      context: "./employee service"
+    container_name: employee_service
+    ports:
+      - "8089:8089"
+    environment:
+      - HOST=0.0.0.0
+      - HOSTNAME=employee_service
+      - PORT=8080
+      - PROFILE=prod
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/employee
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=ashish
+      - DATABASE_DDL_AUTO=validate
+      - KAFKA_SERVER=kafka:9092'
+      - SASL_SSL=${SASL_SSL:-PLAINTEXT}
+      - SCRAM_SHA_512=${SCRAM_SHA_512:-PLAINTEXT}
+      - REDPANDA_CONFIG=${REDPANDA_CONFIG:-PLAINTEXT}
+      - KAFKA_GROUP=${KAFKA_USER:-user}
+      - EUREKA_SERVER_URL=http://main_server:8761/eureka/
+      - EUREKA_TIME_INTERVAL=10000
+      - EUREKA_EXPIRATION_INTERVAL=20000
+      - EUREKA_FETCH_INTERVAL=30000
+      - SERVICE_BASE_URL=http://employee_service:8089
+      - ADMIN_SERVER_URL=http://main_server:8761/
+      - USER=${USER:-admin}
+      - PASSWORD=${PASSWORD:-ashish}
+      - SECRET=${SECRET:-secret}
+    depends_on:
+      - postgres
+      - kafka
+      - main_server
+    networks:
+      - banking-system
+
+  neptune_bank:
+    build:
+      context: "./Neptune Bank"
+    container_name: neptune_bank
+    ports:
+      - "8080:8080"
+    environment:
+      - PROFILE=prod
+      - PORT=8080
+      - HOST=0.0.0.0
+      - HOSTNAME=neptune_bank
+      - AUTH_SERVICE=http://auth_service:8080
+      - USER_SERVICE=http://user_service:8080
+      - ACCOUNT_SERVICE=http://account_service:8080
+      - MESSAGING_SERVICE=http://otp_service:8080
+      - BANKING_SERVICE=http://banking_service:8080
+      - EMPLOYEE_SERVICE=http://employee_service:8080
+      - TRANSACTION_SERVICE=http://transaction_service:8080
+      - CARD_SERVICE=http://card_service:8080
+      - LOAN_SERVICE=http://loan_service:8080
+      - ORIGIN=${ORIGIN:-http://localhost:3000}
+      - EUREKA_SERVER_URL=http://main_server:8761/eureka/
+      - EUREKA_TIME_INTERVAL=10000
+      - EUREKA_EXPIRATION_INTERVAL=20000
+      - EUREKA_FETCH_INTERVAL=30000
+      - SERVICE_BASE_URL=http://neptune_bank:8080
+      - ADMIN_SERVER_URL=http://main_server:8761/
+      - USER=${USER:-admin}
+      - PASSWORD=${PASSWORD:-ashish}
+      - LOGGING_LEVEL=${LOGGING_LEVEL:-DEBUG}
+      - SECRET=${SECRET:-secret}
+      - ROOT_LOGGING_LEVEL=${ROOT_LOGGING_LEVEL:-DEBUG}
+      - HIBERNATE_SQL_LOGGING=${HIBERNATE_SQL_LOGGING:-DEBUG}
+      - LOG_FILE=logs/neptune_bank.log
+      - LOG_FILE_PATH=./logs
+    depends_on:
+      - main_server
+      - auth_service
+      - user_service
+      - account_service
+      - otp_service
+      - banking_service
+      - employee_service
+      - transaction_service
+      - card_service
+      - loan_service
+    networks:
+      - banking-system
+
+  whatsapp_automation:
+    build:
+      context: ./whatsapp_automation
+    container_name: whatsapp_automation
+    ports:
+      - "3000"
+    networks:
+      - banking-system
 
 volumes:
-  pgdata:
+  banking-system:
+    name: banking-system
     driver: local
+  mongo_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  banking-system:
+    name: banking-system
+    driver: bridge
+    internal: true

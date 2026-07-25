@@ -101,7 +101,7 @@ public class Users {
             joinColumns = @JoinColumn(name = "user_id")
     )
     @Column(unique = true)
-    private List<Long> accountId = new ArrayList<>();
+    private final List<Long> accountId = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
     @JoinColumn(unique = true, updatable = false)

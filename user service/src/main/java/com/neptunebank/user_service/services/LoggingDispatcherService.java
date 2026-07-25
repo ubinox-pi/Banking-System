@@ -2,7 +2,7 @@ package com.neptunebank.user_service.services;
 
 import com.neptunebank.user_service.models.log.ApiCallLog;
 import com.neptunebank.user_service.repositories.LogRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -25,13 +25,9 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service
+@RequiredArgsConstructor
 public class LoggingDispatcherService {
-    private LogRepository logRepository;
-
-    @Autowired
-    public void setLogRepository(LogRepository logRepository) {
-        this.logRepository = logRepository;
-    }
+    private final LogRepository logRepository;
 
     @Async
     public void saveApiCallLog(ApiCallLog log) {
